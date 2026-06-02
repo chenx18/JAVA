@@ -1,4 +1,4 @@
-# 08-自增主键与useGeneratedKeys
+﻿# 08-自增主键与useGeneratedKeys
 
 真实项目里，新增数据时通常不让前端传 `id`。
 
@@ -15,7 +15,7 @@ Service 返回带 id 的响应数据
 
 ## 1. 为什么新增时通常不传 id
 
-学习阶段可能会这样新增：
+早期示例中可能会这样新增：
 
 ```json
 {
@@ -268,7 +268,7 @@ int insert(Department department);
 
 ---
 
-## 8. 常见错误
+## 8. 常见误区
 
 ### 1. 忘记设置数据库 auto_increment
 
@@ -279,7 +279,7 @@ insert into department (name, description, status)
 values (#{name}, #{description}, #{status})
 ```
 
-可能报错：
+可能触发异常：
 
 ```text
 Field 'id' doesn't have a default value
@@ -293,9 +293,9 @@ alter table department modify column id int not null auto_increment;
 
 ---
 
-### 2. useGeneratedKeys 大小写写错
+### 2. useGeneratedKeys 大小写不正确
 
-错误：
+不推荐写法：
 
 ```xml
 useGeneratedkeys="true"
@@ -311,7 +311,7 @@ useGeneratedKeys="true"
 
 ---
 
-### 3. keyProperty 写错
+### 3. keyProperty 配置不正确
 
 如果 Java 对象属性叫：
 
@@ -355,7 +355,7 @@ values (#{name}, #{description}, #{status})
 
 ### 5. 误以为 insert 返回值就是 id
 
-错误理解：
+常见误区：
 
 ```java
 int id = mapper.insert(department);

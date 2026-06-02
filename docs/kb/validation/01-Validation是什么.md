@@ -28,7 +28,7 @@ id 不应该小于 1
 name 不应该为空
 ```
 
-如果没有 Validation，就要在 Service 里手写很多判断。
+如果没有 Validation，就要在 Service 里编写大量字段判断。
 
 ---
 

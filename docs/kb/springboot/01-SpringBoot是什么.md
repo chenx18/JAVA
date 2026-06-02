@@ -9,10 +9,10 @@ Spring Boot 是 Java 后端开发中常用的项目框架。
 ## 一句话理解
 
 ```text
-Spring Boot = 帮你快速搭好 Java 后端项目骨架的框架。
+Spring Boot = 用于快速搭建 Java 后端项目骨架的框架。
 ```
 
-它帮你处理很多基础设施问题，例如：
+它帮助处理很多基础设施问题，例如：
 
 ```text
 启动 Web 服务
@@ -51,7 +51,7 @@ Spring Boot 把这些常见能力封装好了。
 
 ---
 
-## 当前阶段最重要的能力
+## 本节重点能力
 
 初学 Spring Boot，先掌握：
 
@@ -74,7 +74,7 @@ Java 是语言，Spring Boot 是框架。
 
 ```text
 Java：提供类、对象、方法、异常等语言能力
-Spring Boot：基于 Java 帮你组织后端项目
+Spring Boot：基于 Java 组织后端项目
 ```
 
 学 Spring Boot 时，遇到不懂的语法，可以回查 `java/` 专题。

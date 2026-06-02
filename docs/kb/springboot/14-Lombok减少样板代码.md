@@ -47,7 +47,7 @@ Lombok 可以让代码更干净。
 </dependency>
 ```
 
-Spring Boot 父工程通常会管理 Lombok 版本，所以学习阶段可以不写版本号。
+Spring Boot 父工程通常会管理 Lombok 版本，所以使用 Spring Boot 父工程时通常可以不写版本号。
 
 添加依赖后建议重新编译：
 
@@ -221,11 +221,11 @@ public class DepartmentService {
 private static final Logger log = LoggerFactory.getLogger(DepartmentService.class);
 ```
 
-学习阶段可以先认识，后面学日志时再深入。
+入门项目可以先认识，后面学日志时再深入。
 
 ---
 
-## 当前阶段推荐用法
+## 推荐用法
 
 ```text
 DTO / Request / Response：@Data

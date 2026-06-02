@@ -1,4 +1,4 @@
-# 05-MyBatis XML写法
+﻿# 05-MyBatis XML写法
 
 MyBatis 有两种常见写 SQL 的方式：注解和 XML。
 
@@ -304,11 +304,11 @@ where name like concat('%', #{name}, '%')
 
 ---
 
-## 常见错误
+## 常见误区
 
 ### 1. XML 的 id 和 Mapper 方法名不一致
 
-错误：
+不推荐写法：
 
 ```java
 List<Department> searchByName(...);
@@ -324,7 +324,7 @@ List<Department> searchByName(...);
 <select id="searchByName">
 ```
 
-### 2. namespace 写错
+### 2. namespace 配置不一致
 
 `namespace` 必须对应 Mapper 接口完整路径。
 
@@ -338,7 +338,7 @@ mybatis.mapper-locations=classpath:mapper/*.xml
 
 ### 4. like 没有加百分号
 
-错误：
+不推荐写法：
 
 ```xml
 where name like #{name}
@@ -364,9 +364,9 @@ where name like concat('%', #{name}, '%')
 
 ---
 
-## 当前阶段要掌握到什么程度
+## 本节小结
 
-不需要现在盲写完整 XML 模板。
+不建议死记完整 XML 模板。
 
 要能做到：
 

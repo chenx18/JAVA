@@ -44,6 +44,13 @@
     select id, name, description, status from department where id = #{id}
   </select>
 
+  <select id="findByIds" resultMap="DepartmentResultMap">
+    select id, name, description, status from department where id in
+    <foreach collection="ids" item="id" open="(" separator="," close=")" >
+      #{id}
+    </foreach>
+  </select>
+
   <select id="findByName" parameterType="string" resultMap="DepartmentResultMap">
     select id, name, description, status from department where name = #{name}
   </select>
@@ -69,6 +76,13 @@
   <delete id="deleteById" parameterType="int">
     delete from department where id = #{id}
   </delete>
+  <delete id="deleteByIds">
+    delete from department
+    where id in
+    <foreach collection="ids" item="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </delete>
 
   <select id="existsById" resultType="boolean">
     select count(*) > 0 from department where id = #{id}
@@ -76,6 +90,39 @@
 
   <select id="existsByName" resultType="boolean">
     select count(*) > 0 from department where name = #{name}
+  </select>
+
+  <resultMap id="DepartmentDetailResultMap"
+    type="com.example.week4.project.system.domain.vo.DepartmentDetailResponse">
+    <id property="id" column="department_id" />
+    <result property="name" column="department_name" />
+    <result property="description" column="department_description" />
+    <result property="status" column="department_status" />
+
+    <collection property="logs" ofType="com.example.week4.project.system.domain.DepartmentLog">
+      <id property="id" column="log_id" />
+      <result property="departmentId" column="department_id" />
+      <result property="operation" column="log_operation" />
+      <result property="content" column="log_content" />
+      <result property="createTime" column="log_create_time" />
+    </collection>
+
+  </resultMap>
+
+  <select id="findDetailById" resultMap="DepartmentDetailResultMap">
+    select 
+      d.id as department_id,
+      d.name as department_name,
+      d.description as department_description,
+      d.status as department_status,
+      l.id as log_id,
+      l.operation as log_operation,
+      l.content as log_content,
+      l.create_time as log_create_time
+    from department d
+    left join department_log l on d.id = l.department_id
+    where d.id = #{departmentId}
+    order by l.id desc;
   </select>
 
 </mapper>

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.example.week4.project.system.domain.Department;
+import com.example.week4.project.system.domain.vo.DepartmentDetailResponse;
 
 @Mapper
 public interface DepartmentMapper {
@@ -25,14 +26,20 @@ public interface DepartmentMapper {
   Department findById(@Param("id") int id);
 
   Department findByName(@Param("name") String name);
+  
+  List<Department> findByIds(@Param("ids") List<Integer> ids);
 
   List<Department> searchByName(@Param("name") String name);
+
+  DepartmentDetailResponse findDetailById(@Param("departmentId") int departmentId);
 
   int insert(Department department);
 
   int updateById(Department department);
 
   int deleteById(@Param("id") int id);
+
+  int deleteByIds(@Param("ids") List<Integer> ids);
 
   boolean existsById(@Param("id") int id);
 

@@ -2,7 +2,7 @@
 
 CRUD 模块是后端项目最常见的业务单元。
 
-User、Role、Department 都可以按同一套结构练习。
+User、Role、Department 都可以按同一套结构开发。
 
 ---
 
@@ -103,7 +103,7 @@ deleteById(int id)
 
 ## 返回值推荐
 
-学习阶段推荐：
+入门项目推荐：
 
 ```text
 查询：返回对象或集合

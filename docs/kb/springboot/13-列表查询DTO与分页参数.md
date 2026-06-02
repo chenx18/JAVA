@@ -1,4 +1,4 @@
-# 12-列表查询DTO与分页参数
+﻿# 13-列表查询DTO与分页参数
 
 DTO 不只用于 `POST` 和 `PUT` 的 JSON 请求体。
 
@@ -52,7 +52,7 @@ public ApiResponse<PageResponse<DepartmentResponse>> list(
 }
 ```
 
-这种写法没错。
+这种写法可以使用。
 
 但真实后台列表页参数会越来越多：
 
@@ -439,9 +439,9 @@ public ApiResponse<DepartmentResponse> getByName(
 
 ---
 
-## 14. 当前阶段要掌握到什么程度
+## 14. 本节小结
 
-你不用背注解组合。
+不需要死记注解组合，重点是理解职责。
 
 要能理解：
 

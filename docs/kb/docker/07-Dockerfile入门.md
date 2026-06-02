@@ -139,7 +139,7 @@ docker run -d -p 8080:8080 --name springboot-demo springboot-demo:1.0
 
 ---
 
-## 7. 当前阶段需要掌握到什么程度
+## 7. 本节小结
 
 入门阶段不需要深入镜像优化。
 

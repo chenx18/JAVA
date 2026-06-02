@@ -1,4 +1,4 @@
-# 13-项目配置关系：pom.xml、docker-compose.yml、application.properties
+﻿# 13-项目配置关系：pom.xml、docker-compose.yml、application.properties
 
 学习 Spring Boot 连接数据库时，最容易混乱的不是代码，而是配置文件。
 
@@ -51,7 +51,7 @@ Spring Boot 为什么知道连哪个数据库？
 
 ## 2. 三个配置文件的关系
 
-以第四周项目为例：
+以示例项目为例：
 
 ```text
 Spring Boot 项目
@@ -64,7 +64,7 @@ Spring Boot 项目
 
 ```text
 pom.xml
-  -> 告诉 Java 项目：我要用 MyBatis、MySQL 驱动
+  -> 告诉 Java 项目需要使用 MyBatis、MySQL 驱动
 
 application.properties
   -> 告诉 Spring Boot：数据库地址、账号、密码是什么
@@ -100,7 +100,7 @@ Spring Boot 版本
 
 最常见的是管理依赖。
 
-比如你要写 Web 接口，需要：
+例如开发 Web 接口，需要：
 
 ```xml
 <dependency>
@@ -109,7 +109,7 @@ Spring Boot 版本
 </dependency>
 ```
 
-你要用 MyBatis，需要：
+使用 MyBatis，需要：
 
 ```xml
 <dependency>
@@ -119,7 +119,7 @@ Spring Boot 版本
 </dependency>
 ```
 
-你要连接 MySQL，需要：
+连接 MySQL，需要：
 
 ```xml
 <dependency>
@@ -161,7 +161,7 @@ scope：依赖作用范围
 
 为什么有的依赖没有 version？
 
-因为 Spring Boot 的 parent 已经帮你管理了一批常用依赖版本。
+因为 Spring Boot 的 parent 已经管理了一批常用依赖版本。
 
 例如：
 
@@ -176,8 +176,8 @@ scope：依赖作用范围
 这表示：
 
 ```text
-当前项目继承 Spring Boot 的依赖版本管理。
-很多常见依赖不需要你手写 version。
+示例项目继承 Spring Boot 的依赖版本管理。
+很多常见依赖不需要显式声明 version。
 ```
 
 ---
@@ -280,7 +280,7 @@ services:
 意思是：
 
 ```text
-我要启动一个叫 mysql 的服务。
+启动一个名为 mysql 的服务。
 ```
 
 ---
@@ -389,7 +389,7 @@ volumes:
 
 ## 8. 三个配置如何配合工作
 
-假设你访问接口：
+假设访问接口：
 
 ```text
 GET /departments/list
@@ -433,9 +433,9 @@ Cannot load driver class: com.mysql.cj.jdbc.Driver
 
 ---
 
-### 数据库地址写错
+### 数据库地址配置不正确
 
-如果 `application.properties` 地址或端口写错，可能会报：
+如果 `application.properties` 地址或端口配置不正确，可能会出现连接异常：
 
 ```text
 Communications link failure
@@ -553,9 +553,9 @@ spring.datasource.url=jdbc:mysql://localhost:3307/week4_db
 
 ---
 
-## 11. 没有 AI 时是不是要自己手写
+## 11. 配置文件是否需要手写
 
-是的，但实际开发中很少完全从 0 手写。
+需要理解写法，但实际开发中通常基于模板、官方文档和团队规范配置。
 
 常见做法是：
 
@@ -567,7 +567,7 @@ spring.datasource.url=jdbc:mysql://localhost:3307/week4_db
 用 AI 辅助生成
 ```
 
-但你必须能看懂和修改。
+但需要能够看懂并修改。
 
 因为真正开发时经常遇到：
 

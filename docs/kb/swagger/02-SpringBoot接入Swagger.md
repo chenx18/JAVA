@@ -2,7 +2,7 @@
 
 Spring Boot 接入 Swagger，通常只需要先加一个依赖。
 
-当前项目是 Spring Boot 3.x，推荐使用 `springdoc-openapi`。
+示例项目是 Spring Boot 3.x，推荐使用 `springdoc-openapi`。
 
 ---
 
@@ -21,7 +21,7 @@ Spring Boot 接入 Swagger，通常只需要先加一个依赖。
 这段配置的意思是：
 
 ```text
-告诉 Maven：我要在项目里使用 springdoc-openapi 这个 Swagger 工具包。
+告诉 Maven：项目需要使用 springdoc-openapi 这个 Swagger 工具包。
 ```
 
 ---
@@ -116,7 +116,7 @@ GET /departments/{id}
 
 ## 接入后是否需要写配置类
 
-学习阶段通常不需要。
+入门项目通常不需要。
 
 只要加依赖、重启项目、访问 Swagger 页面即可。
 

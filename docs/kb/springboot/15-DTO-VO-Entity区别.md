@@ -14,7 +14,7 @@ DTO：数据传输对象
 VO：返回给前端展示的对象
 ```
 
-更贴近当前项目的说法：
+更贴近示例项目的说法：
 
 ```text
 Request：前端传进来
@@ -129,7 +129,7 @@ public class DepartmentResponse {
 
 ---
 
-## 放到当前项目里怎么对应
+## 放到示例项目里怎么对应
 
 当前 Department 模块可以这样理解：
 
@@ -243,9 +243,9 @@ VO / Response / ViewObject：返回给前端对象
 
 ---
 
-## 当前阶段推荐命名
+## 推荐命名
 
-学习阶段建议使用清晰命名：
+推荐使用清晰命名：
 
 ```text
 XxxCreateRequest

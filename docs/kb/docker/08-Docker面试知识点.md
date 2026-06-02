@@ -216,7 +216,7 @@ Dockerfile 作用
 ## 12. 面试回答总模板
 
 ```text
-我在本地开发中主要用 Docker 管理项目依赖环境，比如 MySQL、Redis。
+本地开发中可以用 Docker 管理项目依赖环境，比如 MySQL、Redis。
 通过 docker-compose.yml 可以定义服务镜像、端口映射、环境变量和数据卷，
 然后用 docker compose up -d 一键启动。
 Java 项目本机运行时，可以通过 localhost 映射端口连接 Docker 中的 MySQL。

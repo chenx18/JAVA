@@ -8,7 +8,7 @@ Swagger 不写注解也能自动生成接口文档。
 
 ## 常用注解总览
 
-学习阶段先掌握这些：
+优先掌握这些：
 
 ```text
 @Tag：说明 Controller 模块
@@ -125,7 +125,7 @@ public String test() {
 
 ## 注意 ApiResponse 命名冲突
 
-你的项目里通常会有自己的统一返回类：
+项目里通常会有自己的统一返回类：
 
 ```java
 public class ApiResponse<T> {
@@ -138,6 +138,6 @@ Swagger 注解里也有一个名字叫 `ApiResponse`：
 io.swagger.v3.oas.annotations.responses.ApiResponse
 ```
 
-所以如果以后引入 Swagger 的 `@ApiResponse` 注解，可能会和你自己的 `ApiResponse` 类名字冲突。
+如果引入 Swagger 的 `@ApiResponse` 注解，可能会和项目自己的 `ApiResponse` 类名冲突。
 
-学习阶段可以先不用 Swagger 的 `@ApiResponse` 注解，先掌握 `@Tag`、`@Operation`、`@Parameter`、`@Schema`。
+入门项目可以先不用 Swagger 的 `@ApiResponse` 注解，优先掌握 `@Tag`、`@Operation`、`@Parameter`、`@Schema`。

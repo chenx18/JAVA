@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.week4.project.system.mapper.DepartmentLogMapper">
+
+  <resultMap id="DepLogMap" type="com.example.week4.project.system.domain.DepartmentLog">
+    <id property="id" column="id" />
+    <result property="departmentId" column="department_id" />
+    <result property="operation" column="operation" />
+    <result property="content" column="content" />
+    <result property="createTime" column="create_time" />
+  </resultMap>
+
+  <insert id="insert" parameterType="com.example.week4.project.system.domain.DepartmentLog">
+    insert into department_log (department_id, operation, content, create_time)
+    values (#{departmentId}, #{operation}, #{content}, #{createTime})
+  </insert>
+
+  <select id="findByDepartmentId" resultMap="DepLogMap">
+    select id, 
+    department_id,
+    operation,
+    content,
+    create_time
+    from department_log
+    where department_id = #{departmentId}
+    order by id desc
+  </select>
+
+</mapper>

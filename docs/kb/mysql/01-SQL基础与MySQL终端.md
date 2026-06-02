@@ -1,4 +1,4 @@
-# 01-SQL基础与MySQL终端
+﻿# 01-SQL基础与MySQL终端
 
 SQL 是用来和数据库说话的语言。
 
@@ -13,7 +13,7 @@ SQL 全称是 Structured Query Language，结构化查询语言。
 它的作用是：
 
 ```text
-告诉数据库我要做什么
+告诉数据库需要执行什么操作
 ```
 
 例如：

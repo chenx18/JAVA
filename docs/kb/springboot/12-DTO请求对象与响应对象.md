@@ -25,7 +25,7 @@ Department：数据库对象
 
 ## 为什么不直接使用数据库对象
 
-学习阶段可以直接用：
+入门项目可以直接用：
 
 ```java
 @RequestBody Department department

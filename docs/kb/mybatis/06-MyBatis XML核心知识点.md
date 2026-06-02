@@ -1,4 +1,4 @@
-# 06-MyBatis XML核心知识点
+﻿# 06-MyBatis XML核心知识点
 
 MyBatis XML 不是普通 XML 学习，而是 MyBatis 用来描述 SQL、参数、返回结果映射的配置文件。
 
@@ -83,7 +83,7 @@ public interface DepartmentMapper {
 namespace 必须写 Mapper 接口的完整包名 + 类名
 ```
 
-如果写错，MyBatis 就找不到对应关系。
+如果配置不一致，MyBatis 就找不到对应关系。
 
 ---
 
@@ -212,8 +212,8 @@ department.setName(数据库里的 name);
 简单理解：
 
 ```text
-resultType：你直接告诉 MyBatis 返回什么类
-resultMap：你告诉 MyBatis 每个字段怎么装进这个类
+resultType：直接指定 MyBatis 返回什么类
+resultMap：手动指定每个字段如何装进目标类
 ```
 
 例如字段一致：
@@ -395,7 +395,7 @@ int insert(Department department);
 
 很多时候 MyBatis 可以自动推断参数类型，所以 `parameterType` 不是每次都必须写。
 
-学习阶段可以先写上，方便理解。
+入门项目可以先写上，方便理解。
 
 ---
 
@@ -578,15 +578,15 @@ MyBatis XML 支持动态 SQL：
 | `<set>` | 动态 update 时自动处理逗号 |
 | `<foreach>` | 批量处理集合，比如批量删除 |
 
-当前阶段不用急着背，后面做复杂查询时再深入。
+不需要一开始死记，做复杂查询时再深入。
 
 ---
 
-## 15. 当前阶段最容易错的点
+## 15. 常见误区
 
 ### 1. 把 resultMap 写成 resultType
 
-错误：
+不推荐写法：
 
 ```xml
 <select id="findAll" resultType="DepartmentResultMap">
@@ -606,9 +606,9 @@ DepartmentResultMap 是映射规则 id，不是 Java 类型
 
 ---
 
-### 2. namespace 写错
+### 2. namespace 配置不一致
 
-错误：
+不推荐写法：
 
 ```xml
 <mapper namespace="DepartmentMapper">
@@ -630,7 +630,7 @@ namespace 要写 Mapper 接口完整路径
 
 ### 3. id 和 Mapper 方法名不一致
 
-错误：
+不推荐写法：
 
 ```java
 Department findById(int id);
@@ -675,7 +675,7 @@ limit #{offset}, #{pageSize}
 
 ### 5. 查询列表误用单对象返回
 
-错误：
+不推荐写法：
 
 ```java
 Department searchByName(String name);
@@ -691,9 +691,9 @@ List<Department> searchByName(String name);
 
 ## 16. 现在要掌握到什么程度
 
-当前阶段不需要背完整 XML。
+不需要背完整 XML。
 
-你要做到：
+需要做到：
 
 ```text
 能看懂 namespace 对 Mapper 接口

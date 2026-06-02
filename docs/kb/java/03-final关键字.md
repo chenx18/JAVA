@@ -68,9 +68,9 @@ Java 里的 `String` 就是 final 类。
 
 ---
 
-## 当前阶段最常见用法
+## 常见用法
 
-你现在最常见的是：
+实际项目中常见的是：
 
 ```java
 private final XxxService service;

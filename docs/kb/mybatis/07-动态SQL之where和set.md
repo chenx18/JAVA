@@ -1,4 +1,4 @@
-# 07-动态SQL之where和set
+﻿# 07-动态SQL之where和set
 
 动态 SQL 是 MyBatis XML 的重要能力。
 
@@ -89,7 +89,7 @@ select * from department where name like '%研发%'
 
 但如果条件是动态的，就可能遇到问题。
 
-错误示例：
+不推荐写法：
 
 ```xml
 select id, name from department
@@ -236,7 +236,7 @@ update department set status = 0 where id = 1
 name = #{name},
 ```
 
-如果最后一个字段也带逗号，`<set>` 会帮你清掉。
+如果最后一个字段也带逗号，`<set>` 会自动清掉。
 
 ---
 
@@ -389,7 +389,7 @@ update 没补字段：修改时不生效
 
 ---
 
-## 11. 常见错误
+## 11. 常见误区
 
 ### 1. `<set>` 里面不写逗号
 
@@ -417,7 +417,7 @@ set name = ? status = ?
 
 ### 2. 忘记查询新字段
 
-错误：
+不推荐写法：
 
 ```sql
 select id, name from department
@@ -433,7 +433,7 @@ select id, name, description, status from department
 
 ### 3. count 和 list 查询条件不一致
 
-错误：
+不推荐写法：
 
 ```text
 findPage 按 name 查

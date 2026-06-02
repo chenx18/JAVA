@@ -2,7 +2,7 @@
 
 Swagger 是一个接口文档工具。
 
-它可以根据后端代码自动生成接口文档，并提供一个网页页面让你直接测试接口。
+它可以根据后端代码自动生成接口文档，并提供网页页面用于测试接口。
 
 ---
 
@@ -12,7 +12,7 @@ Swagger 是一个接口文档工具。
 Swagger = 项目自带的接口说明书 + 在线接口测试页面。
 ```
 
-比如你写了一个 Controller：
+例如定义一个 Controller：
 
 ```java
 @GetMapping("/departments/{id}")
@@ -65,7 +65,7 @@ Swagger 不负责业务逻辑。
 
 这些仍然是 Controller、Service、Mapper、ExceptionHandler 各自负责。
 
-Swagger 只是帮你把接口展示出来。
+Swagger 只是帮助把接口展示出来。
 
 ---
 
