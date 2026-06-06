@@ -1,0 +1,560 @@
+{
+  "version": 1,
+  "root": "docs/kb",
+  "generatedAt": "2026-06-04T02:57:57.774Z",
+  "documents": [
+    {
+      "path": "docs/kb/12-Docker专题.md",
+      "title": "Docker专题",
+      "type": "Learning",
+      "sha": "131c01e0c1c0b33c0f70b31101f17af9fcb5f46b",
+      "size": 411
+    },
+    {
+      "path": "docs/kb/13-项目配置关系-pom-docker-application.md",
+      "title": "项目配置关系 pom docker application",
+      "type": "Learning",
+      "sha": "ae3a7d6b36e34a977122a7fce942a65a3db73b89",
+      "size": 9532
+    },
+    {
+      "path": "docs/kb/14-MySQL专题.md",
+      "title": "MySQL专题",
+      "type": "Learning",
+      "sha": "ee61d70d758a756a83c9ffd488605329c2cb6ede",
+      "size": 450
+    },
+    {
+      "path": "docs/kb/16-MyBatis专题.md",
+      "title": "MyBatis专题",
+      "type": "Learning",
+      "sha": "257bb69d396c955c1137fe6fdb4149b1b753d55d",
+      "size": 434
+    },
+    {
+      "path": "docs/kb/17-Swagger专题.md",
+      "title": "Swagger专题",
+      "type": "Learning",
+      "sha": "dde00443cdb5d2da79c1682ccfa35d77be83f8fa",
+      "size": 373
+    },
+    {
+      "path": "docs/kb/18-参数校验Validation专题.md",
+      "title": "参数校验Validation专题",
+      "type": "Learning",
+      "sha": "58af60ccd325287cfdca2ad1a9e460e7ac9203ac",
+      "size": 464
+    },
+    {
+      "path": "docs/kb/99-学习目录.md",
+      "title": "学习目录",
+      "type": "Learning",
+      "sha": "825416cf891bc80a9ccb2fc6c2ee380511178ef8",
+      "size": 5696
+    },
+    {
+      "path": "docs/kb/docker/01-Docker是什么与使用场景.md",
+      "title": "Docker是什么与使用场景",
+      "type": "Learning",
+      "sha": "17bc43a2796155d7237f1b9f7a99fcf07c0d75c6",
+      "size": 2069
+    },
+    {
+      "path": "docs/kb/docker/02-镜像与容器.md",
+      "title": "镜像与容器",
+      "type": "Learning",
+      "sha": "d53b7c6b0d6d2abdcb20e59dadebe7f44cafa30d",
+      "size": 1572
+    },
+    {
+      "path": "docs/kb/docker/03-端口映射与数据卷.md",
+      "title": "端口映射与数据卷",
+      "type": "Learning",
+      "sha": "712e19f07283fe8ccefae698423cc38461571b36",
+      "size": 1761
+    },
+    {
+      "path": "docs/kb/docker/04-docker-compose基础.md",
+      "title": "docker compose基础",
+      "type": "Learning",
+      "sha": "d0e4dbee7de4b68c6991003d28b8c6b2df650c8f",
+      "size": 2239
+    },
+    {
+      "path": "docs/kb/docker/05-Docker运行MySQL实战.md",
+      "title": "Docker运行MySQL实战",
+      "type": "Learning",
+      "sha": "925f58a60e0a4286352aee53daa5ca3ab18ffe24",
+      "size": 2159
+    },
+    {
+      "path": "docs/kb/docker/06-Docker常用命令.md",
+      "title": "Docker常用命令",
+      "type": "Learning",
+      "sha": "8c35324bb2759afe12be70f33e25fdaf57cba6e1",
+      "size": 1549
+    },
+    {
+      "path": "docs/kb/docker/07-Dockerfile入门.md",
+      "title": "Dockerfile入门",
+      "type": "Learning",
+      "sha": "1a206ebf32f49747d1d6d8dddbf32510022f6fe3",
+      "size": 2342
+    },
+    {
+      "path": "docs/kb/docker/08-Docker面试知识点.md",
+      "title": "Docker面试知识点",
+      "type": "Learning",
+      "sha": "817c6cd8d6ee83893f76844ab68ad71f99a5b8b9",
+      "size": 3981
+    },
+    {
+      "path": "docs/kb/docker/README.md",
+      "title": "README",
+      "type": "Learning",
+      "sha": "8d4cfe9b71516753e6ec088867632f82c1572250",
+      "size": 1980
+    },
+    {
+      "path": "docs/kb/java/01-类对象与构造函数.md",
+      "title": "类对象与构造函数",
+      "type": "Learning",
+      "sha": "701639c80d832d68e41ca3b0a5fa32e437dfd243",
+      "size": 1952
+    },
+    {
+      "path": "docs/kb/java/02-方法与构造函数重载.md",
+      "title": "方法与构造函数重载",
+      "type": "Learning",
+      "sha": "a40f0a147a6c6a11d0949bbcec881540572b1ebe",
+      "size": 3126
+    },
+    {
+      "path": "docs/kb/java/03-final关键字.md",
+      "title": "final关键字",
+      "type": "Learning",
+      "sha": "dd0fd856d95384e52102091e7c84ea6ff9571bf0",
+      "size": 1400
+    },
+    {
+      "path": "docs/kb/java/04-访问修饰符与封装.md",
+      "title": "访问修饰符与封装",
+      "type": "Learning",
+      "sha": "c483dbf6425604a9e01f29fefb3b8d9d2a7a9155",
+      "size": 1697
+    },
+    {
+      "path": "docs/kb/java/05-异常基础.md",
+      "title": "异常基础",
+      "type": "Learning",
+      "sha": "43a1c9de7345ed94b6b25f0ce9f8909086959a41",
+      "size": 1586
+    },
+    {
+      "path": "docs/kb/java/06-枚举enum与状态字段.md",
+      "title": "枚举enum与状态字段",
+      "type": "Learning",
+      "sha": "3bbece444e9c523af7ee30696392b790222772be",
+      "size": 10432
+    },
+    {
+      "path": "docs/kb/java/README.md",
+      "title": "README",
+      "type": "Learning",
+      "sha": "86bae66c9239425720ef98a1349cb4c1d4bc9eef",
+      "size": 1955
+    },
+    {
+      "path": "docs/kb/mybatis/01-MyBatis是什么.md",
+      "title": "MyBatis是什么",
+      "type": "Learning",
+      "sha": "243e84fced248b4bfd5a2effe840fe16826d746e",
+      "size": 1407
+    },
+    {
+      "path": "docs/kb/mybatis/02-Mapper接口与SQL注解.md",
+      "title": "Mapper接口与SQL注解",
+      "type": "Learning",
+      "sha": "1ff04b92ced16ce20ba16d66b11310a0a7e70938",
+      "size": 1834
+    },
+    {
+      "path": "docs/kb/mybatis/03-参数绑定.md",
+      "title": "参数绑定",
+      "type": "Learning",
+      "sha": "5fcee931bd72dbed3ea61d5d996d75022926ed10",
+      "size": 1957
+    },
+    {
+      "path": "docs/kb/mybatis/04-增删改查返回值.md",
+      "title": "增删改查返回值",
+      "type": "Learning",
+      "sha": "67b7b45e2feda931572a9dc75f352ca3a9d973d2",
+      "size": 1660
+    },
+    {
+      "path": "docs/kb/mybatis/05-MyBatis XML写法.md",
+      "title": "MyBatis XML写法",
+      "type": "Learning",
+      "sha": "96aa4a2e26d1fd5886a0634c2b285ce7aa902ae4",
+      "size": 6011
+    },
+    {
+      "path": "docs/kb/mybatis/06-MyBatis XML核心知识点.md",
+      "title": "MyBatis XML核心知识点",
+      "type": "Learning",
+      "sha": "5fdb2b76735fda8c3ea4bdf7f076970b27e97dfb",
+      "size": 11876
+    },
+    {
+      "path": "docs/kb/mybatis/07-动态SQL之where和set.md",
+      "title": "动态SQL之where和set",
+      "type": "Learning",
+      "sha": "cdb38a82f4d7e7fc02abd94f2dea93cb2aea1b83",
+      "size": 7676
+    },
+    {
+      "path": "docs/kb/mybatis/08-自增主键与useGeneratedKeys.md",
+      "title": "自增主键与useGeneratedKeys",
+      "type": "Learning",
+      "sha": "8216c9f59f3c949be0648a5b36cfb06ba38c4762",
+      "size": 6472
+    },
+    {
+      "path": "docs/kb/mybatis/09-关联查询与一对多关系.md",
+      "title": "关联查询与一对多关系",
+      "type": "Learning",
+      "sha": "d0653953d525e5376aada1c8670ff002c5a3a6c4",
+      "size": 7550
+    },
+    {
+      "path": "docs/kb/mybatis/10-JOIN查询.md",
+      "title": "JOIN查询",
+      "type": "Learning",
+      "sha": "9b4ca7a9e8d659443b61db8769f8d8a32184abad",
+      "size": 10586
+    },
+    {
+      "path": "docs/kb/mybatis/100-MyBatis面试知识点.md",
+      "title": "MyBatis面试知识点",
+      "type": "Learning",
+      "sha": "b901dca1d1a19d3ca8fb65e7d9569157ec6ee599",
+      "size": 2736
+    },
+    {
+      "path": "docs/kb/mybatis/11-foreach批量操作.md",
+      "title": "foreach批量操作",
+      "type": "Learning",
+      "sha": "3443445074a8397737344cfdff13f194a71c7796",
+      "size": 7473
+    },
+    {
+      "path": "docs/kb/mybatis/README.md",
+      "title": "README",
+      "type": "Learning",
+      "sha": "82cd2a42acb9dcb86747e9ed31303a6ec88d2af5",
+      "size": 2665
+    },
+    {
+      "path": "docs/kb/mysql/01-SQL基础与MySQL终端.md",
+      "title": "SQL基础与MySQL终端",
+      "type": "Learning",
+      "sha": "a72a0c843a8cefc8cf2e790c189c03290d2552d6",
+      "size": 1965
+    },
+    {
+      "path": "docs/kb/mysql/02-建库建表与字段类型.md",
+      "title": "建库建表与字段类型",
+      "type": "Learning",
+      "sha": "aca6d31089f4684fb70ead2a3842cbc7341c52bf",
+      "size": 2010
+    },
+    {
+      "path": "docs/kb/mysql/03-CRUD增删改查.md",
+      "title": "CRUD增删改查",
+      "type": "Learning",
+      "sha": "2b952139c383f8e63cf685502b15c59effbc7c2f",
+      "size": 2736
+    },
+    {
+      "path": "docs/kb/mysql/04-条件查询与排序分页.md",
+      "title": "条件查询与排序分页",
+      "type": "Learning",
+      "sha": "6f29eadce71f3e8ddd0c73ea3497b71543bf63aa",
+      "size": 2770
+    },
+    {
+      "path": "docs/kb/mysql/05-主键约束索引基础.md",
+      "title": "主键约束索引基础",
+      "type": "Learning",
+      "sha": "c0e8bfb52ecb01a765a4b48b9381f5299bc0f977",
+      "size": 2668
+    },
+    {
+      "path": "docs/kb/mysql/06-SQL面试知识点.md",
+      "title": "SQL面试知识点",
+      "type": "Learning",
+      "sha": "dad6907a1ff5d7fbacf077eea2c636bc69f75062",
+      "size": 4126
+    },
+    {
+      "path": "docs/kb/mysql/07-数据库约束与数据兜底.md",
+      "title": "数据库约束与数据兜底",
+      "type": "Learning",
+      "sha": "69af735505200e136a2ffcdf8efd99713518ac44",
+      "size": 6656
+    },
+    {
+      "path": "docs/kb/mysql/README.md",
+      "title": "README",
+      "type": "Learning",
+      "sha": "bc02b6763b63238b14148bdefdda83e6cc9fa9f2",
+      "size": 1943
+    },
+    {
+      "path": "docs/kb/project-practice/01-后台管理模块开发实战.md",
+      "title": "后台管理模块开发实战",
+      "type": "Learning",
+      "sha": "a62e1bfb36452c170ae549db2bc32850d9fecd7d",
+      "size": 10906
+    },
+    {
+      "path": "docs/kb/project-practice/README.md",
+      "title": "README",
+      "type": "Learning",
+      "sha": "c982b10d099670bb1ff606cf2d1fea5d5e071aa8",
+      "size": 1770
+    },
+    {
+      "path": "docs/kb/README.md",
+      "title": "README",
+      "type": "Learning",
+      "sha": "33da0454d240f1ec8ad7111ae8e06f529e14fe35",
+      "size": 3729
+    },
+    {
+      "path": "docs/kb/springboot/01-SpringBoot是什么.md",
+      "title": "SpringBoot是什么",
+      "type": "Learning",
+      "sha": "4fbc26c7974e651260a45b761450e21b5fe642b8",
+      "size": 1407
+    },
+    {
+      "path": "docs/kb/springboot/02-项目结构与启动流程.md",
+      "title": "项目结构与启动流程",
+      "type": "Learning",
+      "sha": "bb2fffe7afa72ff81e206d3e499668a08f4e1ab6",
+      "size": 1798
+    },
+    {
+      "path": "docs/kb/springboot/03-项目目录结构与包分层.md",
+      "title": "项目目录结构与包分层",
+      "type": "Learning",
+      "sha": "c1e58c45e25be45f002dacc6a7bf1a59cff2d85e",
+      "size": 10192
+    },
+    {
+      "path": "docs/kb/springboot/04-分层架构.md",
+      "title": "分层架构",
+      "type": "Learning",
+      "sha": "7b71e2ffcc4e28a4560aea02e3ce905b599727c8",
+      "size": 1938
+    },
+    {
+      "path": "docs/kb/springboot/05-Controller与路由.md",
+      "title": "Controller与路由",
+      "type": "Learning",
+      "sha": "01e022193d4ba8b87942d678cbfb95cac36d98f5",
+      "size": 1834
+    },
+    {
+      "path": "docs/kb/springboot/06-请求参数接收.md",
+      "title": "请求参数接收",
+      "type": "Learning",
+      "sha": "5fa4dcb8f1e8c9d505b031fa7affa29751420739",
+      "size": 8560
+    },
+    {
+      "path": "docs/kb/springboot/07-统一返回ApiResponse.md",
+      "title": "统一返回ApiResponse",
+      "type": "Learning",
+      "sha": "a4f917358345e858aec531e112b8fd1cae65181f",
+      "size": 1692
+    },
+    {
+      "path": "docs/kb/springboot/08-全局异常处理.md",
+      "title": "全局异常处理",
+      "type": "Learning",
+      "sha": "5c42204a7df4c3b0ba6b338a7c0312071f0be95a",
+      "size": 1809
+    },
+    {
+      "path": "docs/kb/springboot/09-依赖注入与组件扫描.md",
+      "title": "依赖注入与组件扫描",
+      "type": "Learning",
+      "sha": "4a75df085f6517b07ece79f50a9e48fab798233a",
+      "size": 1708
+    },
+    {
+      "path": "docs/kb/springboot/10-JavaBean与请求响应对象.md",
+      "title": "JavaBean与请求响应对象",
+      "type": "Learning",
+      "sha": "fc3b5a5b943885c944cbc096e301ca922c4c25ad",
+      "size": 1634
+    },
+    {
+      "path": "docs/kb/springboot/11-CRUD模块通用结构.md",
+      "title": "CRUD模块通用结构",
+      "type": "Learning",
+      "sha": "ffff80ccfb773ab212f0d8ef58c3072c7feba3a2",
+      "size": 2109
+    },
+    {
+      "path": "docs/kb/springboot/12-DTO请求对象与响应对象.md",
+      "title": "DTO请求对象与响应对象",
+      "type": "Learning",
+      "sha": "270efff10be0680c23313ba8af0eedeb40c90d93",
+      "size": 5710
+    },
+    {
+      "path": "docs/kb/springboot/13-列表查询DTO与分页参数.md",
+      "title": "列表查询DTO与分页参数",
+      "type": "Learning",
+      "sha": "1cde74ba23ced24dad7b620c73310c334dfa0186",
+      "size": 8240
+    },
+    {
+      "path": "docs/kb/springboot/14-Lombok减少样板代码.md",
+      "title": "Lombok减少样板代码",
+      "type": "Learning",
+      "sha": "de699545018fb89c5c74af7ab5e2c86b5f23a9e7",
+      "size": 5299
+    },
+    {
+      "path": "docs/kb/springboot/15-DTO-VO-Entity区别.md",
+      "title": "DTO VO Entity区别",
+      "type": "Learning",
+      "sha": "cb7214d906ab967437646919c9d8e24bd4255e2f",
+      "size": 4685
+    },
+    {
+      "path": "docs/kb/springboot/16-事务Transactional.md",
+      "title": "事务Transactional",
+      "type": "Learning",
+      "sha": "c2a7373dce46b526f3ad73ab1e6d8cc736391824",
+      "size": 7711
+    },
+    {
+      "path": "docs/kb/springboot/17-简单字典接口与状态翻译.md",
+      "title": "简单字典接口与状态翻译",
+      "type": "Learning",
+      "sha": "6dc28d46f02943a6b177388b1ef8ce3ce27358f1",
+      "size": 12324
+    },
+    {
+      "path": "docs/kb/springboot/18-数据库版字典管理.md",
+      "title": "数据库版字典管理",
+      "type": "Learning",
+      "sha": "dc18068dfe79bae34369f14d520913a8d6717760",
+      "size": 10842
+    },
+    {
+      "path": "docs/kb/springboot/README.md",
+      "title": "README",
+      "type": "Learning",
+      "sha": "1103de6cb9a587db441df1155c93e77a4e8d843b",
+      "size": 3095
+    },
+    {
+      "path": "docs/kb/swagger/01-Swagger是什么.md",
+      "title": "Swagger是什么",
+      "type": "Learning",
+      "sha": "97206c0607f063b85ee91e283f1963b1b6e049e8",
+      "size": 1590
+    },
+    {
+      "path": "docs/kb/swagger/02-SpringBoot接入Swagger.md",
+      "title": "SpringBoot接入Swagger",
+      "type": "Learning",
+      "sha": "300a2b8422a815804ed0cc0d56056d01ca0c2a94",
+      "size": 2186
+    },
+    {
+      "path": "docs/kb/swagger/03-Swagger常用注解.md",
+      "title": "Swagger常用注解",
+      "type": "Learning",
+      "sha": "4b93da4479a7120418fc795fd6cf106dbf4a2a87",
+      "size": 2836
+    },
+    {
+      "path": "docs/kb/swagger/04-Swagger与Apifox区别.md",
+      "title": "Swagger与Apifox区别",
+      "type": "Learning",
+      "sha": "f57d100339b18e2127e4dd80b0b43be20e9a39be",
+      "size": 1115
+    },
+    {
+      "path": "docs/kb/swagger/05-Swagger面试知识点.md",
+      "title": "Swagger面试知识点",
+      "type": "Learning",
+      "sha": "c0adbafcec6647759b4eea7c8163d972af86bac4",
+      "size": 1864
+    },
+    {
+      "path": "docs/kb/swagger/README.md",
+      "title": "README",
+      "type": "Learning",
+      "sha": "cd416ab047f054eb81c982bbde37069f343698fd",
+      "size": 1584
+    },
+    {
+      "path": "docs/kb/validation/01-Validation是什么.md",
+      "title": "Validation是什么",
+      "type": "Learning",
+      "sha": "06eead8d412aebc70fdafa1c86f2f15604673d12",
+      "size": 1640
+    },
+    {
+      "path": "docs/kb/validation/02-常用校验注解.md",
+      "title": "常用校验注解",
+      "type": "Learning",
+      "sha": "9bd34dc88c41bb17b3731e99d16f1419d8028779",
+      "size": 2029
+    },
+    {
+      "path": "docs/kb/validation/03-Controller中使用Valid.md",
+      "title": "Controller中使用Valid",
+      "type": "Learning",
+      "sha": "ed7778d3642269518bc2c2815f6a52befea8e042",
+      "size": 1753
+    },
+    {
+      "path": "docs/kb/validation/04-全局处理校验异常.md",
+      "title": "全局处理校验异常",
+      "type": "Learning",
+      "sha": "ecbdb2afce488f6369d9df73a4adb0d68a5a81ba",
+      "size": 2409
+    },
+    {
+      "path": "docs/kb/validation/05-Validation与Service校验边界.md",
+      "title": "Validation与Service校验边界",
+      "type": "Learning",
+      "sha": "ab18bc60ec5aacd9ae37ce829446e23ca2b1cb7e",
+      "size": 2006
+    },
+    {
+      "path": "docs/kb/validation/06-Validation面试知识点.md",
+      "title": "Validation面试知识点",
+      "type": "Learning",
+      "sha": "606fc6f7451887a7ce83d4f682be0e6d22f11e54",
+      "size": 2405
+    },
+    {
+      "path": "docs/kb/validation/README.md",
+      "title": "README",
+      "type": "Learning",
+      "sha": "b4e61a324594d21950d01754d8b87126ddc9f44e",
+      "size": 1815
+    }
+  ]
+}

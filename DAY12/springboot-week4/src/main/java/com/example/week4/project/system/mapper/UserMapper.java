@@ -12,7 +12,7 @@ import com.example.week4.project.system.domain.User;
 public interface UserMapper {
   
   
-  List<User> count(@Param("user") User user);
+  long count(@Param("user") User user);
   
   // 查询全部用户
   List<User> findAll();
@@ -25,12 +25,14 @@ public interface UserMapper {
   );
 
   // 新增用户
-  int insert(@Param("u") User u);
+  int insert(@Param("user") User user);
 
   // 更新用户
-  int updateById(@Param("id") int id, @Param("u") User u);
+  int updateById(@Param("id") int id, @Param("user") User user);
 
   // 删除用户
-  boolean deleteByIds(@Param("ids") List<Integer> ids);
+  int deleteById(@Param("id") int id);
+
+  int deleteByIds(@Param("ids") List<Integer> ids);
   
 }

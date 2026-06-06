@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,8 +29,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 
 @Tag(name="用户管理", description="用户增删改查")
+@RequiredArgsConstructor
 @RestController
-@RequestMapping("user")
+@RequestMapping("/user")
 public class UserController {
 
   private final UserService service;
@@ -51,7 +53,7 @@ public class UserController {
   }
 
   @Operation(summary="用户更新")
-  @PutMapping("update/{id}")
+  @PutMapping("/update/{id}")
   public ApiResponse<Void> updateUser(
     @PathVariable int id, 
     @RequestBody User request) {
@@ -61,9 +63,9 @@ public class UserController {
 
 
   @Operation(summary="用户删除")
-  @DeleteMapping("delete")
+  @DeleteMapping("/delete/{ids}")
   public ApiResponse<Void> deleteUser(
-    @ParameterObject List<Integer> ids
+    @PathVariable List<Integer> ids
   ){
     service.deleteByIds(ids);
     return ApiResponse.success(null);

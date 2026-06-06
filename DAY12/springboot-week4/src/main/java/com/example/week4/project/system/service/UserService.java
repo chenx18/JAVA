@@ -23,13 +23,12 @@ public class UserService {
 
   public PageResponse<User> getUsersList(User request) {
     
-    String name = request.getUserName();
     int pageSize = request.getPageSize();
     int pageNum = request.getPageNum();
     int offSet = (pageNum - 1) * pageSize;
 
-    long total = mapper.findAll().size();
-    List<User> users= mapper.count(request);
+    long total = mapper.count(request);
+    List<User> users= mapper.findPage(request, offSet, pageSize);
 
     return new PageResponse<>(total, users);
   }
@@ -54,7 +53,7 @@ public class UserService {
     }
   }
 
-  public boolean deleteByIds(List<Integer> ids) {
+  public void deleteByIds(List<Integer> ids) {
      if(ids == null || ids.isEmpty()) {
       throw new IllegalArgumentException("ids cannot be empty");
     }
@@ -64,10 +63,9 @@ public class UserService {
         throw new IllegalArgumentException("id must > 0");
       }
     }
-    boolean deleted = mapper.deleteByIds(ids);
-    if(!deleted) {
+    int rows = mapper.deleteByIds(ids);
+    if(rows == 0) {
       throw new IllegalArgumentException("Delete delet Error");
     }
-    return deleted;
   }
 }

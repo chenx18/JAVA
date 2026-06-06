@@ -34,7 +34,7 @@
     from sys_use 
     <where>
       <if test="user.userName != null and user.userName != ''">
-        name like concat('%',#{name},'%')
+        username like concat('%',#{user.userName},'%')
       </if>
       <if test="user.status != null">
         and status = #{user.status}
@@ -44,27 +44,21 @@
     limit #{offset}, #{pageSize}
   </select>
 
-
-  <select id="findById" parameterType="int" resultMap="UserResultMap">
-    select id, username, nickname, email, status from sys_use where id = #{id}
-  </select>
-
-
   <insert id="insert" parameterType="com.example.week4.project.system.domain.User" 
     useGeneratedKeys="true" keyProperty="id">
     insert into sys_use 
     ( username, nickname, email, status) 
     values 
-    ( #{username}, #{nickname}, #{email}, #{status})
+    ( #{user.userName}, #{user.nickName}, #{user.email}, #{user.status})
   </insert>
 
   <update id="updateById" parameterType="com.example.week4.project.system.domain.User">
     update sys_use 
     <set>
-      <if test="username != null and username != ''">username = #{username},</if>
-      <if test="nickname != null">nickname = #{nickname},</if>
-      <if test="email != null">email = #{email},</if>
-      <if test="status != null">status = #{status},</if>
+      <if test="user.userName != null and user.userName != ''">username = #{user.userName},</if>
+      <if test="user.nickName != null">nickname = #{user.nickName},</if>
+      <if test="user.email != null">email = #{user.email},</if>
+      <if test="user.status != null">status = #{user.status},</if>
     </set>
     where id = #{id}
   </update>

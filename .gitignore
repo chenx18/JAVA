@@ -1,0 +1,5 @@
+interview-memory-app/
+*.onnx
+*.pt
+*.pth
+*.bin

@@ -17,7 +17,6 @@ public class User {
   private int id;
 
   @Schema(description="用户名称")
-  @NotBlank(message="用户名称不能为空")
   private String userName;
 
   @Schema(description="用户昵称")
