@@ -13,6 +13,8 @@ public interface UserMapper {
   
   
   long count(@Param("user") User user);
+
+  User findByUserName(@Param("userName") String userName);
   
   // 查询全部用户
   List<User> findAll();

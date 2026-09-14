@@ -59,6 +59,8 @@ Spring Boot 内部依赖关系：
 16：知道多个数据库操作为什么要事务
   ↓
 17-18：知道状态字段和字典怎么给前端展示
+  ↓
+19-auth：知道登录、JWT、拦截器、密码加密、权限如何组成登录认证体系
 ```
 
 学完基础接口后进入：
@@ -92,6 +94,28 @@ swagger/01-Swagger是什么.md
 16. `16-事务Transactional.md`
 17. `17-简单字典接口与状态翻译.md`
 18. `18-数据库版字典管理.md`
+19. `19-auth/README.md`
+20. `90-Spring常用注解分类表.md`
+
+---
+
+## 19-auth 阅读顺序
+
+```text
+19-auth/01-登录流程-JWT生成.md
+  ↓
+19-auth/02-登录拦截器-JWT校验.md
+  ↓
+19-auth/03-密码加密BCrypt.md
+  ↓
+19-auth/04-获取当前登录用户.md
+  ↓
+19-auth/05-角色权限基础.md
+  ↓
+19-auth/06-菜单权限基础.md
+  ↓
+19-auth/07-Redis登录态.md
+```
 
 ---
 
@@ -123,6 +147,16 @@ Entity / Model 转 Response DTO / VO
 返回统一 ApiResponse
   ↓
 异常交给 GlobalExceptionHandler
+  ↓
+登录接口返回 JWT
+  ↓
+登录拦截器校验 Authorization
+  ↓
+密码加密 BCrypt
+  ↓
+获取当前登录用户
+  ↓
+角色权限与菜单权限
 ```
 
 ---
@@ -131,6 +165,8 @@ Entity / Model 转 Response DTO / VO
 
 - `Lombok`：减少 getter、setter、构造函数等样板代码
 - `项目目录结构`：让 common、framework、project、domain、mapper、service 等职责清晰
+- `19-auth`：登录、认证、授权、登录态专题
+- `90-Spring常用注解分类表.md`：常用注解速查附录
 
 ---
 

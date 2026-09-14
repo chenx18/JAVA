@@ -16,6 +16,9 @@ public class User {
   @Min(value=1, message="用户ID必须大于0")
   private int id;
 
+  @Schema(description = "密码")
+  private String password;
+
   @Schema(description="用户名称")
   private String userName;
 

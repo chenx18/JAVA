@@ -7,7 +7,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.week4.common.response.ApiResponse;
 import com.example.week4.common.response.PageResponse;
+import com.example.week4.framework.security.LoginUser;
+import com.example.week4.framework.security.LoginUserContext;
 import com.example.week4.project.system.domain.User;
+import com.example.week4.project.system.domain.request.LoginRequest;
 import com.example.week4.project.system.service.UserService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -39,7 +44,7 @@ public class UserController {
   @Operation(summary="用户列表分页查询")
   @GetMapping("/list")
   public ApiResponse<PageResponse<User>> getUserlist(
-    @Valid @ParameterObject User request) {
+    @ParameterObject User request) {
     return ApiResponse.success(service.getUsersList(request));
   }
 
@@ -70,6 +75,23 @@ public class UserController {
     service.deleteByIds(ids);
     return ApiResponse.success(null);
   }
+  
+
+  @PostMapping("/login")
+  public ApiResponse<String> login(@RequestBody LoginRequest request) {
+    return ApiResponse.success(service.login(request));
+  }
+  
+  @GetMapping("/current")
+  public ApiResponse<LoginUser> currentUser() {
+    return ApiResponse.success(LoginUserContext.get());
+  }
+
+  @GetMapping("/info")
+  public ApiResponse<LoginUser> getUserInfo() {
+    return ApiResponse.success(LoginUserContext.get());
+  }
+  
   
   
 }

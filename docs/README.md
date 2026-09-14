@@ -1,37 +1,62 @@
-# 主线知识库入口
+# docs 总入口
 
-现在 `docs` 只保留一条主线：
+这个目录用于沉淀长期可复用的学习和项目知识。
 
-- `kb/`
+当前分成两条主线：
 
-这套知识库的目标是：
-
-- 长期可复用
-- 结构稳定
-- 以后继续补 MySQL、MyBatis、JWT、项目实战时不乱
+```text
+kb/        Java 后端学习与项目开发知识库
+frontend/  前端面试恢复、工程经验复盘、AI 应用前端能力
+```
 
 ---
 
-## 阅读顺序
+## 阅读入口
 
-1. `kb/README.md`
-2. `kb/00-学习地图.md`
-3. `kb/01-Java基础与面向对象.md`
-4. `kb/02-分层架构与项目结构.md`
-5. `kb/03-异常体系与错误处理.md`
-6. `kb/04-SpringBoot项目与配置.md`
-7. `kb/05-Controller与参数接收.md`
-8. `kb/06-统一返回与全局异常处理.md`
-9. `kb/07-JavaBean与请求体对象.md`
-10. `kb/08-依赖注入与组件扫描.md`
-11. `kb/09-User模块.md`
-12. `kb/10-Role模块.md`
-13. `kb/11-第三周目标与验收标准.md`
+```text
+kb/README.md
+frontend/README.md
+```
+
+---
+
+## 目录定位
+
+### kb
+
+`kb/` 只放 Java 后端相关内容：
+
+```text
+Java 基础
+Spring Boot
+MySQL
+MyBatis
+Docker
+Swagger
+Validation
+项目实战
+```
+
+### frontend
+
+`frontend/` 放前端相关内容。当前采用“专题目录 + 单题文件”结构：
+
+```text
+javascript/    Jxx  JavaScript 核心
+browser/       Bxx  浏览器、网络、安全
+html-css/      Cxx  HTML 与 CSS
+vue/           Vxx  Vue 专题
+react/         Rxx  React 专题
+engineering/   Exx  工程化与性能优化
+ai-frontend/   Axx  AI 应用前端专题
+project/       Pxx  项目表达与综合实战
+```
 
 ---
 
 ## 使用原则
 
-- 新学到的长期知识：继续补到 `kb/`
-- 不再按“第几周、第几天”维护笔记
-- 以后只维护这一套主线知识库
+- Java 后端主线继续放到 `kb/`
+- 前端面试恢复和项目表达放到 `frontend/`
+- 不按“第几天、第几周”维护长期文档
+- 前端单题按专题目录维护，不再堆在 `frontend/` 根目录

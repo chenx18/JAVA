@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1100" viewBox="0 0 1600 1100">
+  <defs>
+    <marker id="flow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#126f9f"/>
+    </marker>
+    <marker id="brownFlow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#9a572c"/>
+    </marker>
+    <marker id="greenFlow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#3c7b4c"/>
+    </marker>
+    <style>
+      .title { font-family: Microsoft YaHei, SimHei, sans-serif; font-size: 31px; font-weight: 700; fill: #202326; }
+      .sub { font-family: Microsoft YaHei, SimHei, sans-serif; font-size: 16px; fill: #5b6167; }
+      .h2 { font-family: Microsoft YaHei, SimHei, sans-serif; font-size: 22px; font-weight: 700; fill: #202326; }
+      .label { font-family: Microsoft YaHei, SimHei, sans-serif; font-size: 17px; fill: #2e3338; }
+      .small { font-family: Microsoft YaHei, SimHei, sans-serif; font-size: 14px; fill: #555c62; }
+      .tiny { font-family: Microsoft YaHei, SimHei, sans-serif; font-size: 12px; fill: #646b71; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="1100" fill="#f7f5f0"/>
+  <text x="55" y="52" class="title">阶梯形地块整屋重建：邻居侧内接，其他三侧外绕排水</text>
+  <text x="55" y="82" class="sub">按你补充的情况：前面右侧多出约一间房宽；右侧门保留；红色位置接入公共水道</text>
+
+  <!-- orientation -->
+  <circle cx="1480" cy="72" r="25" fill="#fff2c9" stroke="#d69c29" stroke-width="3"/>
+  <g stroke="#d69c29" stroke-width="3">
+    <line x1="1480" y1="37" x2="1480" y2="22"/><line x1="1480" y1="107" x2="1480" y2="122"/>
+    <line x1="1445" y1="72" x2="1430" y2="72"/><line x1="1515" y1="72" x2="1530" y2="72"/>
+  </g>
+  <text x="1410" y="150" class="small">东：太阳升起（方向示意）</text>
+
+  <!-- plan frame -->
+  <rect x="45" y="130" width="1510" height="690" rx="8" fill="#fff" stroke="#d1d4d7" stroke-width="2"/>
+  <text x="70" y="168" class="h2">推荐平面布置（俯视概念图）</text>
+
+  <!-- neighbour -->
+  <rect x="90" y="220" width="245" height="520" fill="#e8e8e8" stroke="#303337" stroke-width="4"/>
+  <text x="212" y="455" text-anchor="middle" class="label">邻居房屋</text>
+  <text x="212" y="482" text-anchor="middle" class="small">贴着你的左侧围墙建造</text>
+  <text x="212" y="508" text-anchor="middle" class="tiny">生活水、雨水从左侧来</text>
+
+  <!-- L-shaped property -->
+  <path d="M340 220 L1120 220 L1120 500 L1425 500 L1425 740 L340 740 Z" fill="#fffdf8" stroke="#a93632" stroke-width="6"/>
+  <text x="360" y="246" class="tiny" fill="#a93632">你的四面围墙：保留；新楼用独立基础</text>
+  <text x="1150" y="526" class="tiny" fill="#a93632">前面右侧外扩区（约一间房宽）</text>
+
+  <!-- interior walkways and house -->
+  <rect x="353" y="236" width="748" height="60" fill="#eaf2e9" stroke="#71926f" stroke-width="2"/>
+  <text x="725" y="273" text-anchor="middle" class="small" fill="#47714e">后侧内过道：通风、检修</text>
+  <rect x="510" y="325" width="520" height="175" fill="#c9ddea" stroke="#2f5d79" stroke-width="5"/>
+  <text x="770" y="395" text-anchor="middle" class="label" fill="#23465f">新建主楼</text>
+  <text x="770" y="423" text-anchor="middle" class="small" fill="#315f7c">建在后院较窄主体内</text>
+  <text x="770" y="448" text-anchor="middle" class="tiny" fill="#315f7c">基础下不走管、不设检查井</text>
+  <rect x="735" y="481" width="70" height="19" fill="#2f5d79"/>
+  <text x="815" y="496" class="tiny" fill="#315d7a">主入口</text>
+
+  <rect x="365" y="310" width="120" height="225" fill="#f3f6f0" stroke="#a4b69e" stroke-width="2"/>
+  <text x="425" y="410" text-anchor="middle" class="small" fill="#5c7659">左侧过道</text>
+  <text x="425" y="432" text-anchor="middle" class="tiny" fill="#5c7659">邻居贴墙侧</text>
+  <rect x="1055" y="310" width="45" height="225" fill="#f3f6f0" stroke="#a4b69e" stroke-width="2"/>
+  <text x="1078" y="410" text-anchor="middle" class="tiny" fill="#5c7659" transform="rotate(90 1078 410)">右侧内过道</text>
+
+  <!-- front area and extension -->
+  <rect x="365" y="535" width="735" height="170" fill="#f6f0e5" stroke="#c5ad86" stroke-width="2"/>
+  <text x="730" y="615" text-anchor="middle" class="label" fill="#725c39">前院 / 出入空间</text>
+  <text x="730" y="641" text-anchor="middle" class="small" fill="#725c39">主门前保持干燥、开阔</text>
+  <rect x="1115" y="535" width="285" height="170" fill="#f2eee5" stroke="#c5ad86" stroke-width="2"/>
+  <text x="1258" y="608" text-anchor="middle" class="label" fill="#725c39">前面右侧外扩区</text>
+  <text x="1258" y="634" text-anchor="middle" class="small" fill="#725c39">车位、侧厅或储物</text>
+  <rect x="700" y="686" width="75" height="19" fill="#725c39"/>
+  <text x="785" y="701" class="tiny" fill="#725c39">前方主门</text>
+
+  <!-- right rear gate -->
+  <rect x="1108" y="355" width="25" height="105" fill="#fffdf8"/>
+  <line x1="1118" y1="364" x2="1085" y2="405" stroke="#765d43" stroke-width="4"/>
+  <line x1="1118" y1="451" x2="1085" y2="410" stroke="#765d43" stroke-width="4"/>
+  <text x="1215" y="350" class="small" fill="#765d43">右侧后院门（保留）</text>
+  <text x="1215" y="372" class="tiny" fill="#765d43">门内外不设明沟</text>
+
+  <!-- cancelled old ditch -->
+  <line x1="340" y1="305" x2="1115" y2="305" stroke="#9a9a9a" stroke-width="14" stroke-dasharray="24 14" opacity="0.7"/>
+  <line x1="340" y1="305" x2="1115" y2="305" stroke="#ad3733" stroke-width="3"/>
+  <text x="730" y="320" text-anchor="middle" class="tiny" fill="#a33330">原横向明沟取消，不再横穿新主楼前方</text>
+
+  <!-- sealed route: inside only along neighbour side, outside elsewhere -->
+  <path d="M335 400 L382 400 L382 245 L420 245" fill="none" stroke="#126f9f" stroke-width="15" marker-end="url(#flow)"/>
+  <path d="M420 245 L420 215" fill="none" stroke="#126f9f" stroke-width="15"/>
+  <path d="M420 215 L1128 215 L1145 235 L1145 495 L1438 515 L1438 590" fill="none" stroke="#126f9f" stroke-width="15" marker-end="url(#flow)"/>
+  <!-- outside drainage band -->
+  <rect x="405" y="185" width="715" height="22" fill="#e7eef1"/>
+  <rect x="1125" y="220" width="38" height="285" fill="#e7eef1"/>
+  <rect x="1135" y="500" width="300" height="31" fill="#e7eef1"/>
+  <rect x="1425" y="505" width="35" height="105" fill="#e7eef1"/>
+  <text x="760" y="180" text-anchor="middle" class="small" fill="#126f9f">围墙外侧密闭排水带（需有合法使用权和检修条件）</text>
+  <text x="390" y="375" class="small" fill="#126f9f">唯一内侧接入段</text>
+  <text x="390" y="392" class="tiny" fill="#126f9f">邻居贴墙侧先在围墙内接水</text>
+  <text x="720" y="235" text-anchor="middle" class="tiny" fill="#126f9f">穿墙一次后改走外侧，不再占用院内空间</text>
+
+  <!-- inspection wells and wall crossing -->
+  <circle cx="382" cy="400" r="13" fill="#fff" stroke="#126f9f" stroke-width="3"/>
+  <circle cx="420" cy="215" r="13" fill="#fff" stroke="#126f9f" stroke-width="3"/>
+  <circle cx="1145" cy="495" r="13" fill="#fff" stroke="#126f9f" stroke-width="3"/>
+  <circle cx="1438" cy="590" r="13" fill="#fff" stroke="#126f9f" stroke-width="3"/>
+  <text x="397" y="426" class="tiny" fill="#126f9f">检查井</text>
+  <text x="430" y="205" class="tiny" fill="#126f9f">穿墙套管</text>
+  <text x="1160" y="492" class="tiny" fill="#126f9f">转弯检查井</text>
+
+  <!-- public connection highlighted in red -->
+  <rect x="1400" y="563" width="105" height="55" rx="4" fill="#ed3434" stroke="#9b1c1c" stroke-width="3"/>
+  <text x="1452" y="587" text-anchor="middle" font-family="Microsoft YaHei, SimHei, sans-serif" font-size="15" font-weight="700" fill="#fff">红色位置</text>
+  <text x="1452" y="606" text-anchor="middle" font-family="Microsoft YaHei, SimHei, sans-serif" font-size="13" fill="#fff">接公共水道</text>
+  <text x="1260" y="585" class="small" fill="#126f9f">水流 →</text>
+
+  <!-- house own sewer and rain -->
+  <path d="M1030 465 L1050 465 L1050 555 L1080 555" fill="none" stroke="#9a572c" stroke-width="8" marker-end="url(#brownFlow)"/>
+  <rect x="1080" y="532" width="72" height="45" fill="#ead2bd" stroke="#9a572c" stroke-width="3"/>
+  <text x="1116" y="551" text-anchor="middle" class="tiny" fill="#7e4826">化粪池/</text>
+  <text x="1116" y="567" text-anchor="middle" class="tiny" fill="#7e4826">污水处理</text>
+  <text x="1038" y="535" class="tiny" fill="#9a572c">主楼生活污水</text>
+  <path d="M510 345 L480 345 L480 560 L450 560" fill="none" stroke="#3c7b4c" stroke-width="7" stroke-dasharray="16 10" marker-end="url(#greenFlow)"/>
+  <text x="380" y="580" class="tiny" fill="#3c7b4c">屋面雨水单独排放</text>
+
+  <!-- plan note -->
+  <rect x="70" y="752" width="1460" height="42" fill="#fff4dc" stroke="#cba458" stroke-width="1"/>
+  <text x="85" y="778" class="small" fill="#624a1e">外侧绕行优先，但必须确认外侧土地/公共排水带的使用权；暗管需密封、可检修，不能用两墙夹缝明沟排污。</text>
+
+  <!-- section -->
+  <rect x="45" y="835" width="1510" height="215" rx="8" fill="#fff" stroke="#d1d4d7" stroke-width="2"/>
+  <text x="70" y="870" class="h2">围墙穿管与外侧排水带剖面示意</text>
+  <rect x="105" y="900" width="50" height="105" fill="#c6c6c6" stroke="#555" stroke-width="3"/>
+  <text x="130" y="1028" text-anchor="middle" class="small">你的围墙</text>
+  <rect x="155" y="950" width="200" height="55" fill="#edf4e9" stroke="#8da18a" stroke-width="2"/>
+  <text x="255" y="981" text-anchor="middle" class="small" fill="#527054">内侧过道</text>
+  <rect x="355" y="950" width="150" height="55" fill="#e7eef1" stroke="#8ba9b8" stroke-width="2"/>
+  <text x="430" y="981" text-anchor="middle" class="small" fill="#126f9f">墙外排水带</text>
+  <ellipse cx="555" cy="978" rx="42" ry="24" fill="#126f9f" stroke="#0b4d6f" stroke-width="3"/>
+  <text x="555" y="1028" text-anchor="middle" class="small" fill="#126f9f">密闭暗管</text>
+  <line x1="75" y1="1005" x2="760" y2="1005" stroke="#8a6b4a" stroke-width="4"/>
+  <rect x="670" y="915" width="95" height="90" fill="#b8c9d6" stroke="#315d7a" stroke-width="3"/>
+  <text x="718" y="1028" text-anchor="middle" class="small" fill="#315d7a">主楼基础</text>
+  <line x1="600" y1="978" x2="670" y2="978" stroke="#c54c37" stroke-width="3" stroke-dasharray="7 7"/>
+  <text x="635" y="945" text-anchor="middle" class="tiny" fill="#a33b2d">基础安全距离</text>
+  <text x="825" y="920" class="small" fill="#3b4146">施工重点：</text>
+  <text x="825" y="945" class="small" fill="#3b4146">1. 只有邻居贴墙侧先在围墙内接入，其余路线可走外侧。</text>
+  <text x="825" y="969" class="small" fill="#3b4146">2. 穿墙只设一个固定点，用套管、防渗封口和检查井。</text>
+  <text x="825" y="993" class="small" fill="#3b4146">3. 右侧门与红色公共水道接入口错开，门口不走明沟。</text>
+  <text x="825" y="1017" class="small" fill="#3b4146">4. 外侧不是你的土地或公共排水带时，必须先取得使用和接入许可。</text>
+
+  <!-- legend -->
+  <line x1="70" y1="1072" x2="120" y2="1072" stroke="#126f9f" stroke-width="9"/>
+  <text x="130" y="1077" class="tiny">蓝色：邻居混合来水密闭暗管</text>
+  <line x1="390" y1="1072" x2="440" y2="1072" stroke="#9a572c" stroke-width="7"/>
+  <text x="450" y="1077" class="tiny">棕色：主楼生活污水</text>
+  <line x1="690" y1="1072" x2="740" y2="1072" stroke="#3c7b4c" stroke-width="7" stroke-dasharray="15 9"/>
+  <text x="750" y="1077" class="tiny">绿色虚线：屋面雨水</text>
+  <text x="1120" y="1077" class="tiny" fill="#a33330">概念方案，非施工图；须按当地建筑、排水、消防要求复核。</text>
+</svg>

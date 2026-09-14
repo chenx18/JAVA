@@ -1,0 +1,201 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1650" height="1140" viewBox="0 0 1650 1140">
+  <defs>
+    <marker id="flow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0,0 L11,5.5 L0,11 Z" fill="#126f9f"/>
+    </marker>
+    <pattern id="joint" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="8" height="8" fill="#fff"/>
+      <line x1="0" y1="0" x2="0" y2="8" stroke="#c05c4d" stroke-width="3"/>
+    </pattern>
+    <style>
+      .title { font-family: Microsoft YaHei, SimHei, sans-serif; font-size: 31px; font-weight: 700; fill: #202326; }
+      .sub { font-family: Microsoft YaHei, SimHei, sans-serif; font-size: 16px; fill: #5b6167; }
+      .h2 { font-family: Microsoft YaHei, SimHei, sans-serif; font-size: 22px; font-weight: 700; fill: #202326; }
+      .label { font-family: Microsoft YaHei, SimHei, sans-serif; font-size: 16px; fill: #2e3338; }
+      .small { font-family: Microsoft YaHei, SimHei, sans-serif; font-size: 13px; fill: #555c62; }
+      .tiny { font-family: Microsoft YaHei, SimHei, sans-serif; font-size: 11px; fill: #646b71; }
+    </style>
+  </defs>
+
+  <rect width="1650" height="1140" fill="#f7f5f0"/>
+  <text x="55" y="52" class="title">保留原二层：蓝色新楼做不对称倒U形的合院方案</text>
+  <text x="55" y="82" class="sub">一层保留右侧门和通道；二层后楼、左翼完整连接，右翼做短廊；中间天井保持挑空</text>
+
+  <!-- panel backgrounds -->
+  <rect x="35" y="120" width="775" height="650" rx="8" fill="#fff" stroke="#d1d4d7" stroke-width="2"/>
+  <rect x="840" y="120" width="775" height="650" rx="8" fill="#fff" stroke="#d1d4d7" stroke-width="2"/>
+  <text x="60" y="158" class="h2">A 一层布局：新结构落地与院落</text>
+  <text x="865" y="158" class="h2">B 二层布局：蓝色不对称倒U形</text>
+
+  <!-- ==================== PANEL A: FIRST FLOOR ==================== -->
+  <!-- neighbour -->
+  <rect x="65" y="225" width="140" height="465" fill="#e8e8e8" stroke="#303337" stroke-width="3"/>
+  <text x="135" y="445" text-anchor="middle" class="label">邻居房屋</text>
+  <text x="135" y="468" text-anchor="middle" class="tiny">原来贴着厨房</text>
+
+  <!-- L property -->
+  <path d="M210 225 L640 225 L640 455 L775 455 L775 690 L210 690 Z" fill="#fffdf8" stroke="#a93632" stroke-width="5"/>
+  <text x="225" y="247" class="tiny" fill="#a93632">你的围墙范围</text>
+
+  <!-- rear passage -->
+  <rect x="270" y="245" width="350" height="30" fill="#edf4e9" stroke="#8da18a" stroke-width="2"/>
+  <text x="445" y="265" text-anchor="middle" class="tiny" fill="#527054">后侧约0.8～1米检修通道</text>
+
+  <!-- left wall corridor -->
+  <rect x="225" y="280" width="40" height="330" fill="#eaf4e5" stroke="#769b6e" stroke-width="2"/>
+  <text x="245" y="438" text-anchor="middle" class="tiny" fill="#416b43" transform="rotate(-90 245 438)">左侧约1～1.2米围墙通道</text>
+
+  <!-- new rear first floor -->
+  <rect x="340" y="290" width="275" height="115" fill="#9dd7e8" stroke="#25748a" stroke-width="4"/>
+  <text x="477" y="336" text-anchor="middle" class="label" fill="#18566a">新建后楼一层</text>
+  <text x="477" y="360" text-anchor="middle" class="small" fill="#25748a">厅房 / 卫生间湿区</text>
+  <text x="477" y="383" text-anchor="middle" class="tiny" fill="#25748a">完整新基础</text>
+
+  <!-- rebuilt kitchen wing first floor -->
+  <rect x="280" y="420" width="85" height="250" fill="#9dd7e8" stroke="#25748a" stroke-width="4"/>
+  <line x1="280" y1="570" x2="365" y2="570" stroke="#25748a" stroke-width="3"/>
+  <text x="322" y="466" text-anchor="middle" class="small" fill="#18566a">新厨房</text>
+  <text x="322" y="488" text-anchor="middle" class="tiny" fill="#18566a">餐区</text>
+  <text x="322" y="610" text-anchor="middle" class="small" fill="#18566a">独立楼梯</text>
+  <text x="322" y="634" text-anchor="middle" class="tiny" fill="#18566a">楼梯下储物</text>
+
+  <!-- courtyard -->
+  <rect x="385" y="425" width="225" height="135" fill="#eaf4e5" stroke="#769b6e" stroke-width="3"/>
+  <text x="497" y="477" text-anchor="middle" class="label" fill="#416b43">中庭 / 天井</text>
+  <text x="497" y="501" text-anchor="middle" class="small" fill="#527054">净深建议3～4米</text>
+  <text x="497" y="524" text-anchor="middle" class="tiny" fill="#527054">挑空、采光、通风</text>
+  <text x="497" y="545" text-anchor="middle" class="tiny" fill="#527054">只设雨水地漏，不设污水沟</text>
+
+  <!-- old building first floor retained -->
+  <rect x="385" y="585" width="250" height="85" fill="#ff8a34" stroke="#a84c16" stroke-width="4"/>
+  <line x1="455" y1="585" x2="455" y2="670" stroke="#a84c16" stroke-width="2"/>
+  <line x1="555" y1="585" x2="555" y2="670" stroke="#a84c16" stroke-width="2"/>
+  <text x="510" y="620" text-anchor="middle" class="label" fill="#84370f">原楼一层保留</text>
+  <text x="510" y="645" text-anchor="middle" class="tiny" fill="#84370f">旧石基础，先做鉴定</text>
+
+  <!-- structural joint beside old building -->
+  <rect x="365" y="585" width="20" height="85" fill="url(#joint)" stroke="#c05c4d" stroke-width="1"/>
+  <text x="375" y="687" text-anchor="middle" class="tiny" fill="#a33d32">结构缝</text>
+
+  <!-- right storage retained -->
+  <rect x="650" y="505" width="105" height="165" fill="#eadfcf" stroke="#735d43" stroke-width="3"/>
+  <text x="702" y="570" text-anchor="middle" class="small" fill="#604d36">原一层</text>
+  <text x="702" y="592" text-anchor="middle" class="small" fill="#604d36">杂物房</text>
+  <text x="702" y="618" text-anchor="middle" class="tiny" fill="#604d36">不承托新二层</text>
+
+  <!-- right gate and open ground passage -->
+  <rect x="630" y="350" width="22" height="85" fill="#fffdf8"/>
+  <line x1="640" y1="358" x2="615" y2="392" stroke="#765d43" stroke-width="3"/>
+  <line x1="640" y1="427" x2="615" y2="397" stroke="#765d43" stroke-width="3"/>
+  <text x="665" y="342" class="small" fill="#765d43">右侧门</text>
+  <rect x="615" y="420" width="25" height="145" fill="#f3f6f0" stroke="#a4b69e" stroke-width="2"/>
+  <text x="627" y="505" text-anchor="middle" class="tiny" fill="#5c7659" transform="rotate(90 627 505)">一层保持通道</text>
+
+  <!-- columns for second-floor short right wing -->
+  <circle cx="600" cy="420" r="8" fill="#25748a"/>
+  <circle cx="600" cy="550" r="8" fill="#25748a"/>
+  <line x1="600" y1="420" x2="600" y2="550" stroke="#25748a" stroke-width="2" stroke-dasharray="7 6"/>
+  <text x="588" y="490" text-anchor="middle" class="tiny" fill="#25748a" transform="rotate(-90 588 490)">右翼独立柱/基础</text>
+
+  <!-- old ditch and new external pipe -->
+  <line x1="205" y1="570" x2="770" y2="570" stroke="#58b9dc" stroke-width="9" stroke-dasharray="18 10" opacity="0.65"/>
+  <text x="500" y="579" text-anchor="middle" class="tiny" fill="#126f9f">原沟：新管试通后停用</text>
+  <path d="M205 390 L245 390 L245 245 L275 245 L275 210" fill="none" stroke="#126f9f" stroke-width="11"/>
+  <path d="M275 210 L648 210 L655 225 L655 455 L770 470 L770 545" fill="none" stroke="#126f9f" stroke-width="11" marker-end="url(#flow)"/>
+  <circle cx="245" cy="390" r="9" fill="#fff" stroke="#126f9f" stroke-width="3"/>
+  <circle cx="275" cy="210" r="9" fill="#fff" stroke="#126f9f" stroke-width="3"/>
+  <text x="285" y="202" class="tiny" fill="#126f9f">穿墙后外绕</text>
+  <rect x="744" y="525" width="58" height="42" rx="3" fill="#ed3434" stroke="#9b1c1c" stroke-width="2"/>
+  <text x="773" y="543" text-anchor="middle" font-family="Microsoft YaHei, SimHei, sans-serif" font-size="11" font-weight="700" fill="#fff">公共水道</text>
+  <text x="773" y="558" text-anchor="middle" font-family="Microsoft YaHei, SimHei, sans-serif" font-size="10" fill="#fff">接入口</text>
+
+  <!-- ==================== PANEL B: SECOND FLOOR ==================== -->
+  <!-- property -->
+  <path d="M1000 225 L1430 225 L1430 455 L1565 455 L1565 690 L1000 690 Z" fill="#fffdf8" stroke="#a93632" stroke-width="5"/>
+  <text x="1015" y="247" class="tiny" fill="#a93632">二层投影 / 围墙范围</text>
+
+  <!-- rear full second floor -->
+  <rect x="1065" y="285" width="340" height="120" fill="#9dd7e8" stroke="#25748a" stroke-width="4"/>
+  <text x="1235" y="333" text-anchor="middle" class="label" fill="#18566a">蓝色后楼二层</text>
+  <text x="1235" y="357" text-anchor="middle" class="small" fill="#25748a">卧室 / 厅 / 卫生间</text>
+  <text x="1235" y="380" text-anchor="middle" class="tiny" fill="#25748a">与左翼、右翼属于同一套新结构</text>
+
+  <!-- full left wing second floor -->
+  <rect x="1050" y="405" width="85" height="265" fill="#9dd7e8" stroke="#25748a" stroke-width="4"/>
+  <text x="1092" y="485" text-anchor="middle" class="small" fill="#18566a">左翼二层</text>
+  <text x="1092" y="510" text-anchor="middle" class="tiny" fill="#18566a">房间</text>
+  <text x="1092" y="532" text-anchor="middle" class="tiny" fill="#18566a">楼梯厅</text>
+  <text x="1092" y="554" text-anchor="middle" class="tiny" fill="#18566a">储物</text>
+
+  <!-- short right wing second floor -->
+  <rect x="1365" y="405" width="40" height="135" fill="#b9dfe9" stroke="#25748a" stroke-width="4"/>
+  <text x="1385" y="475" text-anchor="middle" class="tiny" fill="#18566a" transform="rotate(90 1385 475)">短右翼：走廊/书房</text>
+  <text x="1415" y="445" class="tiny" fill="#25748a">下方保持侧门通道</text>
+
+  <!-- courtyard opening -->
+  <rect x="1145" y="425" width="210" height="135" fill="#fff" stroke="#769b6e" stroke-width="3" stroke-dasharray="10 7"/>
+  <text x="1250" y="480" text-anchor="middle" class="label" fill="#416b43">中庭挑空口</text>
+  <text x="1250" y="505" text-anchor="middle" class="small" fill="#527054">不封顶、不搭玻璃房</text>
+  <text x="1250" y="530" text-anchor="middle" class="tiny" fill="#527054">净深约3～4米，净宽约4～5米</text>
+
+  <!-- old retained second floor -->
+  <rect x="1145" y="585" width="250" height="85" fill="#ff8a34" stroke="#a84c16" stroke-width="4"/>
+  <line x1="1220" y1="585" x2="1220" y2="670" stroke="#a84c16" stroke-width="2"/>
+  <line x1="1320" y1="585" x2="1320" y2="670" stroke="#a84c16" stroke-width="2"/>
+  <text x="1270" y="620" text-anchor="middle" class="label" fill="#84370f">原二层保留</text>
+  <text x="1270" y="645" text-anchor="middle" class="tiny" fill="#84370f">不加荷载、不与新楼硬接</text>
+
+  <!-- joints and functional connection -->
+  <rect x="1135" y="585" width="10" height="85" fill="url(#joint)" stroke="#c05c4d" stroke-width="1"/>
+  <rect x="1395" y="585" width="10" height="85" fill="url(#joint)" stroke="#c05c4d" stroke-width="1"/>
+  <line x1="1135" y1="610" x2="1145" y2="610" stroke="#765d43" stroke-width="5"/>
+  <text x="1010" y="700" class="tiny" fill="#a33d32">蓝色新楼与橙色旧楼之间保留结构缝；门和短廊只做柔性功能连接</text>
+
+  <!-- U outline emphasis -->
+  <path d="M1050 670 L1050 285 L1405 285 L1405 540" fill="none" stroke="#18566a" stroke-width="3" stroke-dasharray="8 6"/>
+  <text x="1480" y="300" text-anchor="middle" class="small" fill="#18566a">倒U形原则</text>
+  <text x="1480" y="325" text-anchor="middle" class="tiny" fill="#18566a">后楼完整</text>
+  <text x="1480" y="346" text-anchor="middle" class="tiny" fill="#18566a">左翼完整</text>
+  <text x="1480" y="367" text-anchor="middle" class="tiny" fill="#18566a">右翼缩短</text>
+  <text x="1480" y="388" text-anchor="middle" class="tiny" fill="#18566a">前方保持开敞</text>
+
+  <!-- panel notes -->
+  <rect x="870" y="720" width="715" height="34" fill="#fff4dc" stroke="#cba458" stroke-width="1"/>
+  <text x="885" y="742" class="tiny" fill="#624a1e">二层视觉上形成倒U，但右翼不压原杂物房；所有新二层荷载由新柱、新梁和新基础承担。</text>
+
+  <!-- bottom explanation / construction conditions -->
+  <rect x="35" y="800" width="1580" height="285" rx="8" fill="#fff" stroke="#d1d4d7" stroke-width="2"/>
+  <text x="60" y="838" class="h2">结构与施工条件</text>
+
+  <rect x="65" y="870" width="470" height="165" rx="5" fill="#eef5f7" stroke="#8aa7b5" stroke-width="2"/>
+  <text x="85" y="900" class="label" fill="#18566a">蓝色新U形</text>
+  <text x="85" y="928" class="small">后楼、左翼和短右翼统一设计、统一新基础。</text>
+  <text x="85" y="952" class="small">内转角设置可靠柱、梁和抗震构造。</text>
+  <text x="85" y="976" class="small">右翼不能悬空压在原杂物房或旧围墙上。</text>
+  <text x="85" y="1000" class="small">一层侧门通道应保持贯通，作为检修和疏散出口。</text>
+
+  <rect x="565" y="870" width="470" height="165" rx="5" fill="#fff1e6" stroke="#c88454" stroke-width="2"/>
+  <text x="585" y="900" class="label" fill="#84370f">橙色原二层</text>
+  <text x="585" y="928" class="small">先鉴定石基础和一楼地面下沉原因。</text>
+  <text x="585" y="952" class="small">不继续加层，不承托蓝色新楼和连接廊。</text>
+  <text x="585" y="976" class="small">新基础靠近旧楼时必须分段开挖、设置支护。</text>
+  <text x="585" y="1000" class="small">新旧连接处用结构缝、柔性防水和独立门框处理。</text>
+
+  <rect x="1065" y="870" width="520" height="165" rx="5" fill="#edf4e9" stroke="#83a27f" stroke-width="2"/>
+  <text x="1085" y="900" class="label" fill="#416b43">天井与排水</text>
+  <text x="1085" y="928" class="small">天井保持露天，地面设雨水找坡、地漏和防倒灌。</text>
+  <text x="1085" y="952" class="small">邻居混合来水不经过天井，改走外围密闭暗管。</text>
+  <text x="1085" y="976" class="small">先完成新管并试水，再停用旧沟和施工新基础。</text>
+  <text x="1085" y="1000" class="small">公共水道接入口、外侧用地和排放性质需取得确认。</text>
+
+  <!-- legend -->
+  <rect x="65" y="1062" width="32" height="20" fill="#9dd7e8" stroke="#25748a" stroke-width="2"/>
+  <text x="108" y="1078" class="tiny">蓝色：新建独立结构</text>
+  <rect x="310" y="1062" width="32" height="20" fill="#ff8a34" stroke="#a84c16" stroke-width="2"/>
+  <text x="353" y="1078" class="tiny">橙色：原二层保留</text>
+  <rect x="555" y="1062" width="32" height="20" fill="url(#joint)" stroke="#c05c4d" stroke-width="1"/>
+  <text x="598" y="1078" class="tiny">斜纹：新旧结构缝</text>
+  <line x1="800" y1="1072" x2="850" y2="1072" stroke="#126f9f" stroke-width="8"/>
+  <text x="860" y="1078" class="tiny">深蓝：新密闭暗管</text>
+  <text x="1240" y="1078" class="tiny" fill="#a33330">概念方案，须经房屋鉴定、结构设计和当地审批后施工。</text>
+</svg>
