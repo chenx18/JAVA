@@ -2,21 +2,21 @@
 
 这个目录用于沉淀长期可复用的学习和项目知识。
 
-当前分成两条主线：
+当前分成三条主线：
 
 ```text
 kb/        Java 后端学习与项目开发知识库
-frontend/  前端面试恢复、工程经验复盘、AI 应用前端能力
+frontend/  2026 AI 前端工程师面试知识库与传统前端基础
+real-development/  按真实项目顺序执行的后台开发流程
 ```
 
 ---
 
 ## 阅读入口
 
-```text
-kb/README.md
-frontend/README.md
-```
+- [Java 后端知识库](kb/README.md)
+- [前端专题](frontend/README.md)
+- [真实项目手把手开发](real-development/README.md)：先看开发路线，再从新项目启动跟写到用户模块。
 
 ---
 
@@ -54,9 +54,16 @@ project/       Pxx  项目表达与综合实战
 
 ---
 
+### real-development
+
+围绕 `pulse-admin-server` 按项目交付顺序组织教程，包含需求与接口设计、新建项目、MySQL/MyBatis、用户 CRUD、登录权限、前后端联调及部署。每阶段都有执行步骤与验收标准，知识点解释链接到 `kb/`。
+
+---
+
 ## 使用原则
 
 - Java 后端主线继续放到 `kb/`
+- 真实后台项目的执行流程放到 `real-development/`
 - 前端面试恢复和项目表达放到 `frontend/`
 - 不按“第几天、第几周”维护长期文档
 - 前端单题按专题目录维护，不再堆在 `frontend/` 根目录
