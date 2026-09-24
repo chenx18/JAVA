@@ -1,58 +1,107 @@
-# 第二章 Testing
+# 02 单元、集成、契约与端到端测试
 
-## 一、本章具体知识点
+测试应证明业务契约和重要边界，而不是逐行复刻实现。把确定逻辑、模块协作、浏览器流程和模型评估分层，才能让失败容易定位。
 
-- Unit Test
-- Integration Test
-- E2E
-- Mock
-- Stub
-- Fixture
-- Vitest
-- Playwright
-- Vue Test Utils
-- Contract Test
-- AI test
+## 一、本章目录
 
-## 二、各知识点详细解释
+- [按风险选择测试层](#k01)
+- [用边界证明契约](#k02)
+- [Mock、Fixture 与真实集成](#k03)
+- [AI 场景与质量报告](#k04)
+- [知识小结](#summary)
+- [面试题与答案](#interview)
 
-Unit Test 测最小逻辑单元；Integration Test 测多个模块协作；E2E 测真实用户流程。
+## 二、知识讲解
 
-不要把所有问题都用 E2E 测，因为 E2E 通常更慢、更脆弱。
+<a id="k01"></a>
 
-Vue 项目可以覆盖：
+### 1. 按风险选择测试层
 
-```text
-composable
-component
-store
-API integration
-user flow
+单元测试适合纯函数、parser、reducer和局部状态，集成测试验证模块与依赖协作，契约测试验证API结构和错误语义，E2E验证真实用户关键路径。
+
+Vue/React组件测试关注输入、可见输出和用户交互，避免紧耦合私有方法。浏览器布局、焦点和真实路由/网络仍需相应环境，DOM模拟器不提供完整浏览器能力。
+
+<a id="k02"></a>
+
+### 2. 用边界证明契约
+
+```js
+// standalone-node
+import assert from 'node:assert/strict';
+function pageSize(value) {
+  if (!Number.isSafeInteger(value) || value < 1 || value > 100) {
+    throw new RangeError('pageSize must be 1..100');
+  }
+  return value;
+}
+assert.equal(pageSize(1), 1);
+assert.equal(pageSize(100), 100);
+assert.throws(() => pageSize(0), RangeError);
+assert.throws(() => pageSize('20'), RangeError);
 ```
 
-AI 项目新增：
+测试输入边界、错误类型和规则，而不是断言函数用了某个if。异步测试用可控Promise、时钟或事件确认顺序，避免靠大sleep碰运气；取消和清理也要验证。
 
-```text
-stream parser
-message reducer
-tool arguments
-agent workflow
-retry behavior
-prompt regression
-```
+<a id="k03"></a>
 
-## 三、本章面试题与答案
+### 3. Mock、Fixture 与真实集成
 
-### 题：单元测试和 E2E 怎么分工？
+mock/stub替代不可控依赖，fixture提供可重复数据。过度mock会让测试只证明自己的假实现，关键数据库约束、HTTP行为、框架生命周期要有真实集成覆盖。
 
-**答案：**
+契约录制样本需脱敏并更新版本，不能把过期fixture当供应商永远不变的事实。测试成功路径也要测超时、限流、错误体、取消和重试。
 
-单元测试验证局部逻辑，速度快、失败定位清晰；集成测试验证模块协作；E2E 验证核心用户路径。生产项目通常按测试金字塔合理分配，而不是所有逻辑都通过浏览器测试。
+E2E尽量按用户角色与可访问名称定位，避免脆弱CSS选择器；独立数据与清理防止用例互相污染。
 
-### 题：AI 输出不稳定怎么测试？
+<a id="k04"></a>
 
-**答案：**
+### 4. AI 场景与质量报告
 
-不能把生成文本的每个字符都作为固定断言。可以把 Tool 调用、结构化输出、状态机转换、权限校验等确定性部分做精确测试；模型层通过固定数据、mock provider、schema 验证和回归样本集合控制变动。
+parser、工具授权、状态机和幂等属于确定性逻辑，可精确断言；模型生成层用任务样本、schema、证据质量和人工评估，不固定逐字输出。
 
----
+报告明确哪些是静态检查、mock测试、真实浏览器、数据库或供应商测试。覆盖率帮助发现盲区，但高覆盖率不自动代表重要风险被覆盖。
+
+失败用例进入回归集，修复后只扩展与新风险相关的测试，不为每个简单可逆文案改动复制一整套实现测试。
+
+<a id="summary"></a>
+
+## 三、知识小结
+
+测试按风险分层，边界与行为优先，mock与真实集成互补。确定代码精确断言，模型质量按样本评估，验证范围如实报告。
+
+参考：[Vitest Guide](https://vitest.dev/guide/)；[Playwright Best Practices](https://playwright.dev/docs/best-practices)。示例按标注环境运行，版本相关能力以目标版本为准。
+
+<a id="interview"></a>
+
+## 四、面试题与答案
+
+<a id="eng02-01"></a>
+
+### ENG02-01 [P0·工程取舍] 单元和E2E如何分工？
+
+**回答：** 局部确定逻辑用快速单元测试，模块边界用集成/契约，少量关键用户路径用真实E2E。不是全部通过浏览器，也不能全靠mock证明部署行为。
+
+对应讲解：[按风险选择测试层](#k01)。
+
+<a id="eng02-02"></a>
+
+### ENG02-02 [P0·原理] 测试为什么不应复刻实现细节？
+
+**回答：** 相同错误可能被测试再次复制，重构也会无意义失败。应针对输入输出、状态和副作用契约，重点覆盖边界与失败。
+
+对应讲解：[用边界证明契约](#k02)。
+
+<a id="eng02-03"></a>
+
+### ENG02-03 [P1·工程取舍] 模型输出不稳定如何测试？
+
+**回答：** 把工具执行、parser和状态机精确测试，生成质量用固定任务集、schema/引用指标和人工校准。不能把每个字当金标准，也不能完全不测。
+
+对应讲解：[AI 场景与质量报告](#k04)。
+
+<a id="eng02-04"></a>
+
+### ENG02-04 [P1·原理] mock测试通过为何仍可能上线失败？
+
+**回答：** 假依赖可能漏掉真实协议、约束、时序或版本变化。需要关键真实集成与契约回归，并说明未覆盖环境。
+
+对应讲解：[Mock、Fixture 与真实集成](#k03)。

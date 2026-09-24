@@ -1,44 +1,106 @@
-# 第十五章 Embedding / Vector Search
+# 15 Embedding、向量检索与重排
 
-## 一、本章具体知识点
+Embedding把对象映射到某个模型定义的向量空间，相似度用于找候选，不是事实正确率或概率。检索方案要结合词法信息、元数据与评估。
 
-- embedding
-- vector
-- cosine similarity
-- dot product
-- nearest neighbor
-- ANN
-- metadata filter
-- hybrid search
-- rerank
+## 一、本章目录
 
-## 二、各知识点详细解释
+- [向量空间与相似度](#k01)
+- [模型版本与索引一致性](#k02)
+- [精确检索、ANN 与过滤](#k03)
+- [词法混合、重排与评估](#k04)
+- [知识小结](#summary)
+- [面试题与答案](#interview)
 
-Embedding 把文本/对象映射成向量表示，然后根据向量距离找语义相近内容。
+## 二、知识讲解
 
-常见相似度：
+<a id="k01"></a>
 
-- cosine similarity
-- dot product
-- Euclidean distance
+### 1. 向量空间与相似度
 
-大规模向量检索通常会使用 ANN 等近似最近邻算法，以降低全量精确扫描的成本。
+余弦相似度比较方向，点积还受向量长度影响，欧氏距离比较空间距离；是否归一化和使用哪种度量要匹配模型及索引。
 
-Hybrid Search：
-
-```text
-Keyword search
-+
-Vector search
-→ merge/rerank
+```ts
+function cosine(a: readonly number[], b: readonly number[]): number {
+  if (!a.length || a.length !== b.length) throw new TypeError('dimension mismatch');
+  let dot = 0, aa = 0, bb = 0;
+  for (let i = 0; i < a.length; i++) {
+    const x = a[i], y = b[i];
+    if (typeof x !== 'number' || typeof y !== 'number' ||
+        !Number.isFinite(x) || !Number.isFinite(y)) throw new TypeError('invalid vector');
+    dot += x * y; aa += x * x; bb += y * y;
+  }
+  if (aa === 0 || bb === 0) throw new TypeError('zero vector');
+  return dot / Math.sqrt(aa * bb);
+}
+console.log(cosine([1, 0], [1, 0]), cosine([1, 0], [0, 1])); // 1 0
 ```
 
-## 三、本章面试题与答案
+这是有限普通数值的教学计算，极端尺度还需数值稳定性处理。相似度0.8不意味着答案80%正确。
 
-### 题：为什么向量搜索不等于全文搜索？
+<a id="k02"></a>
 
-**答案：**
+### 2. 模型版本与索引一致性
 
-全文搜索强调词项、倒排索引和精确/词法匹配；向量搜索强调语义空间中的相似度。两者对拼写、专有名词、语义改写等场景各有优势，实际 RAG 往往结合 hybrid search。
+文档和查询应使用匹配的embedding空间，不同模型即使维度相同也不代表坐标可比较。更换模型、分块或归一化方式可能需要重建索引并做双版本迁移。
 
----
+记录model/version、维度、内容hash、文档版本和租户metadata。批量写入应幂等，删除/权限改变要同步，不能只新增向量永不清理旧块。
+
+<a id="k03"></a>
+
+### 3. 精确检索、ANN 与过滤
+
+小数据可精确扫描，大规模常用ANN近似最近邻索引如HNSW或其他方案，在召回、延迟、内存和构建成本间折中。参数没有所有数据都最优的默认答案。
+
+metadata过滤与向量召回的执行方式会影响召回和性能，权限过滤必须满足安全边界。过滤后候选不足时要有补检索或证据不足处理，不随意扩大到无权数据。
+
+<a id="k04"></a>
+
+### 4. 词法混合、重排与评估
+
+全文/倒排检索适合准确编号、专名和关键词，向量检索适合语义近似。混合检索需去重和融合分数，重排再按更昂贵模型评估候选与问题的关系。
+
+评估Recall@k、排序质量和最终任务效果，区分标注集合、负例与真实问题分布。相似度阈值需校准，不能把top1永远当正确证据，也不能只优化检索指标而忽略生成成本。
+
+<a id="summary"></a>
+
+## 三、知识小结
+
+Embedding定义空间，索引选择候选，过滤保护范围，重排改善排序，评估决定参数。分数不是事实概率，版本和权限必须贯穿数据链路。
+
+参考：[Microsoft Vector Search](https://learn.microsoft.com/en-us/azure/search/vector-search-overview)。示例按标注环境运行，版本相关能力以目标版本为准。
+
+<a id="interview"></a>
+
+## 四、面试题与答案
+
+<a id="ai15-01"></a>
+
+### AI15-01 [P0·原理] 向量检索和全文搜索的差别是什么？
+
+**回答：** 全文更强调词项和精确匹配，向量更强调表示空间的相似关系。专有编号与语义改写各有优势，常用混合与重排，不应认定向量全面替代关键词。
+
+对应讲解：[词法混合、重排与评估](#k04)。
+
+<a id="ai15-02"></a>
+
+### AI15-02 [P1·原理] 同维度embedding可以混用吗？
+
+**回答：** 不可以仅凭维度判断，同模型空间与训练/版本、归一化和度量要匹配。不同空间坐标没有自动可比性，迁移需要重建或明确兼容策略。
+
+对应讲解：[模型版本与索引一致性](#k02)。
+
+<a id="ai15-03"></a>
+
+### AI15-03 [P1·工程取舍] ANN为什么可能漏掉最相关结果？
+
+**回答：** 它以近似搜索换取规模和延迟收益，参数与过滤影响召回。需用标注问题评估Recall@k和最终任务效果，不能只看查询快。
+
+对应讲解：[精确检索、ANN 与过滤](#k03)。
+
+<a id="ai15-04"></a>
+
+### AI15-04 [P1·原理] 相似度能当答案正确概率吗？
+
+**回答：** 不能，它是某空间和度量下的匹配分数，不校准为事实概率。仍需上下文、引用和业务核验，阈值要按任务数据评估。
+
+对应讲解：[向量空间与相似度](#k01)。

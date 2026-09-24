@@ -1,46 +1,111 @@
-# 第五章 SSE
+# 05 SSE 协议、客户端与恢复
 
-## 一、本章具体知识点
+SSE是基于文本字段的服务器事件流协议，EventSource是浏览器提供的一种客户端。选择fetch后，协议处理和恢复责任仍要完整接住。
 
-- text/event-stream
-- event
-- data
-- id
-- retry
-- EventSource
-- fetch streaming
-- reconnection
-- server disconnect
+## 一、本章目录
 
-## 二、各知识点详细解释
+- [字段、空行与多行数据](#k01)
+- [EventSource 与 fetch](#k02)
+- [完成、重连与幂等](#k03)
+- [测试清单与实现定位](#k04)
+- [知识小结](#summary)
+- [面试题与答案](#interview)
 
-SSE 是基于 HTTP 的服务器到客户端事件流。典型数据：
+## 二、知识讲解
+
+<a id="k01"></a>
+
+### 1. 字段、空行与多行数据
 
 ```text
-event: message
-data: {"type":"text","delta":"hello"}
+id: evt-42
+event: delta
+data: {"text":"hello"}
+
+event: done
+data: {"finish":"completed"}
+
 
 ```
 
-AI 前端也经常直接使用 fetch + ReadableStream，以便自定义 POST 请求、headers 和事件解析，而不局限于 EventSource。
+空行分隔事件，多行data按换行连接，event提供类型，id用于事件标识相关机制，retry提供重连建议，冒号开头常作注释。支持标准SSE需正确处理换行、字段和值规则，而不只是按双换行粗暴split。
 
-前端流程：
+网络chunk边界与事件边界无关，UTF-8解码与事件parser是不同层。将原始供应商事件转为自有领域事件时保留可追踪ID和结束原因。
 
-```text
-fetch
-→ response.body
-→ reader.read()
-→ TextDecoder
-→ SSE parser
-→ domain event
-```
+<a id="k02"></a>
 
-## 三、本章面试题与答案
+### 2. EventSource 与 fetch
 
-### 题：AI 项目为什么有时用 fetch streaming，而不是 EventSource？
+EventSource通常GET连接并处理协议/重连，不能像fetch任意设置POST体和Authorization头。Cookie认证与withCredentials等按跨源策略设计，不能把token随意放URL让日志和历史暴露。
 
-**答案：**
+fetch可发POST并读ReadableStream，但应用要负责解码、分帧、超时、重连和恢复。成熟parser比临时几十行全局split更适合完整标准；教学子集要明确不支持的部分。
 
-EventSource 是标准 SSE 客户端 API，但主要面向 GET 和特定事件流模式。AI 对话通常需要 POST 请求、请求体、Authorization 和自定义协议，因此 fetch + ReadableStream 可以提供更灵活的控制。
+代理可能缓冲响应，服务端需正确flush和配置超时/压缩等链路行为，客户端代码正确也不保证用户及时看到每段内容。
 
----
+<a id="k03"></a>
+
+### 3. 完成、重连与幂等
+
+Last-Event-ID要与服务端事件保留及重放能力配合，不能保证任意连接自动续上。业务事件序号帮助检测重复与缺口，数据过期后应返回可理解恢复策略。
+
+创建新生成任务与订阅已有任务可拆成不同接口。重连只恢复观察，不应无条件重新执行有副作用任务。HTTP200后仍可能error或无done断流，应保留部分结果并标记结局。
+
+<a id="k04"></a>
+
+### 4. 测试清单与实现定位
+
+协议测试覆盖LF/CRLF等标准换行、多行data、空data、注释、字段缺省、跨块字符、多事件同块、超长事件、错误和尾部残片。完整标准还要按选用库和规范验证，不只测试一个JSON行。
+
+JavaScript核心篇的流式解析章节提供限定子集实现和测试思路；本章强调生产协议选择与基础设施。前端状态机接收的是验证后的领域事件，不直接执行事件里的任意代码。
+
+<a id="summary"></a>
+
+## 三、知识小结
+
+SSE定义事件文本，EventSource提供部分客户端机制，fetch提供请求控制但增加责任。恢复依赖服务端保留协议，连接结束和业务成功分别判断。
+
+参考：[MDN Server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events)。示例按标注环境运行，版本相关能力以目标版本为准。
+
+<a id="interview"></a>
+
+## 四、面试题与答案
+
+<a id="ai05-01"></a>
+
+### AI05-01 [P0·基础] SSE与EventSource是什么关系？
+
+**回答：** SSE是事件流格式和机制，EventSource是浏览器客户端API。也可用fetch消费SSE，但需自行承担更多解析、重连和请求生命周期工作。
+
+对应讲解：[EventSource 与 fetch](#k02)。
+
+<a id="ai05-02"></a>
+
+### AI05-02 [P0·原理] data事件为什么要先缓冲到空行？
+
+**回答：** 一条事件可能分多行data，也可能跨网络块，空行才表明完整事件边界。字符解码也需保留半字符，不能一次read等同一条JSON。
+
+对应讲解：[字段、空行与多行数据](#k01)。
+
+<a id="ai05-03"></a>
+
+### AI05-03 [P1·工程取舍] 自动重连是否自动避免重复执行？
+
+**回答：** 不会，它只重新建立观察链路。服务端需稳定任务ID、事件ID和重放策略，写操作需幂等，重连不应无条件重建任务。
+
+对应讲解：[完成、重连与幂等](#k03)。
+
+<a id="ai05-04"></a>
+
+### AI05-04 [P1·工程取舍] 本地流式正常，上线后整段才出现，先查哪里？
+
+**回答：** 检查代理/网关缓冲、服务端flush、压缩与超时链路，再看浏览器消费。只改前端setState频率不一定触及真正缓冲层。
+
+对应讲解：[EventSource 与 fetch](#k02)。
+
+<a id="ai05-05"></a>
+
+### AI05-05 [P1·编码] SSE parser测试至少覆盖哪些切分情况？
+
+**回答：** 覆盖半个UTF-8字符、跨行/跨事件块、多事件同块、多行data、注释、标准换行、超长和不完整尾部。完整标准与教学子集要区分，不能只测试一行JSON正常到达。
+
+对应讲解：[测试清单与实现定位](#k04)。

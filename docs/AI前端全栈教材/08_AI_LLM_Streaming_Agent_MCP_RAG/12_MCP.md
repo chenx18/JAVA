@@ -1,64 +1,110 @@
-# 第十二章 MCP
+# 12 MCP 核心协议、能力发现与扩展
 
-## 一、本章具体知识点
+MCP标准化AI宿主与外部能力之间的交互，不替代模型、业务API或授权系统。本章以已核对的2026-07-28规范为参考，并明确与旧版会话示例区分。
 
-- Model Context Protocol
-- Host
-- Client
-- Server
-- Tool
-- Resource
-- Prompt
-- discovery
-- authorization
-- Tasks
-- MCP Apps
+## 一、本章目录
 
-## 二、各知识点详细解释
+- [Host、Client 与 Server](#k01)
+- [Tools、Resources 与 Prompts](#k02)
+- [2026 协议边界与兼容](#k03)
+- [授权、来源与UI](#k04)
+- [知识小结](#summary)
+- [面试题与答案](#interview)
 
-MCP 可以理解为 AI 应用与外部能力之间的标准协议层。
+## 二、知识讲解
 
-```text
-AI Host
- ↓
-MCP Client
- ↓
-MCP Server
- ├── Tools
- ├── Resources
- └── Prompts
-```
+<a id="k01"></a>
 
-2026-07-28 正式规范将协议核心进一步推进为更偏无状态的 request/response 模型，并增加多轮请求、header routing、cacheable list results、授权强化和扩展框架。([blog.modelcontextprotocol.io](https://blog.modelcontextprotocol.io/posts/2026-07-28/))
+### 1. Host、Client 与 Server
 
-### Tool
+Host是组织模型、用户交互和权限的应用，Client负责与某MCP服务器通信，Server暴露工具、资源或提示等能力。一个Host可连接多个服务器，需隔离它们的信任和数据范围。
 
-提供可执行能力。
+业务HTTP或数据库接口可封装成MCP工具，但MCP不是一个万能业务后端，也不直接让模型获得服务器全部权限。模型工具调用机制与MCP外部能力协议是可组合的不同层。
 
-### Resource
+<a id="k02"></a>
 
-提供可读取上下文。
+### 2. Tools、Resources 与 Prompts
 
-### Prompt
+Tools描述可调用能力及输入/输出schema，常通过tools/list发现、tools/call调用；Resources提供可读上下文，Prompts提供可复用提示模板。不同原语有不同交互和信任模型，不应把全部信息都伪装成一个任意执行工具。
 
-提供可复用提示模板。
+工具名称、描述和schema帮助模型选择，但server必须验证参数、身份和资源权限。列表可能分页或变化，缓存需要版本/失效规则；不能假定连接后工具列表永久固定。
 
-### Tasks
+<a id="k03"></a>
 
-适合长时间运行的任务和任务状态管理。
+### 3. 2026 协议边界与兼容
 
-## 三、本章面试题与答案
+2026-07-28规范强化每请求元数据和发现能力，Tools文档要求相应_meta字段，包括协议版本、客户端信息与能力。旧版初始化/会话流程的裸JSON示例不能直接当作新版完整请求。
 
-### 题：MCP 是不是 API？
+实现应使用支持目标版本的SDK，明确传输、协议版本和发现结果，再调用工具。HTTP头、认证和路由也按对应规范处理；不要自己拼几行JSON就声称完整兼容所有客户端。
 
-**答案：**
+Tasks、Skills over MCP、MCP Apps等为可选扩展，需要双方明确支持。某Host支持普通工具不代表已支持长任务、嵌入UI或所有扩展。
 
-MCP 是协议，不是某个业务 API。它定义了 AI Host/Client 与 MCP Server 之间如何发现和使用 Tools、Resources、Prompts 等能力。业务 API 可以被 MCP Server 封装后提供给 AI 使用。
+<a id="k04"></a>
 
-### 题：MCP 与 Function Calling 的关系？
+### 4. 授权、来源与UI
 
-**答案：**
+服务器验证调用者身份、受众、作用域和资源权限，不盲目透传别处token。工具结果和资源内容是外部数据，不自动成为高信任指令；跨服务器数据传递也要保持用户授权范围。
 
-Function Calling 是模型与应用之间表达“我要调用某个工具”的机制；MCP 是更完整的外部能力协议，可以标准化工具发现、资源、提示、任务等。MCP Tool 最终仍可能映射到具体的函数或 HTTP/API 执行。
+UI应让用户知道哪些能力可用、正在执行什么，以及如何停止或否决相关动作。已有授权内的可逆步骤可正常推进，缺授权或高影响动作则呈现具体可审查提案。
 
----
+测试客户端/服务器版本矩阵、能力缺失、认证过期、列表变化、工具错误和取消，而不仅tools/list成功。
+
+<a id="summary"></a>
+
+## 三、知识小结
+
+MCP管发现与交互协议，业务仍管权限和副作用。版本、传输、每请求能力与可选扩展要明确，不能混用旧版协议或把工具描述当执行授权。
+
+参考：[MCP 2026-07-28 Specification](https://modelcontextprotocol.io/specification/2026-07-28)；[MCP Tools 2026-07-28](https://modelcontextprotocol.io/specification/2026-07-28/server/tools)；[MCP Tasks Extension](https://modelcontextprotocol.io/extensions/tasks/overview)。示例按标注环境运行，版本相关能力以目标版本为准。
+
+<a id="interview"></a>
+
+## 四、面试题与答案
+
+<a id="ai12-01"></a>
+
+### AI12-01 [P0·基础] MCP和Function Calling是什么关系？
+
+**回答：** Function Calling表达模型希望调用的工具与参数，MCP标准化宿主与外部能力服务器的发现和调用。MCP工具可被模型选择，但执行仍经过应用和服务器授权。
+
+对应讲解：[Host、Client 与 Server](#k01)。
+
+<a id="ai12-02"></a>
+
+### AI12-02 [P1·原理] Host、Client、Server各做什么？
+
+**回答：** Host组织模型与用户流程，Client维护对特定服务器的协议通信，Server暴露能力并执行相应检查。多服务器不意味着共享同一信任边界。
+
+对应讲解：[Host、Client 与 Server](#k01)。
+
+<a id="ai12-03"></a>
+
+### AI12-03 [P1·工程取舍] 为什么不能照搬旧版MCP请求示例？
+
+**回答：** 协议版本影响初始化/请求元数据、发现和扩展机制，2026规范对相应_meta与能力有要求。应锁定SDK和协议版本并测试兼容，而非混用字段。
+
+对应讲解：[2026 协议边界与兼容](#k03)。
+
+<a id="ai12-04"></a>
+
+### AI12-04 [P1·原理] 支持MCP就一定支持Tasks或MCP Apps吗？
+
+**回答：** 不一定，它们是可选扩展，需要客户端和服务器明确支持并按对应机制声明。应有能力检测和合理降级，不能向不支持的客户端返回未知结果形态。
+
+对应讲解：[2026 协议边界与兼容](#k03)。
+
+<a id="ai12-05"></a>
+
+### AI12-05 [P0·基础] MCP的Tools、Resources、Prompts各是什么？
+
+**回答：** Tools暴露可调用能力及schema，Resources提供可读上下文，Prompts提供可复用提示模板。它们的交互与信任模型不同，不能全部当任意执行入口；发现还要处理分页和变化。
+
+对应讲解：[Tools、Resources 与 Prompts](#k02)。
+
+<a id="ai12-06"></a>
+
+### AI12-06 [P1·工程取舍] MCP工具结果为什么不能当系统指令？
+
+**回答：** 它来自外部能力服务器，可能含错误或诱导内容，只能作为相应数据处理。Host与服务器保持授权范围，UI让动作可观察可否决，不能让结果文本扩权。
+
+对应讲解：[授权、来源与UI](#k04)。

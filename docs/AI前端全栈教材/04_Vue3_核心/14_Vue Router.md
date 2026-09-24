@@ -1,47 +1,106 @@
-# 第十四章 Vue Router
+# 14 Vue Router 与导航契约
 
-## 一、本章具体知识点
+路由把URL映射到组件与状态。可靠导航需要处理匹配、参数变化、异步守卫、失败和部署路径，权限判断也要区分UI与服务器。
 
-- createRouter
-- history
-- route record
-- nested routes
-- params
-- query
-- meta
-- lazy loading
-- navigation guard
-- scroll behavior
+## 一、本章目录
 
-## 二、各知识点详细解释
+- [路由记录、历史模式与嵌套](#k01)
+- [params、query 与组件复用](#k02)
+- [守卫、异步与导航结果](#k03)
+- [懒加载、滚动与服务端权限](#k04)
+- [知识小结](#summary)
+- [面试题与答案](#interview)
 
-Vue Router 把 URL 与组件树建立映射。
+## 二、知识讲解
 
-```text
-URL
-→ 匹配 Route Record
-→ 产生 route
-→ 渲染组件
+<a id="k01"></a>
+
+### 1. 路由记录、历史模式与嵌套
+
+createRouter配置routes和history。createWebHistory使用正常路径，SPA静态部署需将合适页面路径回退到入口，但不能把API和真实静态资源错误都吞成HTML；createWebHashHistory将前端路由放片段，服务器不接收该片段；内存历史适合服务端或测试等场景。
+
+```ts
+import { createRouter, createMemoryHistory } from 'vue-router';
+const Page = { template: '<p>page</p>' };
+const router = createRouter({
+  history: createMemoryHistory(),
+  routes: [{ path: '/users/:id', name: 'user', component: Page }]
+});
+console.log(router.resolve({ name: 'user', params: { id: 'u1' } }).href); // /users/u1
 ```
 
-权限路由常见模型：
+嵌套路由对应嵌套RouterView，路径匹配与组件布局不是同一层。路径别名、重定向、404与base都需在部署环境中验证。
 
-```text
-User
-→ Role
-→ Permission
-→ Route Meta
-→ Navigation Guard
-```
+<a id="k02"></a>
 
-但后端 API 必须再次授权，不能把前端路由守卫当成真正权限边界。
+### 2. params、query 与组件复用
 
-## 三、本章面试题与答案
+params通常来自路径模式，query来自查询字符串，hash是片段状态。它们是外部输入，需要类型转换和校验，不能把'1'直接当已验证number。
 
-### 题：为什么前端路由权限不等于真正权限？
+同一路由组件在参数改变时可能复用，mounted不一定重新执行。监听()=>route.params.id或使用相应路由更新机制，清理旧请求并校验结果归属；不要深监听整个route导致无关变化重复加载。
 
-**答案：**
+具名导航与params便于编码路径，但使用path时不能假定另外传params会按同样规则拼入路径。
 
-前端代码运行在用户环境，用户可以直接调用 API 或修改前端逻辑，所以路由守卫只能控制 UI 可见性和导航体验。真正资源权限必须在服务端根据用户身份和权限校验。
+<a id="k03"></a>
 
----
+### 3. 守卫、异步与导航结果
+
+beforeEach、beforeResolve、afterEach及组件守卫在不同阶段发挥作用。现代守卫可返回允许、取消或重定向结果，异步等待时应处理失败；混用旧next回调容易出现重复调用或悬挂。
+
+路由meta可以声明所需登录或能力，守卫改善导航体验。异步权限加载要避免循环重定向，保留安全的回跳地址并处理登录页自身。
+
+router.push返回的结果可能包含取消/重复等导航失败信息，也可能因异常拒绝；使用isNavigationFailure等API按契约区分，不把每种失败都当服务器错误。
+
+<a id="k04"></a>
+
+### 4. 懒加载、滚动与服务端权限
+
+路由组件可用动态import按需加载，需处理发布后chunk失效和加载错误。scrollBehavior可恢复位置或定位锚点，但异步内容高度变化、KeepAlive和用户主动滚动会影响体验。
+
+前端守卫、菜单隐藏和按钮禁用不是资源权限边界。服务端对每次请求检查身份、资源归属和操作权限；前端不能用可改写的Store角色作为权威证明。
+
+测试覆盖直达链接、刷新、回退、参数变化、重复导航、守卫取消、失效会话和无权限资源，不能只验证点击菜单一次成功。
+
+<a id="summary"></a>
+
+## 三、知识小结
+
+路由负责URL与组件关系，参数是外部输入，守卫负责导航流程，服务端负责真正授权。复用、异步失败与部署回退是常见工程边界。
+
+参考：[Vue Router Guide](https://router.vuejs.org/guide/)。示例按标注环境运行，版本相关能力以目标版本为准。
+
+<a id="interview"></a>
+
+## 四、面试题与答案
+
+<a id="vue14-01"></a>
+
+### VUE14-01 [P0·原理] 路由参数变了为什么mounted不再执行？
+
+**回答：** 框架可能复用相同路由组件实例，变化的是route数据。应观察具体参数或使用更新守卫，并清理旧请求，不能把挂载生命周期当每次导航加载钩子。
+
+对应讲解：[params、query 与组件复用](#k02)。
+
+<a id="vue14-02"></a>
+
+### VUE14-02 [P0·工程取舍] history模式刷新404怎样处理？
+
+**回答：** 服务器或静态托管需为合适SPA页面路径提供入口回退，同时保留API与不存在资源的正确响应。hash模式避免同样的路径请求问题，但URL和部署取舍不同。
+
+对应讲解：[路由记录、历史模式与嵌套](#k01)。
+
+<a id="vue14-03"></a>
+
+### VUE14-03 [P0·原理] 为什么前端路由权限不能当真正权限？
+
+**回答：** 用户能改变前端代码或直接请求API，守卫只控制导航体验。服务器必须依据可信身份和资源规则逐请求授权。
+
+对应讲解：[懒加载、滚动与服务端权限](#k04)。
+
+<a id="vue14-04"></a>
+
+### VUE14-04 [P1·工程取舍] 异步导航失败要怎样区分？
+
+**回答：** 区分取消、重复、重定向和真正异常，使用路由结果与失败检查API按契约处理。还要处理权限加载、回跳地址和循环重定向，不能统一吞错或弹服务器错误。
+
+对应讲解：[守卫、异步与导航结果](#k03)。

@@ -1,45 +1,98 @@
-# 第十三章 MCP Tasks / 长任务
+# 13 MCP Tasks 与可恢复长任务
 
-## 一、本章具体知识点
+长任务需要独立于浏览器连接生存的持久句柄。本章以当前Tasks扩展说明能力声明、轮询、补充输入和取消，并与旧2025-11-25实验协议区分。
 
-- task
-- status
-- polling
-- progress
-- cancellation
-- result
-- persistence
-- recovery
+## 一、本章目录
 
-## 二、各知识点详细解释
+- [持久句柄与能力协商](#k01)
+- [状态、轮询与结果](#k02)
+- [中途输入、订阅与取消](#k03)
+- [服务端恢复与前端状态](#k04)
+- [知识小结](#summary)
+- [面试题与答案](#interview)
 
-长任务不能依赖一次 HTTP 请求一直挂着：
+## 二、知识讲解
 
-```text
-Create Task
-→ taskId
-→ Running
-→ progress
-→ Completed
-→ result
-```
+<a id="k01"></a>
 
-浏览器可以通过 polling、SSE/WebSocket 等方式获得状态。
+### 1. 持久句柄与能力协商
 
-如果页面刷新：
+服务器将长时间操作先持久创建，再返回任务句柄；客户端保存taskId，断线或刷新后可继续查询。只在内存Map里保存一个Promise不提供同样的崩溃恢复。
 
-```text
-taskId
-→ query task
-→ restore UI
-```
+当前扩展由客户端在每请求能力中声明io.modelcontextprotocol/tasks，服务器通过server/discover等相应能力声明支持。服务器不能向未声明支持的客户端随意返回任务结果形态。
 
-## 三、本章面试题与答案
+旧版实验Tasks与当前扩展的字段和取结果流程不同，使用匹配版本SDK，不把旧tasks/result示例直接套到当前扩展。
 
-### 题：AI Agent 运行 5 分钟，浏览器刷新后怎么办？
+<a id="k02"></a>
 
-**答案：**
+### 2. 状态、轮询与结果
 
-不能把 Agent 状态只放在前端内存里。应创建持久化 taskId 和执行状态，后端/worker 独立运行任务；页面重新加载后根据 taskId 查询或订阅状态，再恢复 UI。
+当前扩展状态包括working、input_required、completed、failed、cancelled，后三者为终态。返回任务带taskId及ttlMs、pollIntervalMs等相关信息，客户端按建议节奏查询而非紧密轮询。
 
----
+tasks/get返回当前状态，终态可包含原请求的result或error；completed表示任务执行协议已完成，业务工具结果仍可能包含自身失败信息，UI需继续解释结果契约。
+
+TTL是句柄/结果保留规则，不能等同底层外部任务必然被停止。应用审计、计费与业务记录有自己的持久周期。
+
+<a id="k03"></a>
+
+### 3. 中途输入、订阅与取消
+
+input_required时，tasks/get包含inputRequests，客户端收集并通过tasks/update提交对应inputResponses，需核对请求身份、有效性和当前授权，不能让迟到批准执行已变化的动作。
+
+支持相应通知时可通过subscriptions/listen等机制接收notifications/tasks；轮询仍是基本路径。能力与扩展支持不一致时使用明确降级，不假定所有Host都能展示交互。
+
+tasks/cancel表达协作取消意图，确认收到不等于工作已停，也可能最终完成而非cancelled。UI可先显示取消中，再以权威终态结算。
+
+<a id="k04"></a>
+
+### 4. 服务端恢复与前端状态
+
+任务状态放持久存储，worker独立执行并带尝试版本/lease，完成提交应防旧worker覆盖新状态。工具副作用要幂等，恢复不能只重跑整个流程。
+
+客户端恢复需task所有权检查，不能仅凭知道taskId就读别人的结果。记录阶段、错误和输出摘要，显示部分进度并提供合理过期/重试行为。
+
+普通Web应用也可用自己的任务API、队列和SSE实现相同持久架构；MCP扩展是互操作协议，不是长任务唯一实现方式。
+
+<a id="summary"></a>
+
+## 三、知识小结
+
+持久任务先创建再返回句柄，能力明确后才返回扩展结果；轮询/输入/取消按版本协议处理。取消是意图，恢复和幂等由服务端任务体系保证。
+
+参考：[MCP Tasks Extension](https://modelcontextprotocol.io/extensions/tasks/overview)；[MCP 2026-07-28](https://modelcontextprotocol.io/specification/2026-07-28)。示例按标注环境运行，版本相关能力以目标版本为准。
+
+<a id="interview"></a>
+
+## 四、面试题与答案
+
+<a id="ai13-01"></a>
+
+### AI13-01 [P0·工程取舍] Agent执行五分钟，页面刷新后怎么办？
+
+**回答：** 服务端持久化taskId和状态，worker独立运行，客户端恢复后查询或订阅，并验证所有权。不能把执行事实只放浏览器内存或一条长HTTP连接中。
+
+对应讲解：[持久句柄与能力协商](#k01)。
+
+<a id="ai13-02"></a>
+
+### AI13-02 [P1·原理] 当前Tasks与旧实验示例为什么不能混用？
+
+**回答：** 能力声明、字段和取结果流程已经演进，当前扩展可通过tasks/get携带终态结果，并有tasks/update处理中途输入。应锁定协议/SDK并测试，不能拼旧字段。
+
+对应讲解：[状态、轮询与结果](#k02)。
+
+<a id="ai13-03"></a>
+
+### AI13-03 [P1·原理] tasks/cancel成功响应就表示已取消吗？
+
+**回答：** 不表示，它确认协作取消意图，服务器可能无法立即停止，最终状态仍可能completed或failed。UI需等待权威状态，底层副作用也可能已发生。
+
+对应讲解：[中途输入、订阅与取消](#k03)。
+
+<a id="ai13-04"></a>
+
+### AI13-04 [P1·工程取舍] 任务句柄如何防止数据泄露和重复操作？
+
+**回答：** 每次访问检查用户/租户所有权，恢复执行使用尝试版本与幂等键，区分句柄TTL和业务记录保留。taskId不是权限凭证，重连也不是重做任务。
+
+对应讲解：[服务端恢复与前端状态](#k04)。

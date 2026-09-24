@@ -1,57 +1,114 @@
-# 第八章 Generative UI
+# 08 Generative UI 与组件注册表
 
-## 一、本章具体知识点
+Generative UI让模型选择受控的界面数据结构，前端用已实现组件渲染。它适合把订单、图表或操作建议变成可交互内容，但不能把模型文本直接当代码。
 
-- structured output
-- component registry
-- tool result
-- dynamic component
-- whitelist
-- schema validation
+## 一、本章目录
 
-## 二、各知识点详细解释
+- [有限结构代替任意模板](#k01)
+- [组件映射与权威数据](#k02)
+- [交互与授权闭环](#k03)
+- [测试、可访问性与错误](#k04)
+- [知识小结](#summary)
+- [面试题与答案](#interview)
 
-传统 AI：
+## 二、知识讲解
 
-```text
-LLM
-→ Text
-```
+<a id="k01"></a>
 
-Generative UI：
+### 1. 有限结构代替任意模板
 
-```text
-LLM
-→ Structured Result
-→ Component Registry
-→ Vue Component
-```
+```ts
+type Block =
+  | { kind: 'text'; text: string }
+  | { kind: 'order'; orderId: string }
+  | { kind: 'chart'; values: number[] };
 
-例如：
-
-```json
-{
-  "type": "order",
-  "orderId": "123",
-  "status": "paid"
+function describe(block: Block): string {
+  switch (block.kind) {
+    case 'text': return block.text;
+    case 'order': return '订单 ' + block.orderId;
+    case 'chart': return '图表点数 ' + block.values.length;
+  }
 }
+console.log(describe({ kind: 'chart', values: [1, 2] }));
 ```
 
-前端：
+这些类型是开发契约，模型返回的JSON还要解析验证。组件注册表只允许已注册kind和对应props，不执行任意JS、Vue模板或不受控HTML。未知类型提供可理解降级。
 
-```text
-order
-→ OrderCard
-```
+<a id="k02"></a>
 
-不要让模型直接生成任意 JavaScript / Vue template 并执行。正确方式是有限的组件注册表 + schema。
+### 2. 组件映射与权威数据
 
-## 三、本章面试题与答案
+订单卡片的金额、状态和可执行动作应来自有权限的业务查询，不让模型凭语言生成一个“已付款”事实。模型可提出orderId，服务端/组件数据层取得权威状态再展示。
 
-### 题：如何保证 Generative UI 安全？
+图表数据需限制长度、数值范围和标签，文本按输出上下文处理，链接只允许合适协议和目标。schema合法的超大数组仍可能拖垮页面，安全与性能约束都要进入契约。
 
-**答案：**
+版本化UI schema，使旧客户端遇到新结构能降级，不把后端模型升级直接变成前端崩溃。
 
-让模型只输出受约束的数据结构，前端根据白名单 component registry 映射到已注册组件，不执行模型返回的任意代码。这样模型只能选择允许的 UI 类型和参数。
+<a id="k03"></a>
 
----
+### 3. 交互与授权闭环
+
+点击卡片上的确认、删除或支付按钮应走正常后端授权、校验和幂等流程。组件被模型选中不等于用户批准动作，前端也不应执行模型给出的任意事件handler字符串。
+
+展示需要区分建议、待确认、执行中和已完成，保留任务与资源ID。高影响动作的确认内容应具体可审查，已有授权按范围使用，避免每个无害读取都弹一次确认。
+
+<a id="k04"></a>
+
+### 4. 测试、可访问性与错误
+
+测试每种组件schema、缺字段、未知类型、超长数据、恶意URL/HTML、权限变化和旧版本兼容。可访问性仍需键盘、标签、焦点和错误反馈，不因界面由模型选择就降低标准。
+
+模型选择组件的质量用样本评估，组件本身用确定性测试。避免只测一个漂亮示例图，忽略无数据、错误、取消和恢复。
+
+<a id="summary"></a>
+
+## 三、知识小结
+
+模型选择有限结构，前端渲染可信组件，业务事实来自权威数据，动作走授权流程。schema版本、性能限制和可访问性让生成界面可维护。
+
+参考：[JSON Schema](https://json-schema.org/understanding-json-schema/)；[MCP Specification](https://modelcontextprotocol.io/specification/2026-07-28)。示例按标注环境运行，版本相关能力以目标版本为准。
+
+<a id="interview"></a>
+
+## 四、面试题与答案
+
+<a id="ai08-01"></a>
+
+### AI08-01 [P0·原理] 为什么不直接执行模型生成的Vue模板？
+
+**回答：** 这会把不可信文本升级成代码与交互能力，难以约束权限和安全。用有限schema与组件注册表，让模型选择数据和受控类型。
+
+对应讲解：[有限结构代替任意模板](#k01)。
+
+<a id="ai08-02"></a>
+
+### AI08-02 [P1·工程取舍] 模型输出订单状态，前端可以直接显示为事实吗？
+
+**回答：** 应从授权业务接口获取权威状态，模型输出可作为查询意图或建议。尤其金额、付款和权限不能仅因schema合法就当真实。
+
+对应讲解：[组件映射与权威数据](#k02)。
+
+<a id="ai08-03"></a>
+
+### AI08-03 [P1·原理] 组件白名单就能保证安全吗？
+
+**回答：** 还需props验证、数据规模、URL/HTML处理、资源授权和动作确认。允许的组件也可能因恶意或过大参数产生问题。
+
+对应讲解：[组件映射与权威数据](#k02)。
+
+<a id="ai08-04"></a>
+
+### AI08-04 [P1·工程取舍] 怎样测试Generative UI？
+
+**回答：** 模型选择质量与组件行为分层测试，覆盖所有结构、未知版本、异常输入、权限和交互生命周期，再验可访问性，不只看视觉成功案例。
+
+对应讲解：[测试、可访问性与错误](#k04)。
+
+<a id="ai08-05"></a>
+
+### AI08-05 [P1·原理] 模型生成的按钮可以自动代表用户授权吗？
+
+**回答：** 不可以，模型选择界面不等于用户批准动作。按钮应走正常后端授权、校验与幂等，高影响提案绑定具体对象和参数，UI状态以真实结果为准。
+
+对应讲解：[交互与授权闭环](#k03)。

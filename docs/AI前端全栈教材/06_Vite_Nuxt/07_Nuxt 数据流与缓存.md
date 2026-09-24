@@ -1,37 +1,113 @@
-# 第七章 Nuxt 数据流与缓存
+# 07 Nuxt 数据流、缓存与失效
 
-## 一、本章具体知识点
+Nuxt应用至少涉及服务器取数、payload传递、客户端状态、HTTP/CDN和后端缓存。优化时先找数据在哪一层被复用，再确定谁负责使它变新。
 
-- payload
-- SSR data
-- client hydration
-- server cache
-- browser cache
-- stale data
-- invalidation
-- route rules
-- CDN
+## 一、本章目录
 
-## 二、各知识点详细解释
+- [SSR 到客户端的数据路径](#k01)
+- [缓存层次与 key](#k02)
+- [刷新、清理与写后失效](#k03)
+- [排错与验证](#k04)
+- [知识小结](#summary)
+- [面试题与答案](#interview)
 
-缓存不能只看“有没有 cache”。要区分：
+## 二、知识讲解
+
+<a id="k01"></a>
+
+### 1. SSR 到客户端的数据路径
 
 ```text
-Browser Cache
-CDN Cache
-Server Cache
-Application Cache
-Database Cache
+服务器请求上下文
+  → 页面AsyncData取数
+  → 可传输结果进入payload
+  → HTML与payload交给客户端
+  → 客户端hydrate复用对应key
+  → 后续导航/刷新按策略重新取数
 ```
 
-Nuxt 的 SSR data 还涉及服务端结果如何序列化到页面 payload，再被客户端 hydration 使用。
+payload不是永久服务器缓存，也不应包含秘密。序列化会受框架支持类型限制，服务端与客户端版本、locale和身份应一致，否则可能出现重复请求或不匹配。
 
-## 三、本章面试题与答案
+<a id="k02"></a>
 
-### 题：为什么 Nuxt SSR 页面可能出现双请求？
+### 2. 缓存层次与 key
 
-**答案：**
+| 层次 | 常见作用 | 关键边界 |
+| --- | --- | --- |
+| AsyncData/useState | 应用内状态与初始复用 | key身份、用户切换、响应式选项 |
+| HTTP浏览器缓存 | 资源响应复用 | Cache-Control与验证 |
+| CDN/页面缓存 | 公共响应分发 | 公私隔离、Vary、失效 |
+| Nitro应用缓存 | 服务端计算/响应复用 | key、TTL、平台支持 |
+| Java/Redis等后端缓存 | 领域读取加速 | 数据一致性与权限范围 |
 
-如果 setup 中直接使用 `$fetch` 做初次数据获取，服务器渲染时会执行一次，浏览器 hydration 时又可能执行一次。useFetch/useAsyncData 会配合 Nuxt payload 机制把服务器结果传递给客户端，从而减少这类重复初次请求。([nuxt.com](https://nuxt.com/docs/4.x/getting-started/data-fetching))
+同名“cache”不能相互替代。key应包含真正影响结果的参数、租户和权限范围；复杂权限响应可能更适合不共享缓存。
 
----
+<a id="k03"></a>
+
+### 3. 刷新、清理与写后失效
+
+refresh/execute可重新取相应数据，clear清理当前AsyncData状态；refreshNuxtData、clearNuxtData、clearNuxtState等针对不同Nuxt状态层，不能把clear当作自动删除CDN和Redis缓存。
+
+写入成功后，应使受影响读取失效或按返回权威数据更新；失败、取消和乐观回滚也要定义。退出登录时清除该用户的本地状态，并使服务端会话按协议失效。
+
+SWR式策略允许阶段性旧值时，要告诉使用方数据新鲜度与失败行为，不能把陈旧权限或价格当无条件可接受。
+
+<a id="k04"></a>
+
+### 4. 排错与验证
+
+双请求先检查是否绕过AsyncData、key是否变化、handler是否返回缺失结果、服务端是否禁用、watch是否额外触发。旧数据先定位缓存层，不能只改一个max-age再猜。
+
+测试直达SSR、客户端导航、返回页面、写后刷新、用户切换、缓存过期、下游失败和发布版本切换。缓存正确性与命中率一起衡量，不能为了命中率共享用户数据。
+
+<a id="summary"></a>
+
+## 三、知识小结
+
+数据流说明值怎么到客户端，缓存层说明哪里复用，失效策略说明何时变新。key、身份和版本是贯穿这些层的共同契约。
+
+参考：[Nuxt Data Fetching](https://nuxt.com/docs/4.x/getting-started/data-fetching)。示例按标注环境运行，版本相关能力以目标版本为准。
+
+<a id="interview"></a>
+
+## 四、面试题与答案
+
+<a id="build07-01"></a>
+
+### BUILD07-01 [P0·原理] payload与服务器缓存有什么区别？
+
+**回答：** payload主要把本次SSR获得的可传输数据交给客户端用于接管和复用，不等于跨请求长期缓存。后者需要单独的key、TTL、权限隔离和失效策略。
+
+对应讲解：[SSR 到客户端的数据路径](#k01)。
+
+<a id="build07-02"></a>
+
+### BUILD07-02 [P1·工程取舍] clearNuxtData能让所有缓存立刻失效吗？
+
+**回答：** 不能，它针对相应Nuxt数据状态，不自动清理浏览器HTTP、CDN或后端Redis。需要先确定缓存在哪层，再用对应失效机制。
+
+对应讲解：[刷新、清理与写后失效](#k03)。
+
+<a id="build07-03"></a>
+
+### BUILD07-03 [P1·原理] 相同URL是否可以直接作为所有接口缓存键？
+
+**回答：** 不一定，响应可能还依赖用户、租户、语言和权限。仅URL可能串数据；要定义完整身份或明确不共享缓存。
+
+对应讲解：[缓存层次与 key](#k02)。
+
+<a id="build07-04"></a>
+
+### BUILD07-04 [P1·工程取舍] 写操作后怎样让页面看到正确结果？
+
+**回答：** 采用权威响应更新或失效受影响查询，并处理失败与取消，不是无条件清空全部缓存。还需考虑乐观状态、并发写和服务端一致性。
+
+对应讲解：[刷新、清理与写后失效](#k03)。
+
+<a id="build07-05"></a>
+
+### BUILD07-05 [P1·工程取舍] 发现Nuxt重复请求怎样定位？
+
+**回答：** 检查是否直接在setup用$fetch、key变化、handler缺失结果、server/watch等配置及导航路径。再区分payload复用和HTTP/服务端缓存，不先用全局缓存掩盖重复来源。
+
+对应讲解：[排错与验证](#k04)。

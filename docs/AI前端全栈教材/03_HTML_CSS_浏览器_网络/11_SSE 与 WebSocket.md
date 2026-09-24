@@ -1,46 +1,104 @@
-# 第十一章 SSE 与 WebSocket
+# 11 SSE、WebSocket 与实时通信
 
-## 一、本章具体知识点
+实时通信先按方向、频率、重连和基础设施需求选协议，再设计应用消息。连接存活、消息到达和业务动作成功不是同一件事。
 
-- Polling
-- Long Polling
-- SSE
-- EventSource
-- text/event-stream
-- WebSocket handshake
-- full duplex
-- reconnect
-- heartbeat
+## 一、本章目录
 
-## 二、各知识点详细解释
+- [轮询、长轮询与推送](#k01)
+- [SSE 与 EventSource](#k02)
+- [WebSocket 消息与生命周期](#k03)
+- [顺序、幂等与停止](#k04)
+- [知识小结](#summary)
+- [面试题与答案](#interview)
 
-SSE 基于 HTTP，服务器向客户端持续发送事件流，天然适合服务端单向推送；AI 文本生成就是典型场景。
+## 二、知识讲解
 
-WebSocket 建立后提供双向通信，适合实时协作、双向消息和游戏等场景。
+<a id="k01"></a>
 
-AI 前端常见链路：
+### 1. 轮询、长轮询与推送
+
+短轮询定期请求，简单且容易经过普通HTTP设施，但空转和延迟由间隔决定。长轮询让服务器等待数据或超时后返回，再由客户端重建请求。SSE偏服务端持续单向推送，WebSocket支持建立后的双向消息。
+
+选择不只看“实时”两个字，还要看用户量、消息频率、移动网络、电量、代理超时、认证和恢复要求。偶尔更新的任务状态不一定需要长期连接。
+
+<a id="k02"></a>
+
+### 2. SSE 与 EventSource
+
+SSE以text/event-stream文本流传递字段行，空行结束事件，data可多行，event/id/retry表达事件类型、标识和重连提示，冒号注释常用于心跳。网络chunk不等于SSE事件。
 
 ```text
-Vue
-→ HTTP request
-→ SSE / ReadableStream
-→ parse chunks
-→ reactive state
-→ incremental render
+id: 42
+event: progress
+data: {"percent":50}
+
+
 ```
 
-## 三、本章面试题与答案
+EventSource提供浏览器原生接收与重连等能力，通常以GET请求，不能像fetch任意设置Authorization头或POST体。需要POST/自定义头时可用fetch+ReadableStream，但解析、重连、认证和恢复需应用负责。
 
-### 题：SSE 和 WebSocket 怎么选？
+Last-Event-ID只有与服务端保留/重放协议结合才有恢复意义，不保证任意服务器会自动补齐所有消息。
 
-**答案：**
+<a id="k03"></a>
 
-如果主要是服务器持续向浏览器推送事件，例如 AI 流式回答、日志流，可以优先考虑 SSE；如果客户端和服务端都需要高频双向实时通信，例如实时协作，则 WebSocket 更合适。还要考虑代理、基础设施和断线重连需求。
+### 3. WebSocket 消息与生命周期
 
-### 题：AI Streaming 为什么常用 SSE？
+WebSocket建立握手后传递双向消息，浏览器API包括open/message/error/close事件与send/close等。消息边界与TCP字节块不同，服务器和客户端应定义JSON或二进制协议、事件ID及错误格式。
 
-**答案：**
+send将数据排入发送流程，不证明服务器已处理；bufferedAmount可反映排队量。高频发送需节流、队列上限和背压设计，浏览器经典WebSocket API不提供自动完整背压流接口。
 
-很多 AI 对话场景主要是客户端发送一次请求，服务器持续向客户端推送文本和事件，通信模式与 SSE 很契合；同时它建立在 HTTP 生态上，服务端和浏览器处理比较直接。
+心跳、断线重连、指数退避、订阅恢复和重复消息处理是应用职责。浏览器不能像普通fetch那样任意设置握手头，认证设计需考虑Cookie、短期票据及日志泄露风险。
 
----
+<a id="k04"></a>
+
+### 4. 顺序、幂等与停止
+
+同一活跃连接内的传输顺序不等于跨重连、多个连接或服务端任务的完整业务顺序。用事件序号、消息ID、版本或游标区分重复、缺失与过时结果。
+
+停止UI显示不等于关闭连接或取消服务器生成；取消需沿客户端→网关→服务→底层任务传播。HTTP200或连接正常关闭也不证明任务成功，应有明确done/error等应用结局。
+
+浏览器页面卸载和网络切换都可能发生，长任务应持久化在服务端，重连后查询权威状态而非只依赖客户端内存。
+
+<a id="summary"></a>
+
+## 三、知识小结
+
+协议选型看方向与基础设施，消息协议看边界、身份与结局，可靠性看重连、取消和恢复。SSE不等于EventSource类，WebSocket双向也不等于自动可靠业务。
+
+参考：[MDN HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP)。示例按标注环境运行，版本相关能力以目标版本为准。
+
+<a id="interview"></a>
+
+## 四、面试题与答案
+
+<a id="web11-01"></a>
+
+### WEB11-01 [P0·工程取舍] SSE与WebSocket怎么选？
+
+**回答：** 单向服务端持续推送且适合HTTP链路时可选SSE，高频双向协作适合考虑WebSocket。还要比较认证、代理、重连、消息恢复和资源成本，不只看API简洁。
+
+对应讲解：[轮询、长轮询与推送](#k01)。
+
+<a id="web11-02"></a>
+
+### WEB11-02 [P1·原理] 为什么AI接口有时用fetch流而不是EventSource？
+
+**回答：** 可能需要POST JSON、自定义Authorization头或自定义读取控制，原生EventSource不提供完全相同的请求配置。改用fetch后要自己实现相应解析、恢复和生命周期。
+
+对应讲解：[SSE 与 EventSource](#k02)。
+
+<a id="web11-03"></a>
+
+### WEB11-03 [P1·原理] WebSocket.send成功意味着服务器执行成功吗？
+
+**回答：** 不意味着，它主要把数据交给发送流程。业务成功需要服务器确认或结果事件，队列量、断线和重复执行都要有协议处理。
+
+对应讲解：[WebSocket 消息与生命周期](#k03)。
+
+<a id="web11-04"></a>
+
+### WEB11-04 [P1·工程取舍] 重连后怎样避免重复或漏掉消息？
+
+**回答：** 需要服务端支持的游标/序号和保留重放策略，客户端按稳定消息ID去重并检查缺口。前端Set或自动重连本身不能保证跨刷新和跨端完整恢复。
+
+对应讲解：[顺序、幂等与停止](#k04)。

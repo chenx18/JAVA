@@ -1,53 +1,115 @@
-# 第十章 Vue Compiler、Patch Flag、Block Tree
+# 10 Vue 编译器、Patch Flag 与 Block Tree
 
-## 一、本章具体知识点
+模板在编译时已经暴露静态与动态结构，Vue利用这些信息减少运行时重复判断。理解编译和运行时协作，比孤立记住几个内部标志更有价值。
 
-- Template AST
-- parser
-- transform
-- codegen
-- static hoist
-- patch flag
-- dynamic children
-- block tree
-- runtime compiler cooperation
+## 一、本章目录
 
-## 二、各知识点详细解释
+- [解析、转换与代码生成](#k01)
+- [静态提升与动态标记](#k02)
+- [Block Tree 与动态子节点](#k03)
+- [开发与面试中的使用方式](#k04)
+- [知识小结](#summary)
+- [面试题与答案](#interview)
 
-Vue 不是把模板简单地当字符串执行，而是：
+## 二、知识讲解
+
+<a id="k01"></a>
+
+### 1. 解析、转换与代码生成
 
 ```text
-Template
-→ Parse
-→ AST
-→ Transform
-→ Codegen
-→ Render Function
-→ VNode
+模板文本
+  → 解析AST
+  → 指令/表达式和结构转换
+  → 生成render函数及辅助调用
+  → 执行render产生VNode
+  → runtime patch真实DOM/组件
 ```
 
-Compiler 可以知道某些节点是静态的，并对动态区域做标记。
+编译发生在构建时最常见，某些运行时构建也可包含模板编译器。模板不是直接拿字符串每帧eval；不可信模板也不应作为安全沙箱使用。
 
-### Patch Flag
+v-if/v-for、事件、props和插槽都需要转换，生成结果依编译选项和版本变化，不应把某一次产物字符串当永久公共API。
 
-编译器告诉 runtime：这个节点哪些部分可能变化，例如 class、text、props 等。Runtime 就不用每次对所有属性做完整比较。
+<a id="k02"></a>
 
-### Block Tree
+### 2. 静态提升与动态标记
 
-Block 收集动态子节点，让 runtime 更快速地定位真正可能变化的部分。
+不会变化的结构可以被提升或复用，减少每次渲染创建和比较工作。动态text、class、style或特定props可通过patch flag把需要关注的维度告知runtime。
 
-## 三、本章面试题与答案
+```vue
+<script setup lang="ts">
+const props = defineProps<{ title: string; active: boolean }>()
+</script>
+<template>
+  <section>
+    <h2 class="heading">说明</h2>
+    <p :class="{ active: props.active }">{{ props.title }}</p>
+  </section>
+</template>
+```
 
-### 题：Vue 为什么需要 Compiler？
+编译器能分辨静态标题与动态文本/类，从而生成相应提示。具体标志数值不值得脱离版本硬背，更应能解释如果只有class变化，为什么无需每次全面扫描所有静态属性。
 
-**答案：**
+<a id="k03"></a>
 
-因为模板在编译阶段已经包含大量静态信息，例如哪些节点不会变、哪些属性是动态的。Compiler 可以提前把这些信息编码进 render function，让 Runtime 在更新时只关注真正动态的部分，减少运行时工作。
+### 3. Block Tree 与动态子节点
 
-### 题：Patch Flag 解决什么问题？
+block将相应动态子节点组织起来，使运行时能更直接访问可能变化的部分，减少对大量静态层次的完整遍历。动态分支、列表和组件边界会影响block组织。
 
-**答案：**
+Patch Flag描述节点变化维度，Block Tree帮助组织需要处理的动态节点，两者协作但不是同一件事。手写render函数通常缺少模板编译器同样丰富的静态信息，性能需结合实际代码分析。
 
-Patch Flag 是编译器提供给运行时的动态信息标记。例如某节点只有 class 动态变化，runtime 就可以只检查 class，而不必对所有 props 做完整 diff。
+优化信息也有回退路径，不能根据存在某个flag就推断任何操作都被省略。
 
----
+<a id="k04"></a>
+
+### 4. 开发与面试中的使用方式
+
+理解机制后，可以更合理地保持props稳定、避免每次创建无意义新对象、选择组件边界和识别过大的动态区域。不要为了追求编译优化把模板写成难读结构，先测实际瓶颈。
+
+构建期模板编译与类型检查是不同任务；compile成功不代表props数据合法，也不保证浏览器交互无误。调试源码时锁定Vue版本，区分公开契约、教学模型与内部实现。
+
+面试可用一个静态列表加一处动态文本的例子，解释编译期知道什么、运行时少做什么、仍需做哪些工作。
+
+<a id="summary"></a>
+
+## 三、知识小结
+
+编译器提取结构信息，静态提升减少重复创建，Patch Flag限定变化维度，Block Tree组织动态节点。解释优化依据与边界，比背内部常量更能体现理解。
+
+参考：[Vue Rendering Mechanism](https://vuejs.org/guide/extras/rendering-mechanism.html)。示例按标注环境运行，版本相关能力以目标版本为准。
+
+<a id="interview"></a>
+
+## 四、面试题与答案
+
+<a id="vue10-01"></a>
+
+### VUE10-01 [P0·原理] Vue为什么在模板上做编译优化？
+
+**回答：** 模板在构建时可暴露静态结构和动态绑定，编译器把这些信息编码进render函数，运行时不必重复猜测所有部分是否变化。
+
+对应讲解：[解析、转换与代码生成](#k01)。
+
+<a id="vue10-02"></a>
+
+### VUE10-02 [P1·原理] Patch Flag与Block Tree分别负责什么？
+
+**回答：** 前者标记节点哪些维度动态，后者组织相应动态子节点以减少遍历。两者都依赖编译与运行时协作，不能当作完全相同的优化。
+
+对应讲解：[Block Tree 与动态子节点](#k03)。
+
+<a id="vue10-03"></a>
+
+### VUE10-03 [P1·基础] 静态提升是不是把所有节点永久缓存？
+
+**回答：** 不是，只对符合条件的静态结构采取相应复用，动态状态和分支仍需处理。具体策略随版本和编译上下文变化，不能无条件套到所有节点。
+
+对应讲解：[静态提升与动态标记](#k02)。
+
+<a id="vue10-04"></a>
+
+### VUE10-04 [P1·工程取舍] 是否需要背所有Patch Flag数值？
+
+**回答：** 通常不需要，应该能解释静态/动态信息如何降低工作量，并能在锁定版本时查源码验证。实际优化还需性能数据，而非依赖内部常量名。
+
+对应讲解：[开发与面试中的使用方式](#k04)。

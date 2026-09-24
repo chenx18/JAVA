@@ -1,60 +1,109 @@
-# 第四章 Streaming
+# 04 Streaming、解码与增量处理
 
-## 一、本章具体知识点
+Streaming让应用边收到响应体边处理，但网络块没有业务含义。可靠流程需要把字节、字符、事件、状态和渲染拆成连续而独立的层。
 
-- full response
-- streaming response
-- chunk
-- stream reader
-- TextDecoder
-- buffering
-- parser
-- backpressure
-- abort
-- retry
-- reconnect
+## 一、本章目录
 
-## 二、各知识点详细解释
+- [流式响应与感知延迟](#k01)
+- [UTF-8 分片与解码](#k02)
+- [取消、关闭与结果归属](#k03)
+- [缓冲、背压与视觉刷新](#k04)
+- [知识小结](#summary)
+- [面试题与答案](#interview)
 
-普通请求：
+## 二、知识讲解
 
-```text
-Request
-→ Wait
-→ Full Response
-→ Render
-```
+<a id="k01"></a>
 
-Streaming：
+### 1. 流式响应与感知延迟
+
+HTTP响应体本来可以分段传输，区别在应用是否持续消费，而不是所有“普通HTTP”都必须服务器完全生成后才传。流式UI让用户更早看到部分结果，未必降低模型生成总时长。
 
 ```text
-Request
-→ chunk 1
-→ chunk 2
-→ chunk 3
-→ ...
-→ done
+响应头 → 字节chunk → 解码器 → 协议parser → 领域事件 → 状态更新 → 视觉批处理
 ```
 
-AI UI 通常需要把事件流解析成内部事件模型，再更新 Vue state：
+首数据时间、首可见文本时间和完整结果时间不同；有些事件是工具或控制信息，不应该都追加为可见文字。
 
-```text
-Network Stream
-→ Parser
-→ AI Event
-→ State Machine
-→ Vue State
-→ UI
+<a id="k02"></a>
+
+### 2. UTF-8 分片与解码
+
+```js
+const bytes = new TextEncoder().encode('中😀');
+const decoder = new TextDecoder('utf-8', { fatal: true });
+let text = '';
+for (const byte of bytes) {
+  text += decoder.decode(Uint8Array.of(byte), { stream: true });
+}
+text += decoder.decode();
+console.log(text); // 中😀
 ```
 
-不要每一个网络 chunk 都无脑触发昂贵的全树更新，可以通过 buffer/batch 控制更新频率。
+一个字符可跨多个chunk，复用decoder保留未完成字节。解码后还可能只有半条协议消息，必须继续缓冲；不能对每次read直接JSON.parse。
 
-## 三、本章面试题与答案
+fatal策略、最大残片和非法数据处理应按协议选择。字节数、字符数和token数不是同一限制。
 
-### 题：Streaming 和普通 HTTP Response 有什么区别？
+<a id="k03"></a>
 
-**答案：**
+### 3. 取消、关闭与结果归属
 
-普通响应通常在完整 body 准备后交给应用；Streaming 允许应用边接收边处理，因此用户可以更早看到结果。AI 场景中可以显著改善首 token 到完整回答之间的感知体验，但也增加了解析、取消、断线和状态管理复杂度。
+reader.read返回done表示字节流结束，不等于应用成功。请求signal、reader.cancel、releaseLock和服务器取消各有作用，释放锁不等于撤销远端任务。
 
----
+多个请求并行时，每条增量带requestId/messageId或由运行上下文关联，提交前检查当前版本。旧请求的finally也不能清掉新请求状态。
+
+已生成的部分内容应在取消/中断时有明确保留与标记规则，用户“停止”后不应继续无声追加旧结果。
+
+<a id="k04"></a>
+
+### 4. 缓冲、背压与视觉刷新
+
+接收缓冲设置上限，消费速度过慢时要控制队列或上游生产。仅限制本地数组长度是资源保护，不等于实现端到端背压。
+
+视觉更新可按帧或小批次合并，避免每个token重做完整Markdown解析和大组件树更新。后台rAF可能暂停，因此业务状态、完成和持久化不能等绘制回调才执行。
+
+验收用单字节分片、多事件一块、断流、取消、超大消息和慢消费者，覆盖边界而非只看顺畅打字效果。
+
+<a id="summary"></a>
+
+## 三、知识小结
+
+Streaming改善过程可见性，可靠性来自解码、分帧、归属、结束协议与资源控制。网络块不等于字符、事件或token，渲染节奏也不等于接收节奏。
+
+参考：[JSON Schema](https://json-schema.org/understanding-json-schema/)；[MDN Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)。示例按标注环境运行，版本相关能力以目标版本为准。
+
+<a id="interview"></a>
+
+## 四、面试题与答案
+
+<a id="ai04-01"></a>
+
+### AI04-01 [P0·原理] 为什么一次read不能直接JSON.parse？
+
+**回答：** read得到任意字节块，可能拆在UTF-8字符或事件中间，也可能含多条消息。先增量解码，再按协议组成完整事件，最后解析并校验。
+
+对应讲解：[UTF-8 分片与解码](#k02)。
+
+<a id="ai04-02"></a>
+
+### AI04-02 [P0·基础] 流式能保证总耗时更短吗？
+
+**回答：** 不保证，它主要让用户更早看到可用部分；上游计算和总输出时间可能不变，解析和渲染还有成本。应分别量首数据、首可见和完成时间。
+
+对应讲解：[流式响应与感知延迟](#k01)。
+
+<a id="ai04-03"></a>
+
+### AI04-03 [P1·工程取舍] rAF能作为流式状态更新的唯一入口吗？
+
+**回答：** 不宜，后台页面可能暂停绘制，任务完成和持久化不能依赖它。接收/状态持续推进，rAF只合并视觉刷新，缓冲还需有界。
+
+对应讲解：[缓冲、背压与视觉刷新](#k04)。
+
+<a id="ai04-04"></a>
+
+### AI04-04 [P1·原理] reader done是否表示回答成功？
+
+**回答：** 只表示字节流结束，可能中断。按应用done/error等协议判断结局，并区分取消、超时和解析失败。
+
+对应讲解：[取消、关闭与结果归属](#k03)。

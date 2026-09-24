@@ -1,28 +1,90 @@
-# 第八章 React / Vue 对比
+# 08 React 与 Vue 的迁移认知
 
-## 一、本章具体知识点
+比较框架应围绕状态、更新、复用和副作用，而不是谁一定更快。理解差异后，才能迁移已有经验而不把一种框架的习惯生硬套到另一种。
 
-- Vue fine-grained reactivity
-- React state update
-- Vue compiler
-- React reconciliation
-- effect
-- hooks
-- component model
-- performance model
+## 一、本章目录
 
-## 二、各知识点详细解释
+- [状态读取与更新模型](#k01)
+- [复用与副作用](#k02)
+- [模板、JSX 与编译优化](#k03)
+- [项目选择与可验证迁移](#k04)
+- [知识小结](#summary)
+- [面试题与答案](#interview)
 
-Vue 更依赖运行时响应式依赖追踪和编译器优化：状态属性被组件读取时建立依赖，变化时可以较细粒度地调度更新。Vue 官方也把自己的模型描述为 mutable fine-grained reactivity。([vuejs.org](https://vuejs.org/guide/extras/composition-api-faq))
+## 二、知识讲解
 
-React 更强调 state update → render → reconciliation 的模型，每次 render 产生新的 UI 描述。
+<a id="k01"></a>
 
-这不代表“Vue 一定更快”或“React 一定更快”，真正性能取决于应用结构、更新频率、DOM 数量、编译优化和具体运行场景。
+### 1. 状态读取与更新模型
 
-## 三、本章面试题与答案
+Vue常通过ref/Proxy读取建立依赖，写入使相关计算失效或调度；React以state更新驱动新的render快照并协调提交。两者都有批处理、编译/运行时优化和组件边界，不能把Vue简单称为“只更新一个DOM”、React称为“每次重建所有DOM”。
 
-### 题：Vue 和 React 最大的思想差异？
+Vue脚本中的ref.value可观察当前容器值，React某次render闭包中的state是当次快照。迁移时先确定闭包读的是哪一份环境，不能把.value与setState完全类比。
 
-**答案：**
+<a id="k02"></a>
 
-可以从更新模型理解：Vue 以响应式依赖追踪为核心，组件内部访问哪些 reactive state 会形成依赖；React 以 state update 驱动 render/reconciliation，每次 render 可以理解为当前状态快照的 UI 计算。两者都可以通过编译器、调度和手工优化改善性能，因此不能简单用“谁更快”概括。
+### 2. 复用与副作用
+
+Vue composable常在setup调用并利用响应式来源、watcher与作用域清理；React自定义Hook遵守调用规则，通过state/effect/ref等能力组织逻辑。名字都叫useX不代表调用和依赖规则相同。
+
+Vue watchEffect自动收集同步读取，React Effect依赖数组声明同步关系；两者都需要取消旧请求、保护提交归属和清理资源。派生值在Vue常用computed，在React可直接render计算或按需useMemo，不应都额外Effect同步。
+
+<a id="k03"></a>
+
+### 3. 模板、JSX 与编译优化
+
+Vue模板编译可利用静态结构、Patch Flag与Block Tree，React JSX是JS表达式生成元素描述，React Compiler在采用相应工具链时也可提供优化。两者都能使用不同渲染表达方式，工具链配置影响最终能力。
+
+列表稳定key、组件身份和不可变/可变数据契约都重要。Vue允许通过代理直接修改状态，不意味着无数据所有权；React强调新引用，也不意味着每次必须深复制全部数据。
+
+<a id="k04"></a>
+
+### 4. 项目选择与可验证迁移
+
+团队经验、产品类型、现有生态、SSR/RSC/移动端需求、维护成本和招聘环境共同影响选择。性能按相同业务、设备和数据量测试，不靠框架口号决定。
+
+迁移一个模块时先列公共契约、状态来源、请求生命周期、路由与错误边界，再做等价测试。跨框架能力的证据是能解释和处理不同模型下的真实问题，不是把同一段API名称换写一遍。
+
+<a id="summary"></a>
+
+## 三、知识小结
+
+跨框架迁移看状态快照、依赖机制、组件身份、副作用与工具链。保持业务契约和验证方法一致，让框架差异成为实现选择而不是误用来源。
+
+参考：[Vue Composition API FAQ](https://vuejs.org/guide/extras/composition-api-faq.html)；[React Learn](https://react.dev/learn)。示例按标注环境运行，版本相关能力以目标版本为准。
+
+<a id="interview"></a>
+
+## 四、面试题与答案
+
+<a id="react08-01"></a>
+
+### REACT08-01 [P0·原理] Vue与React更新模型怎样比较？
+
+**回答：** Vue以响应式读取关系定位相关计算，React通过状态更新产生新render快照再协调提交；两者都可批处理和优化，不能简化为局部更新对全量DOM重建。
+
+对应讲解：[状态读取与更新模型](#k01)。
+
+<a id="react08-02"></a>
+
+### REACT08-02 [P1·原理] watchEffect与useEffect有什么关键区别？
+
+**回答：** 前者自动追踪同步读取，后者通过依赖数组表达何时重新同步。两者的调用规则不同，但副作用清理、取消和请求归属问题都必须处理。
+
+对应讲解：[复用与副作用](#k02)。
+
+<a id="react08-03"></a>
+
+### REACT08-03 [P1·工程取舍] Vue一定比React快吗？
+
+**回答：** 没有普遍结论，更新范围、数据结构、DOM数量、编译优化和设备场景都会影响。应在相同业务条件下测量，不用某个微基准替代项目性能。
+
+对应讲解：[模板、JSX 与编译优化](#k03)。
+
+<a id="react08-04"></a>
+
+### REACT08-04 [P1·工程取舍] 怎样证明自己具备跨框架能力？
+
+**回答：** 能把状态、组件契约和副作用映射到目标框架，解释其模型差异，完成等价交互和异常路径测试，并说明工具链与性能取舍。只熟悉语法名称不足以证明。
+
+对应讲解：[项目选择与可验证迁移](#k04)。

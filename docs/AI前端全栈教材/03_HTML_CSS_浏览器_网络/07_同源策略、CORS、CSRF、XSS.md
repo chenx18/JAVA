@@ -1,46 +1,110 @@
-# 第七章 同源策略、CORS、CSRF、XSS
+# 07 同源策略、CORS、CSRF 与 XSS
 
-## 一、本章具体知识点
+浏览器安全需要区分谁在执行代码、请求是否可以发送、响应能否被脚本读取，以及服务器是否允许这个用户操作。CORS、CSRF和XSS分别覆盖不同边界。
 
-- Origin
-- Same-Origin Policy
-- CORS
-- preflight
-- Access-Control-Allow-Origin
-- credentials
-- CSRF
-- SameSite
-- XSS
-- CSP
-- Trusted Types
+## 一、本章目录
 
-## 二、各知识点详细解释
+- [Origin、同源与跨站](#k01)
+- [CORS 与预检](#k02)
+- [CSRF：自动附带凭据的风险](#k03)
+- [XSS：输出上下文与执行能力](#k04)
+- [知识小结](#summary)
+- [面试题与答案](#interview)
 
-Origin 通常由 scheme、host、port 构成。同源策略限制一个 origin 的脚本访问另一个 origin 的受保护资源。
+## 二、知识讲解
 
-CORS 是服务器通过 HTTP 响应头授予其他 origin 访问权限的一套机制，不是“浏览器关闭跨域”。预检通常使用 OPTIONS，询问实际请求是否被允许。
+<a id="k01"></a>
 
-CSRF 利用的是浏览器会自动带上某些认证凭据的特点；XSS 则是攻击代码进入页面并在受害者上下文中执行。
+### 1. Origin、同源与跨站
 
-防护：
+origin通常由scheme、host、port构成，同源策略限制脚本跨源读取受保护内容及访问某些文档对象。跨源资源加载、请求发送与读取响应不是同一个动作；页面能发出请求，不代表能读取结果。
 
-```text
-XSS → 输出编码 / Sanitization / CSP / Trusted Types
-CSRF → SameSite / CSRF Token / Origin 校验
+site通常涉及方案和可注册域等概念，不等于origin。因此同站不同源的子域场景，需要分别考虑Cookie/SameSite与CORS/同源规则。file、sandbox iframe等还可能形成特殊或不透明origin。
+
+<a id="k02"></a>
+
+### 2. CORS 与预检
+
+浏览器对满足条件的跨源请求可能先发OPTIONS预检，询问方法、头等是否允许；实际响应还需要相应允许头。服务端应基于明确白名单返回允许origin，动态按origin变化时考虑Vary: Origin防止缓存串用。
+
+```http
+Access-Control-Allow-Origin: https://app.example.com
+Access-Control-Allow-Credentials: true
+Vary: Origin
 ```
 
-## 三、本章面试题与答案
+带凭据的读取不能用Access-Control-Allow-Origin:*替代精确origin。客户端credentials设置、Cookie策略和服务端允许头共同影响结果。预检通过不代表用户被授权，非浏览器客户端也不受同一浏览器读取限制。
 
-### 题：CORS 是怎么工作的？
+mode:no-cors不是“解决跨域”，它限制请求并产生opaque响应，业务脚本不能正常读取响应体。开发代理改变请求来源路径，生产仍需明确实际部署和信任边界。
 
-**答案：**
+<a id="k03"></a>
 
-浏览器检测到跨源请求后，根据请求类型判断是否需要预检；服务器通过 Access-Control-Allow-* 等响应头声明允许的 origin、method、headers 和 credentials。浏览器根据这些响应头决定是否把响应暴露给前端脚本。CORS 主要是浏览器侧的跨源访问控制机制。
+### 3. CSRF：自动附带凭据的风险
 
-### 题：XSS 和 CSRF 的区别？
+CSRF利用用户浏览器会自动附带某些认证凭据，使攻击者诱导用户向目标站点发起操作。即使攻击者读不到响应，写操作仍可能产生副作用，因此CORS不等于CSRF防护。
 
-**答案：**
+防护通常组合SameSite、服务端CSRF token、Origin/Referer校验和合理方法语义。GET不应承担有副作用的业务写入；敏感操作还需服务端授权及适当的重新确认或认证。
 
-XSS 的核心是攻击脚本在受害页面上下文中执行；CSRF 的核心是攻击者诱导浏览器向目标站点发起用户凭据自动附带的请求。两者的攻击路径和防护重点不同。
+仅在前端加一个任意头并不自动完成保护，服务端必须正确验证，并考虑简单请求、同站子域与接口兼容路径。
 
----
+<a id="k04"></a>
+
+### 4. XSS：输出上下文与执行能力
+
+XSS的核心是攻击内容进入受信任页面的可执行上下文，可来自持久化数据、反射输入或DOM处理。防护按输出位置区分HTML文本、属性、URL、脚本等上下文，不能用一个replace函数清洗所有输入。
+
+纯文本使用textContent；需要富文本时采用可信清洗与允许列表。避免将外部文本交给eval、new Function或不受控模板编译。CSP可限制脚本来源等能力，Trusted Types可约束特定DOM注入入口，但都不是数据校验和授权的替代。
+
+前端路由按钮隐藏只影响UI，攻击者仍可直接调用后端；服务端逐请求检查身份、资源归属和操作权限。
+
+<a id="summary"></a>
+
+## 三、知识小结
+
+同源/CORS管脚本跨源访问，CSRF关注凭据自动附带下的诱导请求，XSS关注不可信代码在页面执行。先定位边界再选防护，服务器授权始终独立存在。
+
+参考：[MDN CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS)；[OWASP Cheat Sheets](https://cheatsheetseries.owasp.org/)。示例按标注环境运行，版本相关能力以目标版本为准。
+
+<a id="interview"></a>
+
+## 四、面试题与答案
+
+<a id="web07-01"></a>
+
+### WEB07-01 [P0·原理] CORS到底限制请求发送还是响应读取？
+
+**回答：** 主要是浏览器对跨源脚本访问的控制，某些请求需预检通过后才发送实际请求，但简单请求可能已发出而响应不可读。不能据控制台跨域错误断定服务器完全没执行。
+
+对应讲解：[CORS 与预检](#k02)。
+
+<a id="web07-02"></a>
+
+### WEB07-02 [P0·原理] 为什么CORS不能代替CSRF防护？
+
+**回答：** 攻击者可能不需要读响应，只要浏览器带用户凭据执行了写操作即可。应在服务器验证CSRF相关条件和授权，避免把读取限制误当副作用防线。
+
+对应讲解：[CSRF：自动附带凭据的风险](#k03)。
+
+<a id="web07-03"></a>
+
+### WEB07-03 [P0·基础] XSS与CSRF的区别是什么？
+
+**回答：** XSS让攻击代码在受害页面上下文执行，CSRF诱导带自动凭据的请求。前者重点处理输出、脚本与注入入口，后者重点处理请求来源、token和Cookie策略，二者也可能组合。
+
+对应讲解：[XSS：输出上下文与执行能力](#k04)。
+
+<a id="web07-04"></a>
+
+### WEB07-04 [P1·工程取舍] no-cors或开发代理能修复所有跨域问题吗？
+
+**回答：** 不能。no-cors会带来受限opaque响应，无法当普通接口读取；开发代理只改变开发链路。生产需设计真实origin、凭据、允许策略与服务器授权。
+
+对应讲解：[CORS 与预检](#k02)。
+
+<a id="web07-05"></a>
+
+### WEB07-05 [P1·原理] 同源与同站为什么不能混为一谈？
+
+**回答：** origin通常看scheme、host、port，site采用另一套包含可注册域等的规则。子域或端口变化可能跨源但仍同站，CORS和SameSite因此处理不同边界，不能用一套判断推断全部安全行为。
+
+对应讲解：[Origin、同源与跨站](#k01)。
