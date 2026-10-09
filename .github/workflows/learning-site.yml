@@ -1,0 +1,54 @@
+name: Publish learning site
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: learning-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: learning-site/package-lock.json
+      - name: Set site base path
+        env:
+          REPO_NAME: ${{ github.event.repository.name }}
+          CUSTOM_BASE: ${{ vars.SITE_BASE }}
+        run: |
+          if [ -n "$CUSTOM_BASE" ]; then
+            echo "SITE_BASE=$CUSTOM_BASE" >> "$GITHUB_ENV"
+          elif [[ "$REPO_NAME" == *.github.io ]]; then
+            echo "SITE_BASE=/" >> "$GITHUB_ENV"
+          else
+            echo "SITE_BASE=/$REPO_NAME/" >> "$GITHUB_ENV"
+          fi
+      - run: npm ci
+        working-directory: learning-site
+      - run: npm run build && npm run check
+        working-directory: learning-site
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: learning-site/.vitepress/dist
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

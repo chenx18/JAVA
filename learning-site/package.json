@@ -1,0 +1,20 @@
+{
+  "name": "frontend-learning-site",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "vitepress dev --host 127.0.0.1 --port 5173 --strictPort",
+    "build": "vitepress build",
+    "preview": "vitepress preview --host 127.0.0.1 --port 4173 --strictPort",
+    "check": "node scripts/check-site.mjs"
+  },
+  "devDependencies": {
+    "parse5": "8.0.0",
+    "vitepress": "1.6.4",
+    "vue": "3.5.43"
+  }
+}
