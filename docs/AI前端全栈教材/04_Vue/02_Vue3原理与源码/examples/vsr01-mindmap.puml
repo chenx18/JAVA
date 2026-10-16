@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 响应式系统总览
+**[#EDE7F6] 感知与关联
+*** Proxy与ref感知读写
+*** 数据关联使用者
+*** 读取过程建立依赖
+**[#E3F2FD] 安排更新
+*** 状态同步发生变化
+*** 任务可合并同步修改
+*** render与patch连接界面
+**[#E0F2F1] 阅读源码
+*** reactivity管理依赖
+*** runtime管理组件与宿主
+*** Dep与Link保存关联
+**[#FFF3E0] 注意
+*** Proxy不自行决定组件更新
+*** 不同订阅执行时机不同
+*** 教学Set图不是完整实现
+
+@endmindmap

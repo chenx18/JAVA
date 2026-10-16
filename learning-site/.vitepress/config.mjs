@@ -35,7 +35,8 @@ export default defineConfig({
         md.renderer.rules[type] = (tokens, index, options, env, self) => {
           const html = tokens[index].content;
           const allowed = /^(?:<a id="[\w-]+"><\/a>|<a id="[\w-]+">|<\/a>|<div v-pre>|<\/div>|<KnowledgeHome\s*\/>|<!--[^]*?-->|&ZeroWidthSpace;)\s*$/.test(html);
-          return allowed ? original(tokens, index, options, env, self) : md.utils.escapeHtml(html);
+          const sourceDetails = /^(?:<details>(?:\s*<summary>PlantUML 源码<\/summary>)?|<summary>PlantUML 源码<\/summary>|<\/details>)\s*$/.test(html);
+          return allowed || sourceDetails ? original(tokens, index, options, env, self) : md.utils.escapeHtml(html);
         };
       }
       const renderLink = md.renderer.rules.link_open;

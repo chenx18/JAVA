@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* Scheduler与nextTick
+**[#EDE7F6] 任务入队
+*** 稳定job身份用于去重
+*** id和标志安排顺序
+*** 失效任务需要跳过
+**[#E3F2FD] 刷新与等待
+*** Promise安排flushJobs
+*** nextTick等待当前刷新
+*** 异常后恢复队列状态
+**[#E0F2F1] 回调时机
+*** pre在所属组件更新前
+*** post在渲染后处理
+*** sync可能增加重入成本
+**[#FFF3E0] 注意
+*** DOM更新不同于屏幕绘制
+*** 没有更新不等待未来请求
+*** 循环写回不能靠nextTick修复
+
+@endmindmap

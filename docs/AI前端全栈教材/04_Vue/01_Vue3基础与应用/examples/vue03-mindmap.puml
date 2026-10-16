@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 模板语法与指令
+**[#EDE7F6] 显示与绑定
+*** 插值显示转义文本
+*** v-bind绑定属性
+*** class与style接受对象
+**[#E3F2FD] 条件与列表
+*** v-if创建和卸载
+*** v-show保留节点
+*** v-for按数据渲染
+**[#E0F2F1] 身份与更新
+*** key代表稳定身份
+*** 先过滤再渲染列表
+*** 按需使用once和memo
+**[#FFF3E0] 注意
+*** Vue3同元素if优先于for
+*** 随机key导致重建
+*** v-html不接收不可信内容
+
+@endmindmap

@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* ref与依赖追踪
+**[#EDE7F6] 容器入口
+*** value提供稳定访问点
+*** raw值用于比较
+*** Dep记录容器订阅
+**[#E3F2FD] 转换与通知
+*** 对象值按规则转换
+*** shallowRef保留内部值
+*** triggerRef显式通知
+**[#E0F2F1] 关联与定制
+*** toRef连接目标属性
+*** 模板按特定规则解包
+*** customRef控制track与trigger
+**[#FFF3E0] 注意
+*** 另存旧对象不跟随替换
+*** 数组集合解包规则不同
+*** 防抖定时器仍需清理
+
+@endmindmap

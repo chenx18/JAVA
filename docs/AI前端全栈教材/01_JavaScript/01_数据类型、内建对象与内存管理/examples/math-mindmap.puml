@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* Math
+**[#EDE7F6] 基本属性
+*** 静态内建对象，不能 new
+*** 常量：PI / E / SQRT2 等
+*** 主要处理 Number，返回结果而不修改值
+**[#E3F2FD] API
+*** 取整：floor / ceil / trunc / round
+*** 符号与极值：abs / sign / min / max
+*** 幂根对数：pow / sqrt / cbrt / hypot / log
+*** 角度：sin / cos / tan / atan2
+*** 随机：random 配合 floor
+**[#E0F2F1] 注意
+*** 负数取整方向不同；round 中点偏正无穷
+*** 位运算按 32 位规则，不是通用截断
+*** 巨大数组展开可能超出参数限制
+*** 三角函数使用弧度；浮点计算可能有误差
+*** random 不适合 token 等安全凭证
+
+@endmindmap

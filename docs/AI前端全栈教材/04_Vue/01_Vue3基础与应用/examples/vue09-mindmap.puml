@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 生命周期、模板引用与DOM更新
+**[#EDE7F6] 生命周期
+*** setup同步注册钩子
+*** 挂载后操作DOM
+*** 区分更新与卸载
+**[#E3F2FD] 引用与等待
+*** useTemplateRef关联节点
+*** 条件变化后等待nextTick
+*** 模板引用可能为空
+**[#E0F2F1] 管理副作用
+*** 取消监听与定时器
+*** 缓存停用不等于卸载
+*** 捕获后代错误并替换界面
+**[#FFF3E0] 注意
+*** nextTick不保证屏幕已绘制
+*** SSR没有浏览器DOM
+*** 异步创建资源明确归属
+
+@endmindmap

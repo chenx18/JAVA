@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* computed与watch
+**[#EDE7F6] 派生值
+*** computed订阅源Dep
+*** 自身Dep关联消费者
+*** 读取时确认缓存值
+**[#E3F2FD] 缓存判断
+*** 全局版本快速检查
+*** 依赖版本判断失效
+*** 结果变化推进版本
+**[#E0F2F1] 侦听任务
+*** source归一为getter
+*** job比较并调用回调
+*** 组件层补充调度时机
+**[#FFF3E0] 注意
+*** deep不是深复制快照
+*** computed不负责网络副作用
+*** await前登记清理和归属
+
+@endmindmap

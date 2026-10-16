@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* watch与watchEffect
+**[#EDE7F6] 声明监听来源
+*** watch 显式来源与新旧值
+*** getter 保留属性关系
+*** watchEffect 自动同步追踪
+**[#E3F2FD] 控制执行规则
+*** immediate 与 once
+*** deep 和数组深度
+*** pre post sync 时机
+**[#E0F2F1] 清理与停止
+*** onCleanup 清理旧工作
+*** onWatcherCleanup 同步注册
+*** stop pause resume
+**[#FFF3E0] 注意
+*** 深监听不保存历史副本
+*** await 后读取不自动收集
+*** 取消与结果归属都要处理
+
+@endmindmap

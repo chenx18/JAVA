@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vue 3 从创建到卸载</title>
+  <style>
+    body { max-width: 920px; margin: 32px auto; padding: 0 20px; font: 16px/1.65 system-ui, sans-serif; color: #243447; }
+    h1 { font-size: 25px; }
+    nav { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0; }
+    button { font: inherit; padding: 6px 12px; cursor: pointer; }
+    button:disabled { cursor: default; }
+    #app { border: 1px solid #cbd5e1; border-radius: 8px; min-height: 72px; padding: 16px; }
+    pre { border-radius: 8px; background: #f1f5f9; padding: 16px; overflow: auto; white-space: pre-wrap; }
+    .hint { color: #526477; }
+  </style>
+  <script type="importmap">
+    { "imports": { "vue": "https://cdn.jsdelivr.net/npm/vue@3.5.43/dist/vue.esm-browser.js" } }
+  </script>
+</head>
+<body>
+  <h1>Vue 3：创建、挂载、更新、卸载</h1>
+  <p>先创建应用，再逐步执行。日志展示普通同步组件在 Vue 3.5.43 中的调用顺序。</p>
+  <p class="hint">请通过 HTTP 服务打开。Vue 从固定版本 CDN 加载；也可在本地 Vue 3.5.43 项目中导入旁边的 runtime-mainline.mjs。</p>
+  <nav aria-label="执行步骤">
+    <button id="create" type="button" disabled>创建应用</button>
+    <button id="mount" type="button" disabled>挂载</button>
+    <button id="batch" type="button" disabled>同步增加三次</button>
+    <button id="dispose" type="button" disabled>卸载</button>
+    <button id="queued-dispose" type="button" disabled>修改后立即卸载</button>
+    <button id="clear" type="button">清空日志</button>
+  </nav>
+  <div id="app"></div>
+  <p id="status" role="status">正在加载示例依赖……</p>
+  <pre id="log" aria-label="执行日志"></pre>
+  <script type="module">
+    const status = document.getElementById('status');
+    const output = document.getElementById('log');
+    const host = document.getElementById('app');
+    const controls = Object.fromEntries(['create', 'mount', 'batch', 'dispose', 'queued-dispose', 'clear'].map(id => [id, document.getElementById(id)]));
+    const record = value => { output.textContent += value + '\n'; };
+    controls.clear.onclick = () => { output.textContent = ''; };
+    try {
+      const [{ nextTick }, { createMainlineApp }] = await Promise.all([import('vue'), import('./runtime-mainline.mjs')]);
+      let demo;
+      function setStage(stage) {
+        controls.create.disabled = !['empty', 'disposed'].includes(stage);
+        controls.mount.disabled = stage !== 'created';
+        for (const id of ['batch', 'dispose', 'queued-dispose']) controls[id].disabled = stage !== 'mounted';
+      }
+      controls.create.onclick = () => {
+        record('--- 创建应用 ---');
+        demo = createMainlineApp(record);
+        record(`创建后 count：${String(demo.readCount())}`);
+        status.textContent = '已创建应用，还没有执行组件 setup。';
+        setStage('created');
+      };
+      controls.mount.onclick = () => {
+        record('--- 挂载 ---');
+        const instance = demo.app.mount(host);
+        record(`mount 返回应用对象：${instance === demo.app}`);
+        record('app.mount() 已返回');
+        status.textContent = '已挂载。可以点击组件按钮，或连续增加三次。';
+        setStage('mounted');
+      };
+      controls.batch.onclick = async () => {
+        const current = demo;
+        record('--- 同步增加三次 ---');
+        current.increment(); current.increment(); current.increment();
+        record(`同步结束 count：${current.readCount()}；DOM：${host.querySelector('[data-count]').textContent}`);
+        await nextTick();
+        record(`nextTick 后 DOM：${host.textContent}`);
+      };
+      function dispose(withPendingUpdate) {
+        const current = demo;
+        record(withPendingUpdate ? '--- 修改后立即卸载 ---' : '--- 卸载 ---');
+        if (withPendingUpdate) current.increment();
+        current.app.unmount();
+        record(`卸载后容器为空：${host.childNodes.length === 0}`);
+        status.textContent = '已卸载。再次实验请创建新的应用实例。';
+        setStage('disposed');
+        if (withPendingUpdate) nextTick(() => record(`待执行批次结束，容器仍为空：${host.childNodes.length === 0}`));
+      }
+      controls.dispose.onclick = () => dispose(false);
+      controls['queued-dispose'].onclick = () => dispose(true);
+      setStage('empty');
+      status.textContent = '依赖已加载，请从“创建应用”开始。';
+    } catch (error) {
+      status.textContent = '依赖未加载成功，请检查网络与 HTTP 服务，或使用本地 Vue 项目运行。';
+      record(error instanceof Error ? error.message : String(error));
+    }
+  </script>
+</body>
+</html>

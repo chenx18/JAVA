@@ -1,0 +1,30 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 事件循环与调度
+**[#EDE7F6] 线程与执行
+*** 进程承载资源，线程执行代码
+*** 页面主线程一次执行一段JS
+*** 调用栈记录尚未结束的调用
+*** 队列保存等待调度的工作
+**[#E3F2FD] 任务与微任务
+*** 任务也常称宏任务
+*** Promise结果处理是微任务
+*** await先求值，再等待恢复
+*** queueMicrotask追加队列
+**[#E0F2F1] 推导顺序
+*** 先确认状态和实际入队
+*** 一个任务后检查微任务
+*** 新增微任务排到队尾
+*** 渲染更新需满足条件
+**[#FFF3E0] 注意
+*** pending不安排结果处理器
+*** rAF属于渲染更新流程
+*** 同步派发事件不是新任务
+*** Node阶段不等于循环轮数
+
+@endmindmap

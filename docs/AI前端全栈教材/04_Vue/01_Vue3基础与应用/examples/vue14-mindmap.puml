@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 自定义指令与插件
+**[#EDE7F6] 指令用法
+*** v-focus聚焦元素
+*** binding读取值和参数
+*** 函数形式处理挂载与更新
+**[#E3F2FD] 元素生命周期
+*** mounted创建资源
+*** updated同步新值
+*** unmounted断开观察器
+**[#E0F2F1] 插件安装
+*** app.use执行安装
+*** app.directive注册指令
+*** app.provide提供类型化服务
+**[#FFF3E0] 注意
+*** 组件承载界面与交互
+*** 指令资源按元素管理
+*** SSR隔离应用状态
+
+@endmindmap

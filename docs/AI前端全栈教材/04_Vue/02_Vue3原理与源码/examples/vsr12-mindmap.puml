@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 生命周期与KeepAlive
+**[#EDE7F6] 登记钩子
+*** currentInstance确定归属
+*** 包装错误处理与追踪恢复
+*** 运行时消费实例钩子
+**[#E3F2FD] 保留实例
+*** cache保存复用关系
+*** 停用时移动子树
+*** 激活时恢复并更新输入
+**[#E0F2F1] 管理缓存
+*** keys维护访问顺序
+*** max限制缓存容量
+*** 验证激活停用与淘汰
+**[#FFF3E0] 注意
+*** 异步后代不套用同步顺序
+*** 停用不停止全部watcher
+*** 权限和登录变化要失效缓存
+
+@endmindmap

@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* PatchFlag与BlockTree
+**[#EDE7F6] 标记职责
+*** shapeFlag描述节点类别
+*** patchFlag提示变化维度
+*** dynamicProps记录动态键
+**[#E3F2FD] 动态结构
+*** openBlock维护当前块
+*** dynamicChildren收集动态节点
+*** 稳定结构减少遍历
+**[#E0F2F1] 复用与回退
+*** 静态缓存减少重复创建
+*** 结构变化使用对应策略
+*** BAIL回退通用比较
+**[#FFF3E0] 注意
+*** 特殊负值不随意按位组合
+*** memo漏依赖会显示旧内容
+*** 框架省比较不等于浏览器无成本
+
+@endmindmap

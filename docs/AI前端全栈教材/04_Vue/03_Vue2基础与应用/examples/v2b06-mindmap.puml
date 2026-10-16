@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 自定义指令、过滤器与插件
+**[#EDE7F6] 自定义指令
+*** 封装底层DOM行为
+*** 区分插入与更新钩子
+*** 解绑时清理外部资源
+**[#E3F2FD] 模板过滤器
+*** 只处理展示结果
+*** 参数按顺序传入
+*** Vue3迁移为函数
+**[#E0F2F1] 插件安装
+*** Vue.use执行install
+*** 传入Vue与配置
+*** 注册公共能力
+**[#FFF3E0] 注意
+*** 业务界面优先用组件
+*** 避免全局命名冲突
+*** 缓存失活不等于解绑
+
+@endmindmap

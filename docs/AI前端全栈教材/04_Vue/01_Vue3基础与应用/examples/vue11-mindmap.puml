@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 插槽、attrs与组件公开接口
+**[#EDE7F6] 定制内容
+*** 默认插槽提供出口
+*** 具名插槽划分区域
+*** slot props传递子级数据
+**[#E3F2FD] 属性透传
+*** 未声明属性进入attrs
+*** 单根通常自动继承
+*** 关闭继承后明确落点
+**[#E0F2F1] 公开接口
+*** 模板引用取得公开实例
+*** defineExpose提供有限方法
+*** focus适合命令式调用
+**[#FFF3E0] 注意
+*** 插槽按声明方作用域读取
+*** attrs不是watch数据源
+*** 避免公开全部内部状态
+
+@endmindmap

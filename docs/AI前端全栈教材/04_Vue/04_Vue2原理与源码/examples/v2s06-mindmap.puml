@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 模板编译与渲染函数
+**[#EDE7F6] 编译过程
+*** parse组织模板AST
+*** optimize标记静态子树
+*** generate生成渲染代码
+**[#E3F2FD] 运行过程
+*** 执行render读取状态
+*** 当前状态生成VNode
+*** patch更新真实DOM
+**[#E0F2F1] 构建选择
+*** 工程模板通常预编译
+*** runtime执行已有render
+*** 完整构建可编译字符串
+**[#FFF3E0] 注意
+*** AST不是VNode或DOM
+*** 普通更新不重新编译
+*** v-model包含事件回写
+
+@endmindmap

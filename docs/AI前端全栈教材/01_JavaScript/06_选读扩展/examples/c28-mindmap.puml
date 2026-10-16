@@ -1,0 +1,30 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 流式响应与 SSE
+**[#EDE7F6] 数据边界
+*** chunk 不等于消息
+*** TextDecoder 增量解码
+*** 空行派发事件
+*** LF、CRLF 与 CR
+**[#E3F2FD] 消费方式
+*** 原生 EventSource
+*** Fetch 与 reader
+*** data 分帧教学子集
+*** JSON 与字段检查
+**[#E0F2F1] 生命周期
+*** HTTP、EOF 与 done
+*** 取消与释放 reader
+*** 每条增量检查版本
+*** 请求与服务端幂等
+**[#FFF3E0] 注意
+*** 子集不含重连恢复
+*** UTF-8 尾部刷新
+*** 限制未完成缓冲
+*** rAF 不等于背压
+
+@endmindmap

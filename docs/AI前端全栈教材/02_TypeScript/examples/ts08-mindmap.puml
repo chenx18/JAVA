@@ -1,0 +1,27 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 类、接口实现与枚举
+**[#EDE7F6] 类的用法
+*** 成员类型与初始化
+*** 参数属性
+*** readonly约束
+**[#E3F2FD] 接口与继承
+*** implements检查
+*** extends复用
+*** 抽象类
+**[#E0F2F1] 成员与枚举
+*** static接收者
+*** private与井号私有
+*** 数字与字符串枚举
+**[#FFF3E0] 注意
+*** 接口不生成方法
+*** 静态不属实例
+*** 类型限制非权限
+*** enum可能生成代码
+
+@endmindmap

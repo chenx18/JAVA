@@ -1,0 +1,27 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 联合、交叉与类型收窄
+**[#EDE7F6] 类型组合
+*** 联合列出可能
+*** 交叉同时满足
+*** 冲突属性never
+**[#E3F2FD] 真实判断
+*** typeof与空值
+*** in与字段类型
+*** 判别字段
+**[#E0F2F1] 深入检查
+*** 类型谓词
+*** 断言函数
+*** 穷尽分支
+**[#FFF3E0] 注意
+*** 真值可能误伤
+*** 不执行对象合并
+*** 谓词需要验证
+*** 外部数据另校验
+
+@endmindmap

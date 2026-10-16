@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 动态组件与KeepAlive
+**[#EDE7F6] 动态组件
+*** is选择组件
+*** key表达实例身份
+*** 普通切换可能卸载
+**[#E3F2FD] 缓存设置
+*** include按名称匹配
+*** exclude排除缓存
+*** max限制缓存数量
+**[#E0F2F1] 激活与停用
+*** 激活恢复活动资源
+*** 停用暂停计时与请求
+*** 淘汰时真正卸载
+**[#FFF3E0] 注意
+*** 停用不等于卸载
+*** 组件缓存不保证数据新鲜
+*** 退出登录处理旧缓存
+
+@endmindmap

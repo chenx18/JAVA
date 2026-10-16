@@ -1,0 +1,32 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* Object
+**[#EDE7F6] 基本属性
+*** 属性键：字符串或 Symbol
+*** 区分自有、继承与可枚举
+*** 赋值共享对象，不自动复制
+**[#E3F2FD] 常用 API
+*** 创建：字面量 / create / Object
+*** 存在：hasOwn / in
+*** 枚举：keys / values / entries / ownKeys
+*** 合并：assign / 展开
+*** 转换分组：fromEntries / groupBy
+*** 比较：Object.is
+**[#E0F2F1] 属性与原型
+*** 定义：defineProperty / defineProperties
+*** 描述符：getOwnPropertyDescriptor(s)
+*** 原型：getPrototypeOf / setPrototypeOf
+*** 限制：preventExtensions / seal / freeze
+**[#FFF3E0] 注意
+*** 属性值 undefined 不等于不存在
+*** assign 改目标，嵌套仍共享
+*** 新建描述符省略标志默认 false
+*** freeze 不递归；const 限制绑定
+*** 外部数据合并先限制字段
+
+@endmindmap

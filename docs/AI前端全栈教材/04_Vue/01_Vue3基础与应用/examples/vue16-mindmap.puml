@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* Teleport与Transition
+**[#EDE7F6] 传送内容
+*** to指定目标容器
+*** disabled保持原位置
+*** defer延后同轮解析
+**[#E3F2FD] 单节点过渡
+*** name指定类名前缀
+*** appear处理首次进入
+*** out-in先离开后进入
+**[#E0F2F1] 列表过渡
+*** TransitionGroup处理列表
+*** 稳定key标识业务项
+*** move类处理位置变化
+**[#FFF3E0] 注意
+*** 原生事件按实际DOM传播
+*** nextTick不代表动画完成
+*** 尊重减少动态效果偏好
+
+@endmindmap

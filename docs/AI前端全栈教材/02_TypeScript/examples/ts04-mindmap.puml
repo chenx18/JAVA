@@ -1,0 +1,30 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 对象类型、interface与type
+**[#EDE7F6] 描述对象
+*** 字段名与值类型分开
+*** interface和type复用结构
+*** 可选表示属性可缺失
+*** readonly限制当前赋值
+**[#E3F2FD] 复用与兼容
+*** 来源满足目标所需结构
+*** 字面量有额外属性检查
+*** extends要求字段兼容
+*** 交叉不是后写覆盖
+**[#E0F2F1] 索引与合并
+*** 动态键说明值的约束
+*** 索引不保证每个键存在
+*** 同名interface按规则合并
+*** type不靠重名追加字段
+**[#FFF3E0] 注意
+*** 缺失与显式undefined分开
+*** 类型不删除额外字段
+*** 声明不自动创建运行时成员
+*** 按表达需要选interface或type
+
+@endmindmap

@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 手写迷你Vue
+**[#EDE7F6] 连通机制
+*** 普通对象依赖追踪
+*** computed缓存派生值
+*** 队列连接VNode与DOM
+**[#E3F2FD] 运行实现
+*** examples提供完整文件
+*** 静态服务器加载ES模块
+*** 根setup返回render
+**[#E0F2F1] 验证行为
+*** 检查清理恢复与去重
+*** 输入状态随key移动
+*** 排队后卸载不重新挂载
+**[#FFF3E0] 注意
+*** 不支持完整Vue组件模型
+*** 简化Diff没有LIS优化
+*** 最小编译仅处理文本插值
+
+@endmindmap

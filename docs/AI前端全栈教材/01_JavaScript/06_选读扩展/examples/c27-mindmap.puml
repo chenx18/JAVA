@@ -1,0 +1,24 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* Web Worker
+**[#EDE7F6] 用途
+*** 独立JS执行环境，适合较重计算
+*** 不能直接操作页面DOM
+*** async不会把计算自动移到另一线程
+**[#E3F2FD] API
+*** 创建：new Worker；结束：terminate
+*** 通信：postMessage / message / error
+*** 数据：结构化克隆或transfer
+*** 任务协议：ID / 结果 / 失败 / 取消
+**[#E0F2F1] 注意
+*** 转移ArrayBuffer后发送方缓冲分离
+*** 长同步循环无法及时处理取消消息
+*** 终止时处理等待中的Promise
+*** 衡量交互改善及启动通信成本
+
+@endmindmap

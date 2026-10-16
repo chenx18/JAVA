@@ -1,0 +1,29 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* Number
+**[#EDE7F6] 基本属性
+*** 整数、小数、NaN、正负无穷
+*** 安全整数：±(2⁵³ − 1)
+*** MAX_VALUE：最大有限正数
+*** MIN_VALUE：最小正非零数
+*** EPSILON：1 附近的表示间距
+**[#E3F2FD] API
+*** 转换：Number；前缀解析：parseInt / parseFloat
+*** NaN 与有限数：isNaN / isFinite
+*** 整数：isInteger / isSafeInteger
+*** 进制：toString；解包：valueOf
+*** 展示：toFixed / toPrecision / toExponential
+*** 本地化：toLocaleString / Intl.NumberFormat
+**[#E0F2F1] 注意
+*** 二进制浮点可能舍入，格式化不能恢复精度
+*** 空白转 Number 是 0，解析不等于完整校验
+*** toFixed 指定小数位，toPrecision 指定有效数字
+*** 容差按业务确定，EPSILON 不是通用修复
+*** 超大 ID 保留字符串，金额明确单位和舍入
+
+@endmindmap

@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 接口类型与运行时校验
+**[#EDE7F6] 数据结构
+*** 请求字段按权限选择
+*** 响应与展示可以不同
+*** 类型不会自动转换数据
+**[#E3F2FD] 验证过程
+*** 未知输入用unknown
+*** 检查形状与范围
+*** 构造需要的返回值
+**[#E0F2F1] 失败与状态
+*** Result表达业务分支
+*** 异常与取消另有协议
+*** UI状态不等于接口结果
+**[#FFF3E0] 注意
+*** 泛型请求不等于验证
+*** 额外字段策略要明确
+*** schema不代替授权
+
+@endmindmap

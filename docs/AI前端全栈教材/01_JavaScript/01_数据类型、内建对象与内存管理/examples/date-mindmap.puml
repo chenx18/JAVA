@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* Date
+**[#EDE7F6] 基本属性
+*** 表示时间点；时间戳单位是毫秒
+*** 不保存固定业务时区
+*** set 系列会修改原 Date
+**[#E3F2FD] API
+*** 创建：new Date / Date.now / parse / UTC
+*** 读取：年月日、星期、时分秒、getTime
+*** 修改：set 系列与 setTime
+*** 格式化：ISO / Locale / JSON
+*** 校验：getTime 配合 Number.isNaN
+**[#E0F2F1] 注意
+*** 月份 0 起；getDate 是几号，getDay 是星期
+*** 本地与 UTC 系列按需求选择
+*** 越界日期可能自动溢出，月底改月要小心
+*** 无效日期：ISO 抛错，JSON 得到 null
+*** 自然日不总等于固定 24 小时
+
+@endmindmap

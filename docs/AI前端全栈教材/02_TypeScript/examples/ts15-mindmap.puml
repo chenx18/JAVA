@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* tsconfig、模块与声明文件
+**[#EDE7F6] 检查入口
+*** tsconfig描述项目
+*** tsc --project读取配置
+*** strict与额外选项
+**[#E3F2FD] 模块与声明
+*** 类型导入可被去掉
+*** 声明文件不提供实现
+*** 模块解析匹配环境
+**[#E0F2F1] 工程验证
+*** 类型与运行分别检查
+*** 预期诊断也要验证
+*** 外部数据另做校验
+**[#FFF3E0] 注意
+*** lib不会安装运行时能力
+*** 转译不等于类型检查
+*** 声明增强仍需实现
+
+@endmindmap

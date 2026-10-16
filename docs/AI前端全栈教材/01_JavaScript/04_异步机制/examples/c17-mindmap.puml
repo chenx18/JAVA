@@ -1,0 +1,29 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* async 与 await
+**[#EDE7F6] 写法与结果
+*** then改写为await
+*** async返回Promise
+*** Generator返回迭代器
+**[#E3F2FD] 执行顺序
+*** 先求值再等待
+*** 普通值也异步恢复
+*** 按依赖组织任务
+*** forEach不等待回调
+**[#E0F2F1] 异常与清理
+*** await处接住拒绝
+*** return await边界
+*** finally清理时机
+*** 及时接管失败
+**[#FFF3E0] 注意
+*** 不是只换关键字
+*** Generator需外部推进
+*** 等待不等于取消
+*** 计算仍占线程
+
+@endmindmap

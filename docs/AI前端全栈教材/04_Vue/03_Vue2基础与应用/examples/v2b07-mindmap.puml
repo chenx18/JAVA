@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* Vue Router3路由与导航
+**[#EDE7F6] 注册与显示
+*** Vue.use安装插件
+*** new VueRouter建实例
+*** 链接导航与视图出口
+**[#E3F2FD] 参数与复用
+*** route读取当前地址
+*** router执行导航
+*** 参数变化重新加载
+**[#E0F2F1] 守卫与部署
+*** 每条路径调用一次next
+*** history配置入口回退
+*** 星号路由处理404
+**[#FFF3E0] 注意
+*** 不要混用Router4 API
+*** 前端守卫不能替代鉴权
+*** URL外参数刷新会丢失
+
+@endmindmap

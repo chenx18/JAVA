@@ -1,0 +1,22 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+start
+repeat
+  :从任务队列中选择一个已就绪任务;
+  :执行这个任务中的同步代码和函数调用;
+  while (微任务队列还有内容？) is (有)
+    :取出一个微任务并执行;
+    :新微任务追加到队尾;
+  endwhile (空)
+  if (本轮有渲染机会？) then (有)
+    :进行渲染更新流程\n包括本轮 rAF 回调等步骤;
+    :按需更新样式、布局和绘制;
+  endif
+  :继续调度；没有待办工作时等待;
+repeat while (事件循环继续运行？) is (是)
+stop
+@enduml

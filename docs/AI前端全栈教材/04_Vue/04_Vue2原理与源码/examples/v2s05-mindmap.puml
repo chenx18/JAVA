@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* VNode、Patch与双端Diff
+**[#EDE7F6] 更新描述
+*** render生成新VNode
+*** sameVnode判断能否复用
+*** patch更新真实节点
+**[#E3F2FD] 双端比较
+*** 头尾四种情况先匹配
+*** 未命中再按键或范围查找
+*** 最终添加和移除剩余项
+**[#E0F2F1] 身份复用
+*** 稳定key跟随业务对象
+*** 组件保留实例再更新输入
+*** 原生事件复用调用入口
+**[#FFF3E0] 注意
+*** 索引key可能串编辑状态
+*** 四端未命中仍可能复用
+*** Vue2不使用Vue3的LIS
+
+@endmindmap

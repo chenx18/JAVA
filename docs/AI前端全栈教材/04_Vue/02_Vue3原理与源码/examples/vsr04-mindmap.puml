@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* effect_track_trigger与依赖清理
+**[#EDE7F6] 执行现场
+*** 设置当前订阅者
+*** 嵌套完成恢复外层
+*** 异常路径也要恢复
+**[#E3F2FD] 维护关系
+*** Dep和订阅者双向关联
+*** Link记录关联和版本
+*** 清理未再次访问的依赖
+**[#E0F2F1] 触发与停止
+*** 按操作通知相关Dep
+*** scheduler决定执行策略
+*** stop解除自动订阅
+**[#FFF3E0] 注意
+*** 内部batch不等于微任务队列
+*** 手动runner与自动观察不同
+*** 外部资源仍需独立清理
+
+@endmindmap

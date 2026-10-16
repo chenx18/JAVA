@@ -1,0 +1,28 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 条件类型与 infer
+**[#EDE7F6] 条件判断
+*** 可赋值关系
+*** 成立与失败分支
+*** 不同于泛型约束
+**[#E3F2FD] 结构提取
+*** infer 命名类型
+*** 数组元素
+*** 函数结果
+*** 单层异步结果
+**[#E0F2F1] 联合与递归
+*** 逐成员分布
+*** 元组包装
+*** never 整体判断
+**[#FFF3E0] 注意
+*** 不执行运行时代码
+*** any 的特殊结果
+*** 重载最后签名
+*** 递归复杂度
+
+@endmindmap

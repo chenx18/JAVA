@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 异步组件与Suspense
+**[#EDE7F6] 异步组件
+*** loader返回组件Promise
+*** 需要渲染时加载
+*** 成功后复用组件定义
+**[#E3F2FD] 加载状态
+*** delay延后加载提示
+*** timeout显示超时错误
+*** onError限制重试
+**[#E0F2F1] Suspense
+*** 等待async setup
+*** fallback展示等待界面
+*** 父组件捕获子树错误
+**[#FFF3E0] 注意
+*** 仍属于实验性能力
+*** 不自动等待任意fetch
+*** 代码缓存不等于实例缓存
+
+@endmindmap

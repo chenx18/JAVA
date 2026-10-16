@@ -1,0 +1,27 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* keyof、typeof 与索引访问类型
+**[#EDE7F6] 获取键
+*** keyof键联合
+*** 索引签名
+*** 联合的共同键
+**[#E3F2FD] 提取类型
+*** typeof已有值
+*** T[K]属性类型
+*** 数组元素类型
+**[#E0F2F1] 建立关系
+*** 对象T
+*** 合法键K
+*** 返回T[K]
+**[#FFF3E0] 注意
+*** 不执行属性读取
+*** Object.keys不同
+*** 可选值仍可能空
+*** 外部对象先校验
+
+@endmindmap

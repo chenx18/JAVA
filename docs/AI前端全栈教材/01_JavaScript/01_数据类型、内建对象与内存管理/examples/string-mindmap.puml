@@ -1,0 +1,34 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* String
+**[#EDE7F6] 基本属性
+*** length：按 UTF-16 编码单位计数
+*** 字符串不可变，使用方法返回的结果
+*** String() 转换；new String() 创建包装对象
+**[#E3F2FD] 常用 API
+*** 读取：length / [] / charAt / at
+*** 查找：includes / indexOf / startsWith / endsWith
+*** 截取：slice / substring
+*** 拆连：split / concat / join（数组方法）
+*** 替换：replace / replaceAll
+*** 正则：search / match / matchAll
+*** 格式：trim 系列 / pad 系列 / repeat / 大小写
+*** 模板：模板字符串 / String.raw
+**[#E0F2F1] 注意
+*** indexOf：0 是开头匹配，-1 才是未找到
+*** 截取：终点不包含；负数与反向边界要区分
+*** split 的 limit：返回项数，不是分割次数
+*** replaceAll：传入正则时必须带 g
+*** match 带 g：不保留每次匹配的捕获组
+**[#FFF3E0] 补充 API
+*** 编码：charCodeAt / codePointAt
+*** 构造：fromCharCode / fromCodePoint
+*** 比较：normalize / localeCompare
+*** 遍历：for...of / Intl.Segmenter
+
+@endmindmap

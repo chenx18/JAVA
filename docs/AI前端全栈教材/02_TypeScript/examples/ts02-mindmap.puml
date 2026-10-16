@@ -1,0 +1,29 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 基础类型与特殊类型
+**[#EDE7F6] 原始值与空值
+*** 用小写原始类型名
+*** number不自动完成范围校验
+*** 联合明确允许的空值
+**[#E3F2FD] 特殊类型
+*** unknown先判断再操作
+*** any放宽检查但不补实现
+*** void不消费结果
+*** never没有正常返回
+**[#E0F2F1] 对象与选择
+*** object排除原始值
+*** 空花括号不是空对象保证
+*** 已知字段写具体结构
+*** 未知边界保留unknown
+**[#FFF3E0] 注意
+*** 严格检查下空值需显式允许
+*** 包装对象不是原始值替代
+*** 类型名不完成业务校验
+*** void回调仍可能返回数字
+
+@endmindmap

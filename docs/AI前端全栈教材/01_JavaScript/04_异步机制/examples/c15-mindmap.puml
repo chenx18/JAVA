@@ -1,0 +1,29 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 异步基础与定时器
+**[#EDE7F6] 基本概念
+*** 同步与异步
+*** 回调何时执行
+*** 注册不等于执行
+*** 宿主负责调度
+**[#E3F2FD] 定时任务
+*** 一次与重复
+*** 同步任务后再计时
+*** 保存与清理句柄
+*** 异步请求重叠
+**[#E0F2F1] 其他调度
+*** 按时间更新动画
+*** 微任务合并
+*** Hash 变化用事件
+**[#FFF3E0] 注意
+*** 延迟不保准时
+*** 不保证立即补跑
+*** 清理不等于取消请求
+*** 完整轮询进阶选读
+
+@endmindmap

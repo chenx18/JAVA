@@ -1,0 +1,29 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 模块化
+**[#EDE7F6] 先运行模块
+*** 确定ESM或CommonJS环境
+*** 相对路径从导入文件出发
+*** 导出函数再导入调用
+*** 具名、默认、别名和命名空间
+**[#E3F2FD] 读取与初始化
+*** ESM导入观察导出绑定
+*** 赋值快照不会自动更新
+*** require返回module.exports
+*** exports初始指向导出对象
+**[#E0F2F1] 加载与依赖
+*** 动态import返回Promise
+*** 同一模块身份通常复用实例
+*** 循环先分析初始化与读取时机
+**[#FFF3E0] 注意
+*** 模块文件不能拼成普通脚本
+*** 绑定只读不等于对象冻结
+*** 副作用影响构建删除
+*** 前端模块不能隐藏服务端密钥
+
+@endmindmap

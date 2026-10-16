@@ -1,0 +1,29 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 异步控制与任务调度
+**[#EDE7F6] 并发池
+*** 任务函数
+*** 工作位补位
+*** 按输入保存结果
+*** 失败继续收集
+**[#E3F2FD] 取消与超时
+*** 排队项不启动
+*** 运行项协作取消
+*** 等待超时
+*** 资源清理
+**[#E0F2F1] 重试与复用
+*** 次数与退避
+*** 错误分类
+*** 进行中去重
+*** 结果缓存
+**[#FFF3E0] 注意
+*** 取消不等于终止
+*** 写入幂等
+*** 次数不是总时限
+
+@endmindmap

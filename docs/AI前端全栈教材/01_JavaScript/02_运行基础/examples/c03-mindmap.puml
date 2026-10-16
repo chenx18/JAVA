@@ -1,0 +1,30 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 函数
+**[#EDE7F6] 概念与定义
+*** 函数是可以调用的对象
+*** 函数本身与调用结果
+*** 声明 / 表达式 / 箭头 / 方法
+*** Function从字符串创建函数
+**[#E3F2FD] 参数与返回
+*** 形参是名字，实参是传入的值
+*** 默认值：省略或undefined才触发
+*** arguments全部实参；rest剩余实参
+*** return返回值，无返回值为undefined
+**[#E0F2F1] 属性与箭头
+*** name / length / toString
+*** 箭头沿用外层this与arguments
+*** 箭头不能使用new
+*** 回调与接收函数的高阶函数
+**[#FFF3E0] 注意
+*** 函数length不等于实参数量
+*** constructor属性不证明能否new
+*** 箭头返回对象要加括号
+*** 回调也可以同步执行
+
+@endmindmap

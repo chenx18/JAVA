@@ -1,0 +1,27 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* Proxy 与 Reflect
+**[#EDE7F6] 代理与转发
+*** 目标与代理
+*** get 与 set
+*** Reflect 返回结果
+**[#E3F2FD] 接收者与限制
+*** getter 的 this
+*** 继承接收者
+*** 固定属性约束
+**[#E0F2F1] 响应式进阶
+*** 写入后通知
+*** 按对象与键登记
+*** 依赖清理与停止
+**[#FFF3E0] 注意
+*** 原对象绕过代理
+*** 嵌套不会自动代理
+*** 内部槽与私有检查
+*** 调度衔接 Vue
+
+@endmindmap

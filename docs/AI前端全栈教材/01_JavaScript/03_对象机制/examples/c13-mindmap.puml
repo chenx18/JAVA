@@ -1,0 +1,30 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* class 与私有成员
+**[#EDE7F6] 类与构造
+*** 类描述对象规则
+*** constructor初始化
+*** 基类与派生默认行为
+*** 类仍基于原型
+**[#E3F2FD] 成员位置
+*** 实例属性与字段
+*** 普通方法共享
+*** static属于类
+*** 箭头字段各自创建
+**[#E0F2F1] 继承与初始化
+*** extends两条链
+*** super构造与方法
+*** 字段初始化顺序
+*** 私有成员检查
+**[#FFF3E0] 注意
+*** super前可局部计算
+*** 父构造慎调子方法
+*** 字段定义不同赋值
+*** 私有继承与代理边界
+
+@endmindmap

@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* Pinia与共享状态
+**[#EDE7F6] 建立Store
+*** createPinia注册应用
+*** Options组织状态动作
+*** Setup组合ref与computed
+**[#E3F2FD] 读取与更新
+*** storeToRefs保留关联
+*** action表达业务动作
+*** patch分组更新与reset重置
+**[#E0F2F1] 生命周期
+*** 订阅返回取消函数
+*** 请求版本阻止旧结果
+*** 每次SSR请求独立实例
+**[#FFF3E0] 注意
+*** 局部状态不必全局化
+*** 持久化需校验恢复数据
+*** Store不替代服务器缓存策略
+
+@endmindmap

@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* computed与派生状态
+**[#EDE7F6] 派生展示结果
+*** computed 返回计算引用
+*** 总价与列表筛选
+*** 脚本读取 .value
+**[#E3F2FD] 缓存与依赖
+*** 依赖未变复用结果
+*** 变化后按需确认
+*** 结果稳定性减少下游工作
+**[#E0F2F1] 可写与规则
+*** setter 修改源状态
+*** previous 读取上次结果
+*** 方法与 watch 分工
+**[#FFF3E0] 注意
+*** getter 不请求或改源状态
+*** 时间不是响应式依赖
+*** 新对象不会自动深比较
+
+@endmindmap

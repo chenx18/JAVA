@@ -1,0 +1,28 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 语法、运算符与严格模式
+**[#EDE7F6] 表达式与运算
+*** 表达式和语句
+*** 优先级与求值
+*** 副作用与递增
+**[#E3F2FD] 常用语法
+*** 短路与默认值
+*** 可选链访问
+*** 控制流与遍历
+*** 解构与展开
+**[#E0F2F1] 注意
+*** 空值不等于假值
+*** for...in包含继承项
+*** 浅复制共享嵌套值
+*** return换行与ASI
+**[#FFF3E0] 环境规则
+*** 模块默认严格
+*** 函数自身严格性
+*** 语法与API兼容
+
+@endmindmap

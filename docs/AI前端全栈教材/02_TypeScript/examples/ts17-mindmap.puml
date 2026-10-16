@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* Vue 与 TypeScript 应用
+**[#EDE7F6] 组件用法
+*** props描述输入
+*** emits描述事件载荷
+*** model与expose明确接口
+**[#E3F2FD] 状态与元素
+*** ref包含未来空状态
+*** computed推断派生结果
+*** DOM引用先处理null
+**[#E0F2F1] 检查与运行
+*** SFC需要配套编译
+*** vue-tsc检查父子使用
+*** 交互与清理运行验证
+**[#FFF3E0] 注意
+*** 学过Vue后回看
+*** 版本影响props解构
+*** 静态类型不验证接口数据
+
+@endmindmap

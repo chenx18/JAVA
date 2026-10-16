@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 组件通信、插槽与v-model
+**[#EDE7F6] 传递状态
+*** props 向下传递
+*** $emit 表达更新意图
+*** v-model 与 sync 简化配合
+**[#E3F2FD] 定制内容
+*** 默认与具名插槽
+*** 作用域插槽公开数据
+*** 插槽模板属于父级作用域
+**[#E0F2F1] 封装与跨层
+*** attrs 与 listeners 透传
+*** provide 与 inject 提供依赖
+*** 共享状态按范围管理
+**[#FFF3E0] 注意
+*** 不直接修改父级 prop
+*** 注入绑定不自动变响应式
+*** 总线监听需要对应清理
+
+@endmindmap

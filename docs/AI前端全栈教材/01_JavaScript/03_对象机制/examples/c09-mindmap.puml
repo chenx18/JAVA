@@ -1,0 +1,29 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 面向对象与对象创建
+**[#EDE7F6] 组织方式
+*** 面向过程：按步骤处理数据
+*** 面向对象：组织状态和职责
+*** 两种方式可以结合使用
+**[#E3F2FD] 对象与创建
+*** 对象是具体值，实例强调关系
+*** 类描述创建规则和行为
+*** 字面量直接创建对象
+*** 工厂、构造函数、class可重复创建
+**[#E0F2F1] 如何选择
+*** 先确定状态归属与操作职责
+*** 需要几个对象，是否重复创建
+*** 方法能否共享要看函数位置
+*** 遵循项目已有约定
+**[#FFF3E0] 注意
+*** 范式名称不决定性能或维护成本
+*** 工厂返回的对象并非没有类型
+*** 实例独立状态通常是业务需要
+*** 共享方法不等于共享可变数据
+
+@endmindmap

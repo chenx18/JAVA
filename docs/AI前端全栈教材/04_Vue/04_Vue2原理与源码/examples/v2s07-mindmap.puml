@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 组件更新、生命周期与KeepAlive
+**[#EDE7F6] 组件更新
+*** prepatch保留子实例
+*** 更新props监听器插槽
+*** 按依赖决定继续渲染
+**[#E3F2FD] 生命周期
+*** 父先创建子先挂载完成
+*** 同步更新后子updated在前
+*** 钩子反映具体执行阶段
+**[#E0F2F1] 实例缓存
+*** 命中缓存复用实例
+*** 切换经历激活和停用
+*** 容量限制处理旧缓存
+**[#FFF3E0] 注意
+*** 停用不自动暂停轮询
+*** 淘汰保护当前渲染实例
+*** 销毁不代替外部资源清理
+
+@endmindmap

@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* Observer、Dep与Watcher
+**[#EDE7F6] 观察数据
+*** Observer遍历已有字段
+*** 访问器连接读写行为
+*** 数组包装七种变异方法
+**[#E3F2FD] 收集依赖
+*** Dep登记当前Watcher
+*** 目标栈恢复外层订阅者
+*** cleanup移除过期依赖
+**[#E0F2F1] 触发更新
+*** setter通知相关订阅者
+*** lazy先标记缓存失效
+*** 普通Watcher进入队列
+**[#FFF3E0] 注意
+*** 新增键要经过支持入口
+*** 下标修改可能没有通知
+*** 2.7仍保留访问器体系
+
+@endmindmap

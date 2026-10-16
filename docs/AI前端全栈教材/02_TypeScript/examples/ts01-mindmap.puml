@@ -1,0 +1,28 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* TypeScript入门与运行
+**[#EDE7F6] 先写类型
+*** 冒号说明参数与返回要求
+*** 类型检查发现不匹配调用
+*** JavaScript值本来就有类型
+**[#E3F2FD] 安装与运行
+*** 项目内安装TypeScript
+*** tsc检查并生成JavaScript
+*** Node执行生成文件
+*** noEmit只检查不输出
+**[#E0F2F1] 注解与推断
+*** 局部初始值可以推断
+*** 公共边界明确契约
+*** 返回语句也能提供类型信息
+**[#FFF3E0] 注意
+*** 转译成功不等于类型通过
+*** 类型擦除不执行数据校验
+*** strict之外还有独立选项
+*** 真实运行仍遵循JavaScript
+
+@endmindmap

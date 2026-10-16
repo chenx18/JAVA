@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* Vue 2 响应式原理与 Vue 3 对比
+**[#EDE7F6] Vue2主线
+*** Observer安装访问器
+*** Dep登记和通知依赖
+*** Watcher执行并清理关系
+**[#E3F2FD] 更新入口
+*** 新增删除需要特定入口
+*** 数组包装变异方法
+*** nextTick连接批量更新
+**[#E0F2F1] 版本对比
+*** Vue3代理对象操作
+*** 保留依赖与调度机制
+*** 按旧项目需要阅读源码
+**[#FFF3E0] 注意
+*** 直接新增后set不一定修复
+*** 根字段应提前声明
+*** Proxy不消除资源管理责任
+
+@endmindmap

@@ -1,0 +1,28 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 映射类型与模板字面量
+**[#EDE7F6] 逐键映射
+*** keyof 取得键
+*** in 逐键处理
+*** T[K] 保留值类型
+**[#E3F2FD] 属性修饰
+*** 添加可选与只读
+*** 移除修饰
+*** 缺省与 undefined
+**[#E0F2F1] 键名组合
+*** as 重映射
+*** never 过滤键
+*** 模板组合
+*** 字符串类型工具
+**[#FFF3E0] 注意
+*** 不创建运行时对象
+*** 通常只改当前层
+*** 联合规模成本
+*** 外部字符串需检查
+
+@endmindmap

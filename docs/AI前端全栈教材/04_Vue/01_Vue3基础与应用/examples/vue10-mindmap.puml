@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* props、emits与组件v-model
+**[#EDE7F6] 输入与事件
+*** props声明父级输入
+*** emit报告操作意图
+*** 父级负责更新状态
+**[#E3F2FD] 组件模型
+*** 值prop配合更新事件
+*** 3.4起使用defineModel
+*** 命名模型支持多个值
+**[#E0F2F1] 组件契约
+*** 类型描述事件载荷
+*** 修饰符约定转换
+*** 编辑草稿定义同步规则
+**[#FFF3E0] 注意
+*** 嵌套对象仍可能共享修改
+*** 组件事件不自动冒泡
+*** 父子默认值可能不同步
+
+@endmindmap

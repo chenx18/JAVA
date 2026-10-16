@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* VNode与Renderer
+**[#EDE7F6] 节点描述
+*** type与key表达身份
+*** children描述子结构
+*** el关联宿主节点
+**[#E3F2FD] 渲染接口
+*** 算法选择更新路径
+*** 宿主负责创建和插入
+*** 自定义Renderer可独立于DOM
+**[#E0F2F1] 结构与属性
+*** 挂载更新卸载分别处理
+*** 文本数组转换清理旧子树
+*** 事件可用稳定包装器
+**[#FFF3E0] 注意
+*** 创建VNode不立即创建DOM
+*** 同一VNode不能任意多处复用
+*** 卸载不只是删除节点
+
+@endmindmap

@@ -1,0 +1,29 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 函数类型与重载
+**[#EDE7F6] 基础调用
+*** 参数注解约束输入
+*** 返回类型表达结果
+*** 函数类型提供上下文
+**[#E3F2FD] 参数与回调
+*** 可选参数可能缺失
+*** 默认值处理undefined
+*** 剩余参数收集后续实参
+*** 回调可忽略多余参数
+**[#E0F2F1] this与重载
+*** this参数不占普通实参
+*** 调用方式实际提供接收者
+*** 多个签名共用一个实现
+*** 公开重载决定合法调用
+**[#FFF3E0] 注意
+*** this类型不自动绑定
+*** 不用参数不等于参数可选
+*** 实现签名不是额外调用入口
+*** 重载承诺仍需运行验证
+
+@endmindmap

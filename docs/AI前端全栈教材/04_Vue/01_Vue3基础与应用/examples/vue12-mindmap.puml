@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* provide、inject与依赖注入
+**[#EDE7F6] 跨层传递
+*** provide提供状态或能力
+*** inject查找最近祖先
+*** 中间组件无需转发
+**[#E3F2FD] 类型与修改
+*** 共享同一个Symbol键
+*** InjectionKey同步类型
+*** 只读状态搭配动作函数
+**[#E0F2F1] 使用范围
+*** 表单主题适合子树上下文
+*** 可选依赖提供默认值
+*** 跨路由状态按需用Pinia
+**[#FFF3E0] 注意
+*** 基本值快照不会持续更新
+*** 必需依赖缺失明确报错
+*** SSR按请求隔离用户状态
+
+@endmindmap

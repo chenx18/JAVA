@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* Vue3入门与应用创建
+**[#EDE7F6] 创建应用
+*** create-vue创建项目
+*** createApp创建应用
+*** mount挂载根组件
+**[#E3F2FD] 界面更新
+*** 状态描述界面
+*** 事件修改状态
+*** 响应式安排更新
+**[#E0F2F1] 组织组件
+*** 按职责划分组件
+*** 两种API共享运行机制
+*** 区分实例与共享状态
+**[#FFF3E0] 注意
+*** 脚手架版本会变化
+*** 状态变化不等于DOM已更新
+*** SSR避免跨请求共享用户数据
+
+@endmindmap

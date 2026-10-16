@@ -1,0 +1,27 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* BigInt
+**[#EDE7F6] 基本属性
+*** 精确整数，不表示小数
+*** 创建：n 后缀或 BigInt(value)
+*** typeof 返回 bigint；0n 为假
+*** 没有 NaN、Infinity 或独立负零
+**[#E3F2FD] API 与运算
+*** 除法向零截断，比较允许 Number
+*** 位宽：asIntN / asUintN
+*** 文本：toString / toLocaleString
+*** 解包：valueOf；转数字：Number
+*** JSON：约定字符串字段，序列化时转换
+**[#E0F2F1] 注意
+*** 大整数从文本或 n 字面量开始
+*** 不能与 Number 混合数值算术
+*** 除零报错；不支持一元 + 和无符号右移
+*** 位宽方法会截断，转 Number 可能失精度
+*** JSON 默认报错，字符串字段按协议还原
+
+@endmindmap

@@ -1,0 +1,30 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* DOM 操作与 DOM 事件
+**[#EDE7F6] 页面与事件
+*** 查询、文本与当前状态
+*** 按点击、输入、提交等用途选择
+*** 焦点与指针进出有不同传播规则
+*** 页面就绪与资源完成分别判断
+**[#E3F2FD] 绑定与清理
+*** 内联与onclick共用一个处理器位置
+*** addEventListener保留多个不同监听
+*** 按引用与capture移除，匿名也可
+*** once、signal与生命周期按需使用
+**[#E0F2F1] 传播与交互
+*** 捕获、目标、冒泡
+*** 默认行为与传播分别控制
+*** 委托处理动态后代并检查归属
+*** 同步派发与任务调度分开
+**[#FFF3E0] 注意
+*** 输入法合成不能只按键判断
+*** requestSubmit与submit行为不同
+*** 事件委托不保证一定更快
+*** unload不可靠，隐藏不等于销毁
+
+@endmindmap

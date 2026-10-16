@@ -1,0 +1,27 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 判别联合与状态建模
+**[#EDE7F6] 状态形状
+*** 可选字段的矛盾
+*** 字面量判别字段
+*** 每态必需数据
+**[#E3F2FD] 读取与遗漏
+*** 按状态收窄
+*** switch 分支
+*** never 穷尽检查
+**[#E0F2F1] 请求与界面
+*** 事件与状态转移
+*** 请求标识归属
+*** 接口结果映射
+**[#FFF3E0] 注意
+*** 不自动校验 JSON
+*** 不自动解决竞态
+*** 取消与迟到结果
+*** 别用断言掩盖遗漏
+
+@endmindmap

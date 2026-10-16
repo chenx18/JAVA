@@ -1,0 +1,25 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* Map
+**[#EDE7F6] 基本属性
+*** 任意值作键；size 是条目数
+*** 对象按身份比较；NaN 相同、正负零相同
+*** 按插入顺序遍历；修改条目改变原 Map
+**[#E3F2FD] API
+*** 增删查：set / get / has / delete / clear
+*** 遍历：keys / values / entries / forEach
+*** 转换：Object.entries / Object.fromEntries
+*** 分组：Map.groupBy
+**[#E0F2F1] 注意
+*** get 返回 undefined，不代表键不存在
+*** set 已有键不移位；删除再插入才到末尾
+*** map[key] 是普通属性，不是条目
+*** JSON 默认不序列化 Map 条目
+*** 强引用缓存要限制容量与生命周期
+
+@endmindmap

@@ -1,0 +1,19 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam object {
+  BackgroundColor #F3F6FA
+  BorderColor #65758B
+}
+left to right direction
+object "User\n构造函数" as Constructor
+object "User.prototype\n原型对象" as Prototype
+object "user\n实例对象" as Instance
+
+Constructor -[#4E7AD9]-> Prototype : prototype 属性
+Prototype .[#8B6FD6].> Constructor : constructor 属性
+Instance -[#269A87]-> Prototype : 对象自身的原型
+@enduml

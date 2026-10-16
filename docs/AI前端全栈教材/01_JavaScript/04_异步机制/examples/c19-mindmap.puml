@@ -1,0 +1,29 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 错误处理
+**[#EDE7F6] 创建与抛出
+*** Error对象记录名称与说明
+*** throw中断当前正常流程
+*** catch接到实际抛出的值
+**[#E3F2FD] 传播与清理
+*** 沿当前执行路径寻找catch
+*** 恢复或继续向上抛出
+*** finally正常清理保留原结果
+*** 清理return或throw可覆盖结果
+**[#E0F2F1] 异步与上下文
+*** 回调内捕获再reject
+*** await把拒绝接回当前流程
+*** cause保留原始原因
+*** 分类后决定提示或重试
+**[#FFF3E0] 注意
+*** 创建Error不会自动抛出
+*** 默认值可能掩盖失败
+*** 当前文件解析失败不能就地catch
+*** 清理与重试需要明确责任
+
+@endmindmap

@@ -1,0 +1,30 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 原型与原型链
+**[#EDE7F6] 属性查找
+*** 自身优先，再找原型
+*** 找到同名属性就停止
+*** Object.hasOwn 与 in
+*** 赋值遮蔽，删除再查找
+**[#E3F2FD] 三种关系
+*** prototype 提供实例原型
+*** 对象原型是查找的下一站
+*** constructor 是普通属性
+*** 实例与构造函数各有查找链
+**[#E0F2F1] 修改与边界
+*** 修改共享数组会影响使用者
+*** 替换 prototype 不迁移旧实例
+*** Object.create 不执行初始化
+*** null 表示没有下一层原型
+**[#FFF3E0] 注意
+*** 不是每个函数都有 prototype
+*** 查询使用 Object.getPrototypeOf
+*** 字符串原始值查询涉及包装
+*** 原型关系不等于构造历史
+
+@endmindmap

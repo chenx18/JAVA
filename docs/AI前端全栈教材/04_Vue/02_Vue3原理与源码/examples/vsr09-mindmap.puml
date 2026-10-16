@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 组件更新流程
+**[#EDE7F6] 组件角色
+*** VNode描述输入
+*** 实例保存运行状态
+*** subTree保存渲染输出
+**[#E3F2FD] 挂载与更新
+*** 挂载建立渲染effect
+*** 调度稳定组件job
+*** 重算subTree后patch
+**[#E0F2F1] 父子与卸载
+*** props和slots参与判断
+*** 停止组件scope
+*** 防止迟到任务重新挂载
+**[#FFF3E0] 注意
+*** render重跑不等于setup重跑
+*** 父更新不代表所有子更新
+*** 外部连接不由scope自动关闭
+
+@endmindmap

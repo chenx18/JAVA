@@ -1,0 +1,30 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* undefined / null / Boolean
+**[#EDE7F6] 基本属性
+*** undefined：未定义的值
+*** null：通常表示主动设置的空值
+*** boolean：true / false 两个原始值
+**[#E3F2FD] 判断与转换
+*** 严格比较：=== undefined / === null
+*** 自有属性：Object.hasOwn；原型也检查：in
+*** 布尔转换：Boolean / !!
+*** 取原始值：valueOf；转文本：toString
+**[#E0F2F1] 默认值与传输
+*** ?? 只替换 null / undefined
+*** || 替换所有假值；?. 处理空值访问
+*** JSON：对象的 undefined 属性省略
+*** JSON：数组的 undefined 元素变 null
+**[#FFF3E0] 注意
+*** typeof null 为 object，但 null 是原始值
+*** 'false'、'0'、空数组和普通对象都是真值
+*** 包装 false 的 Boolean 对象也是真值
+*** 参数默认值只对 undefined 生效
+*** 缺失字段与主动清空按接口协议区分
+
+@endmindmap

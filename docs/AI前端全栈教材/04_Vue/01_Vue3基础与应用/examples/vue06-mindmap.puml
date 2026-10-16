@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* reactive与只读代理
+**[#EDE7F6] 代理对象
+*** reactive 返回新身份
+*** 对象数组和集合操作
+*** 统一经过代理读写
+**[#E3F2FD] 保留状态关联
+*** 原始值解构是快照
+*** 对象引用与整体替换
+*** 普通属性的 ref 解包
+**[#E0F2F1] 控制代理边界
+*** shallowReactive 根层追踪
+*** readonly 限制视图写入
+*** toRaw 与 markRaw
+**[#FFF3E0] 注意
+*** 浅层不抹除已有响应式
+*** 只读不是冻结或授权
+*** 原始对象与代理身份不同
+
+@endmindmap

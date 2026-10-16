@@ -1,0 +1,32 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* Symbol
+**[#EDE7F6] 基本属性
+*** 原始类型，用于独立身份和对象属性键
+*** Symbol() 每次创建新符号
+*** description 只描述，不决定身份
+*** 不能 new，可用 Object 创建包装对象
+**[#E3F2FD] API
+*** 共享：Symbol.for；查注册键：Symbol.keyFor
+*** 展示：String / toString；解包：valueOf
+*** 读取属性：obj[symbol]
+*** 符号键：Object.getOwnPropertySymbols
+*** 全部自有键：Reflect.ownKeys
+**[#E0F2F1] 内建协议
+*** 遍历：iterator / asyncIterator
+*** 转换：toPrimitive；标签：toStringTag
+*** 实例判断：hasInstance
+*** 合并、字符串模式与资源管理等协议入口
+**[#FFF3E0] 注意
+*** 符号键可被查询，不等于私有字段
+*** 展开和 assign 复制可枚举符号属性
+*** JSON 忽略符号键，keys 不列出符号键
+*** 隐式拼接会报错，展示时显式 String
+*** 标签能被修改，不是绝对类型证明
+
+@endmindmap

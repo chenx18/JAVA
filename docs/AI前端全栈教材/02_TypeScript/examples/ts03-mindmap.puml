@@ -1,0 +1,29 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 数组、元组与只读类型
+**[#EDE7F6] 数组元素
+*** T[]与Array<T>同义
+*** 联合括号决定作用层次
+*** 多层数组逐层写类型
+**[#E3F2FD] 索引与元组
+*** 普通索引可能不存在
+*** 元组描述位置与数量
+*** 标签不产生对象字段
+*** 可选和剩余位置拓展长度
+**[#E0F2F1] 只读使用
+*** readonly限制当前视图写入
+*** 只读参数表达读取需求
+*** 其他可写引用仍可修改
+*** 数组只读不等于元素只读
+**[#FFF3E0] 注意
+*** const不冻结数组内容
+*** 元组运行时仍是数组
+*** 索引检查不创建缺失元素
+*** 复制一层不隔离嵌套对象
+
+@endmindmap

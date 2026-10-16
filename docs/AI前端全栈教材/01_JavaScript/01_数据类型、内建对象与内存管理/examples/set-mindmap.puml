@@ -1,0 +1,25 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* Set
+**[#EDE7F6] 基本属性
+*** 保存唯一成员；size 是成员数
+*** NaN 可去重；正负零相同
+*** 对象按身份比较；按插入顺序遍历
+**[#E3F2FD] API
+*** 增删查：add / has / delete / clear
+*** 遍历：values / keys / entries / forEach
+*** 集合运算：并集、交集、差集、对称差集
+*** 关系判断：子集、超集、是否无交集
+**[#E0F2F1] 注意
+*** 内容相同的不同对象不会自动去重
+*** forEach 前两个参数都是成员值
+*** 集合运算返回新 Set，先检查环境支持
+*** 数组不是集合运算要求的 set-like 参数
+*** 业务去重需提取 id，明确保留哪条记录
+
+@endmindmap

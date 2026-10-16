@@ -1,0 +1,22 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* Vue2入口与Options API
+**[#EDE7F6] 创建应用
+*** new Vue 初始化选项
+*** render 描述根组件
+*** $mount 挂载界面
+**[#E3F2FD] 组织组件
+*** data 保存独立状态
+*** methods 处理操作
+*** SFC 构建时编译模板
+**[#FFF3E0] 注意
+*** data 每次返回新对象
+*** 实例方法使用普通函数
+*** Vue 2.7 仍有响应式限制
+
+@endmindmap

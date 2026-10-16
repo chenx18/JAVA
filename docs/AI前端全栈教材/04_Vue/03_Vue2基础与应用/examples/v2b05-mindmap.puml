@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 生命周期、KeepAlive与资源清理
+**[#EDE7F6] 生命周期
+*** created可用数据
+*** mounted后操作DOM
+*** beforeDestroy清理资源
+**[#E3F2FD] 组件缓存
+*** include按名称筛选
+*** activated启动活动
+*** deactivated暂停活动
+**[#E0F2F1] 资源归属
+*** 定时器需要主动停止
+*** 外部订阅成对解除
+*** 旧请求结果防止回写
+**[#FFF3E0] 注意
+*** 缓存失活不等于销毁
+*** 重复激活避免重复注册
+*** v-show不会触发失活
+
+@endmindmap

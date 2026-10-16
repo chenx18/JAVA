@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* ref与响应式工具
+**[#EDE7F6] 保存与读取
+*** ref 保存原始值或对象
+*** .value 读取与替换
+*** 模板解包和类型声明
+**[#E3F2FD] 控制更新范围
+*** shallowRef 只追踪外层
+*** triggerRef 主动通知
+*** customRef 自定通知时机
+**[#E0F2F1] 传递响应式入口
+*** toRef 连接单个属性
+*** toRefs 保留解构关联
+*** unref 与 toValue 归一化
+**[#FFF3E0] 注意
+*** 嵌套解包要看场景
+*** 属性引用不是复制
+*** 计时器随作用域清理
+
+@endmindmap

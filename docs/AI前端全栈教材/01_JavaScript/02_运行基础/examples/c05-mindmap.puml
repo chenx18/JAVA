@@ -1,0 +1,29 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 执行上下文与调用栈
+**[#EDE7F6] 执行状态
+*** 一次执行需要的状态
+*** 函数定义与调用不同
+*** 全局与模块也有执行状态
+**[#E3F2FD] 调用与返回
+*** 准备 → 执行 → 返回
+*** 嵌套调用：后进先出
+*** 每次调用有自己的局部变量
+*** 递归各层保留等待状态
+**[#E0F2F1] 参数初始化
+*** 先算实参，再初始化参数
+*** 默认值每次重新求值
+*** 参数从左到右初始化
+*** 默认值看不到函数体局部声明
+**[#FFF3E0] 注意
+*** 调用关系不改变变量查找
+*** 退出调用不等于数据立即销毁
+*** 独立参数仍可引用同一对象
+*** 暂停与恢复另有执行规则
+
+@endmindmap

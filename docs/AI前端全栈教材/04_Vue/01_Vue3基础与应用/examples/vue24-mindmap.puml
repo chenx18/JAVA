@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 性能排查、测试与项目练习
+**[#EDE7F6] 定位原因
+*** 区分加载交互和长期内存
+*** 记录脚本布局与绘制
+*** 保持比较条件一致
+**[#E3F2FD] 减少工作
+*** 稳定输入缩小更新范围
+*** 分页和虚拟化减少DOM
+*** 浅层状态约定替换更新
+**[#E0F2F1] 验证行为
+*** 类型检查组件输入
+*** 组件测试点击与显示
+*** 控制请求结果返回顺序
+**[#FFF3E0] 注意
+*** memo不能遗漏依赖
+*** 模拟DOM不测真实绘制
+*** 优化要兼顾状态与清理
+
+@endmindmap

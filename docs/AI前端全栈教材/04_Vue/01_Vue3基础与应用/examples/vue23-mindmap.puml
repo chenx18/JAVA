@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 模板编译与渲染优化
+**[#EDE7F6] 编译过程
+*** 解析形成语法树
+*** 转换指令和表达式
+*** 生成渲染函数
+**[#E3F2FD] 观察产物
+*** compile返回代码字符串
+*** 静态结构可以缓存
+*** 动态文本和class被标记
+**[#E0F2F1] 减少工作
+*** Patch Flag描述变化维度
+*** Block组织动态子节点
+*** 编译与渲染器共同处理
+**[#FFF3E0] 注意
+*** 内部产物随版本变化
+*** 不编译不可信模板
+*** 编译不等于类型和行为正确
+
+@endmindmap

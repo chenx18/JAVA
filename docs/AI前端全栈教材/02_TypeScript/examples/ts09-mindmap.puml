@@ -1,0 +1,27 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 泛型与类型关系
+**[#EDE7F6] 类型关系
+*** 输入对应输出
+*** 数组元素类型
+*** 空数组可能undefined
+**[#E3F2FD] 使用与推断
+*** 调用时推断
+*** 显式类型实参
+*** 默认类型
+**[#E0F2F1] 约束与容器
+*** extends最低能力
+*** 泛型接口
+*** 泛型类与map
+**[#FFF3E0] 注意
+*** 约束不是具体T
+*** 不用as T补漏洞
+*** 静态侧另设参数
+*** 无关系不用泛型
+
+@endmindmap

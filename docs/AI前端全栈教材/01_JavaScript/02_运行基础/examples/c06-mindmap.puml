@@ -1,0 +1,30 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* this 指向
+**[#EDE7F6] 基本判断
+*** this是本次调用使用的值
+*** 对象方法调用与单独调用
+*** 严格独立调用：undefined
+*** 非严格独立调用：全局对象
+**[#E3F2FD] 箭头与构造
+*** 箭头沿用外层this
+*** 对象字面量不另设this
+*** new创建实例并初始化
+*** 明确返回对象时可替换实例
+**[#E0F2F1] 常见场景
+*** 回调与递归仍看调用方式
+*** 浏览器与Node定时器不同
+*** 普通DOM监听：currentTarget
+*** 类方法取出后this可能改变
+**[#FFF3E0] 注意
+*** 严格性看函数自身
+*** this不由函数存放位置固定
+*** 箭头this不变不等于属性不变
+*** 指定this的方法见下一篇
+
+@endmindmap

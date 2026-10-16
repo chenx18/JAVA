@@ -1,0 +1,30 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 迭代器与生成器
+**[#EDE7F6] 迭代协议
+*** 序列入口
+*** 读取进度
+*** value 可以省略
+*** done 按布尔判断
+**[#E3F2FD] 生成器
+*** 函数与返回对象
+*** yield 求值时机
+*** next 回传
+*** 交出 Promise 后仍需 next
+*** 最终完成值
+**[#E0F2F1] 按需与异步
+*** yield* 委托
+*** 惰性推进
+*** for await 等待
+**[#FFF3E0] 注意
+*** 迭代器会消耗
+*** break 与清理
+*** 流协议另行处理
+*** 不是 async 前置
+
+@endmindmap

@@ -1,0 +1,27 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 类型推断、断言与 satisfies
+**[#EDE7F6] 自动推断
+*** 初始值与返回值
+*** const与let
+*** 上下文类型
+**[#E3F2FD] 表达要求
+*** 类型注解
+*** as改变视角
+*** 非空断言
+**[#E0F2F1] 配置工具
+*** as const
+*** 只读字面信息
+*** satisfies兼容检查
+**[#FFF3E0] 注意
+*** 断言不转换
+*** 不执行校验
+*** 不运行时冻结
+*** 先确认事实
+
+@endmindmap

@@ -1,0 +1,30 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 闭包与函数应用
+**[#EDE7F6] 概念与执行
+*** 函数继续访问定义处的外层变量
+*** 外层调用结束后仍可使用
+*** 不要求return或在外部调用
+*** 返回函数与返回调用结果不同
+**[#E3F2FD] 共享与独立
+*** 同一份变量的修改能被看到
+*** 提前算好的字符串不会自动重算
+*** 再次调用外层函数产生新状态
+*** 同一个函数赋给别名仍共享状态
+**[#E0F2F1] 实际应用
+*** 计数器与局部数据封装
+*** 固定配置后返回函数
+*** 循环：共享变量与每轮独立变量
+*** 防抖节流：跨调用保存状态
+**[#FFF3E0] 注意
+*** 不是全部父级变量永久保存
+*** 闭包不等于内存泄漏
+*** 清理监听、定时器和多余引用
+*** delete不能删除普通局部变量
+
+@endmindmap

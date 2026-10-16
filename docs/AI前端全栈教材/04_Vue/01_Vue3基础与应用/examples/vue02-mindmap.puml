@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* SFC、setup与script setup
+**[#EDE7F6] 单文件组件
+*** 模板描述界面
+*** 脚本组织逻辑
+*** 构建工具转换SFC
+**[#E3F2FD] 组合式入口
+*** setup接收props和context
+*** 返回对象供模板使用
+*** script setup省去return
+**[#E0F2F1] 编译功能
+*** 宏声明输入输出
+*** 3.5支持响应式props解构
+*** scoped限制选择器范围
+**[#FFF3E0] 注意
+*** 编译宏无需导入
+*** 顶层await形成异步setup
+*** 构建通过不等于类型正确
+
+@endmindmap

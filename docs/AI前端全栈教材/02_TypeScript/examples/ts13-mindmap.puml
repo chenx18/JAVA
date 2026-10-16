@@ -1,0 +1,29 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 常用工具类型
+**[#EDE7F6] 对象属性
+*** Partial 与 Required
+*** Readonly
+*** Pick 与 Omit
+*** Record 键集合
+**[#E3F2FD] 联合与函数
+*** Exclude 与 Extract
+*** NonNullable
+*** Parameters 与 ReturnType
+*** Awaited
+**[#E0F2F1] 按需工具
+*** 构造参数与实例
+*** 显式 this
+*** NoInfer
+**[#FFF3E0] 注意
+*** 浅层类型变化
+*** 真实字段不会删除
+*** 任意索引可能缺失
+*** 签名不代替验证
+
+@endmindmap

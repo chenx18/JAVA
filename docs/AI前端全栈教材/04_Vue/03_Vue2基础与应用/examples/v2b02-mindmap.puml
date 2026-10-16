@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* 模板指令、事件与表单
+**[#EDE7F6] 描述界面
+*** 插值输出文本
+*** v-bind 绑定属性
+*** class 与 style 动态绑定
+**[#E3F2FD] 控制内容
+*** v-if 创建或销毁
+*** v-show 切换 display
+*** 稳定 key 保持列表身份
+**[#E0F2F1] 处理输入
+*** v-on 注册监听
+*** 修饰符表达事件处理规则
+*** v-model 按表单类型绑定
+**[#FFF3E0] 注意
+*** Vue 2 中 v-for 优先于 v-if
+*** passive 不是节流
+*** 不直接插入不可信 HTML
+
+@endmindmap

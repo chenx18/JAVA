@@ -1,0 +1,26 @@
+@startmindmap
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam dpi 100
+skinparam backgroundColor white
+skinparam shadowing false
+
+* Teleport与Suspense
+**[#EDE7F6] 移动节点
+*** Teleport保留逻辑锚点
+*** to指定真实目标
+*** disabled控制实际落点
+**[#E3F2FD] 保留关系
+*** 组件树关系保持
+*** 注入继续按祖先查找
+*** 原生事件沿真实DOM冒泡
+**[#E0F2F1] 异步协调
+*** Suspense记录特定依赖
+*** pending与active分支切换
+*** 旧结果不能提交新分支
+**[#FFF3E0] 注意
+*** defer不无限等待目标
+*** Suspense仍属实验性能力
+*** fallback不替代错误处理和取消
+
+@endmindmap
