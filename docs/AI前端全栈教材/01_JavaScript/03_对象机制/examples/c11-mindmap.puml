@@ -7,24 +7,42 @@ skinparam shadowing false
 
 * 原型与原型链
 **[#EDE7F6] 属性查找
-*** 自身优先，再找原型
-*** 找到同名属性就停止
+*** 原型与原型链的定义
+**** 自身优先，没有再逐层找原型
+**** 找到 undefined 属性也停止\n走到 null 仍没有通常返回 undefined
 *** Object.hasOwn 与 in
-*** 赋值遮蔽，删除再查找
-**[#E3F2FD] 三种关系
-*** prototype 提供实例原型
-*** 对象原型是查找的下一站
-*** constructor 是普通属性
-*** 实例与构造函数各有查找链
-**[#E0F2F1] 修改与边界
-*** 修改共享数组会影响使用者
-*** 替换 prototype 不迁移旧实例
-*** Object.create 不执行初始化
-*** null 表示没有下一层原型
-**[#FFF3E0] 注意
-*** 不是每个函数都有 prototype
-*** 查询使用 Object.getPrototypeOf
-*** 字符串原始值查询涉及包装
-*** 原型关系不等于构造历史
+**** Object.hasOwn：只检查自身\nin：还检查原型链
+**** 能读到不等于自己保存\n属性存在与值为 undefined 不冲突
+**[#E3F2FD] 原型关系与修改
+*** prototype 与对象自身原型
+**** 构造函数 prototype 通常给实例提供原型\n对象内部原型记作 ~[[Prototype]]
+**** 实例与构造函数是不同对象\n各自拥有属性查找链
+**** 查询真实原型用 Object.getPrototypeOf
+*** constructor 与 ~__proto__ 的边界
+**** constructor 通常从原型继承\n修改它不改变原型或重做构造
+**** ~__proto__ 可被遮蔽且无原型对象不继承\n优先使用 Object.getPrototypeOf
+*** 赋值遮蔽、删除与共享对象修改
+**** 可扩展对象对可写数据属性赋值\n通常创建同名自有属性
+**** 删除自有属性后可再读原型值\n修改继承数组会影响共享者
+**** setter、不可写和不可扩展\n需要按各自规则判断
+left side
+**[#E0F2F1] 创建与终点
+*** Object.create：关联原型不做构造初始化
+**** 指定原型，不复制原型上的属性
+**** 可找到方法但未初始化实例字段\ninstanceof 不证明构造执行历史
+*** 修改原型对象与替换 prototype
+**** 修改原型对象影响仍沿它查找的实例
+**** 替换 prototype 不迁移已有实例\n后续实例通常使用新原型
+**** 默认 instanceof 根据当前 prototype 检查\n结果可能因替换而变化
+*** 原型链终点与无原型对象
+**** null 表示没有下一层原型
+**** Object.create(null) 直接结束\n不继承 Object.prototype 的方法
+**[#FFF3E0] 身份和使用边界
+*** 原始值与函数的原型查询
+**** 字符串原始值查询涉及包装规则\n不因此变成对象
+**** 普通函数自身通常关联 Function.prototype\n这与它的 prototype 属性不同
+*** 原型关系、身份判断与原型污染
+**** instanceof 不证明初始化或业务字段\n数组身份优先用 Array.isArray
+**** 共享原型被污染会影响许多对象\n限制外部字段与不受控合并
 
 @endmindmap

@@ -15,25 +15,43 @@ skinparam backgroundColor white
 skinparam shadowing false
 
 * async 与 await
-**[#EDE7F6] 写法与结果
-*** then改写为await
-*** async返回Promise
-*** Generator返回迭代器
-**[#E3F2FD] 执行顺序
-*** 先求值再等待
-*** 普通值也异步恢复
-*** 按依赖组织任务
-*** forEach不等待回调
-**[#E0F2F1] 异常与清理
-*** await处接住拒绝
-*** return await边界
-*** finally清理时机
-*** 及时接管失败
-**[#FFF3E0] 注意
-*** 不是只换关键字
-*** Generator需外部推进
-*** 等待不等于取消
-*** 计算仍占线程
+**[#EDE7F6] 返回与执行时机
+*** async 返回值：调用者先拿到 Promise
+**** 普通返回成为成功，抛错成为拒绝，返回结果则采用
+**** 先拿 Promise 再取数据；采用已有结果不等于同一对象
+*** 同步前缀：async 不是从函数第一行就延后
+**** 先同步执行到实际经过的 await，右侧先求值
+**** 函数内提前 throw 也交付为 Promise 拒绝
+*** await：暂停当前函数，不阻塞整个线程
+**** 普通值也异步恢复；拒绝在 await 处表现为抛错
+**** 暂停后续，不搬走右侧或续体里的同步计算
+**[#E3F2FD] 任务组织
+*** 串行与并发：由依赖和启动点决定
+**** 有依赖先等待，独立任务可先启动再汇总
+**** 大量任务用池控制启动，及时接管拒绝
+*** 异步遍历：forEach 不收集回调的 Promise
+**** forEach 忽略回调返回值，外层 await 无法补上等待
+**** for...of 控制逐项启动；map 加 all 汇总并发结果
+left side
+**[#E0F2F1] 错误与清理
+*** 拒绝接管：在 await 的位置进入本地 catch
+**** 函数内 throw 成为返回 Promise 的拒绝
+**** 调用者 await 或 catch 接管，日志不是完整错误策略
+*** return await：让本地捕获与清理等到结果
+**** 直接 return 采用结果，本地 catch 不接稍后拒绝
+**** return await 等待后再进入本地捕获与 finally
+**** 清理 return 或失败仍可能覆盖原结果
+*** async executor：两份 Promise 不会自动连接
+**** async executor 返回自己的 Promise，构造器不接管
+**** 已有结果直接组合；回调适配明确连接成功和失败
+**[#FFF3E0] 运行边界与对照
+*** 等待、取消与页面响应：分别选择机制
+**** await 不取消；signal 需要底层操作响应
+**** 连续微任务不保证绘制；分片与 Worker 另行选择
+*** Generator 对照：暂停能力相似，返回与驱动不同
+**** Generator 返回迭代器，需要外部 next 等推进
+**** async 返回 Promise，await 恢复由运行时安排
+**** 自动执行器可作类比，不是简单替换关键字
 
 @endmindmap
 ```
@@ -43,6 +61,12 @@ skinparam shadowing false
 <!-- core-mindmap:end -->
 
 **口述总览：** async 函数仍然返回 Promise，await 让当前函数等到结果后再继续书写后面的步骤。学习时先把熟悉的 then 链改写一次，再区分任务何时启动、当前函数何时暂停，以及失败由哪里接住。
+
+<!-- recall-route:start -->
+**记忆线：** 返回 Promise → 同步开始与暂停恢复 → 任务依赖与启动 → 错误和清理 → 取消、响应与 Generator 对照。先分清启动时机和等待位置，再判断调用者得到什么。
+
+本篇按 10 个主要知识点复习：[先自查](#self-check) · [口述与答案](#interview)。先尝试口述，再用正文示例验证；文末完整保留每点的回答和记忆提示，不依赖跳转也能复习。
+<!-- recall-route:end -->
 
 先读懂 [Promise](02_Promise.md)，再看本篇。async/await 没有增加后台线程，也没有改变 Promise 的成功与失败机制。
 
@@ -339,46 +363,141 @@ result.then(value => console.log('async', value)); // async done
 生成器需要外部继续推进；async 在等待后自动继续，并通过 Promise 交付结果。可以用“Generator 加自动执行器”类比 async/await 的转换：执行器等待交出的 Promise，再用 next 或 throw 送回值或错误。但这需要完整的推进与异常传递逻辑，不能只替换 function*、yield 两个符号，也不能据此认定原生 async 内部必须使用 Generator。该关系不是学习本篇的前置条件，细节见[迭代器与生成器](../06_选读扩展/01_迭代器与生成器.md)。
 
 <a id="summary"></a>
+<a id="self-check"></a>
+
+## 自查问题
+
+先遮住答案，沿记忆线逐题口述；下方逐点保留完整回答与记忆提示。
+
+1. [async 函数返回什么？return 普通值、已有 Promise 或 throw 分别怎样？返回已有 Promise 时对象身份是否相同？](#recall-01)
+2. [async 函数调用后立刻异步执行吗？第一个 await 之前和右侧表达式什么时候运行？函数内提前 throw 怎样交给调用者？](#recall-02)
+3. [await 会阻塞整个线程吗？等待普通值或已成功 Promise 会同步跳过吗？await heavyCalculation() 能把重计算搬走吗？](#recall-03)
+4. [怎样选择串行、Promise.all、allSettled 和并发池？多个 await 就一定串行吗？为什么不能把已启动结果很晚才逐个接管？](#recall-04)
+5. [forEach(async callback) 为什么不会等全部完成？外面再加 await 有用吗？需要顺序或并发处理应怎样写？](#recall-05)
+6. [async 内的 throw 怎样传播？为什么只在调用外包同步 try/catch 不够？哪里才能接住返回 Promise 的拒绝？](#recall-06)
+7. [return await 一定多余吗？直接 return Promise 时本地 catch 和 finally 怎样运行？资源需要等操作完成后释放时怎样选择？](#recall-07)
+8. [new Promise(async resolve => ...) 为什么危险？已有 Promise 的任务怎样组合，传统回调又怎样适配？](#recall-08)
+9. [await 会取消不再需要的工作吗？连续 await Promise.resolve() 能保证页面刷新吗？取消和重计算分别该用什么手段？](#recall-09)
+10. [async/await 只是把 Generator 的两个关键字替换了吗？它们返回什么、谁负责推进、怎样传回值和错误？](#recall-10)
+
 <a id="interview"></a>
 
 ## 试题与答案
 
-**口述主线：** async 保证返回 Promise，await 先求值再暂停；启动方式决定顺序或并发，等待位置决定本地异常与清理边界。
+以下按 10 个知识点依次归纳。原有分级题保留题号，其余标题对应同一条复习主线。
+
+<a id="recall-01"></a>
+
+### async 返回值：调用者先拿到 Promise
+
+**自查：** async 函数返回什么？return 普通值、已有 Promise 或 throw 分别怎样？返回已有 Promise 时对象身份是否相同？
+
+**回答：** 调用 async 函数会得到一个 Promise。普通 return 值成为成功结果，返回 Promise 或 thenable 时采用其最终结果，函数内抛错则成为拒绝。调用者需要 await 或 then 取得最终数据，不能把返回对象直接当业务结果。即使返回已有 Promise，async 调用得到的也不是那个对象本身，要区分最终结果相同与引用身份相同。then 链与 async/await 都以 Promise 传递结果，主要是组织后续步骤的写法不同。
+
+**记忆：** async 交回 Promise，最终结果与 Promise 身份分开看。
+
+<a id="recall-02"></a>
 
 <a id="c17-01"></a>
 
 ### C17-01 [P0·原理] async函数调用后立刻异步执行吗？
 
-**回答：** 调用先同步执行到实际经过的第一个 await，右侧表达式也先求值。await 后续逻辑再异步恢复。async 保证返回 Promise，不会自动并行执行计算。见[async 返回值](#k01)。
+**自查：** async 函数调用后立刻异步执行吗？第一个 await 之前和右侧表达式什么时候运行？函数内提前 throw 怎样交给调用者？
+
+**回答：** 调用先同步执行到实际经过的第一个 await；await 右侧表达式也先求值，其中的函数调用和同步计算照常执行。暂停后的续体才在后续恢复。因此 async 不会把整段函数搬进后台线程。即使函数内 throw 发生在第一个 await 前，也通过返回 Promise 的拒绝交给调用者，调用者需要接管该 Promise。见[async 与执行时机](#k01)。
+
+**记忆：** async 先同步跑，await 右边也先算，暂停后的步骤才稍后恢复。
+
+<a id="recall-03"></a>
 
 <a id="c17-02"></a>
 
 ### C17-02 [P0·原理] await会阻塞整个线程吗？
 
-**回答：** 等待期间暂停当前 async 函数，其他可调度代码可以继续；但 await 前后的同步计算仍会占用线程。连续等待已成功 Promise 也不保证绘制机会。见[等待与页面响应](#k05)。
+**自查：** await 会阻塞整个线程吗？等待普通值或已成功 Promise 会同步跳过吗？await heavyCalculation() 能把重计算搬走吗？
 
-<a id="c17-03"></a>
+**回答：** await 先求值，再暂停当前 async 函数的后续步骤，其他可调度代码可以继续。即使等待普通值或已成功 Promise，续体也会异步恢复；遇到拒绝则在 await 位置表现为抛错。暂停不等于后台计算，右侧以及恢复后的同步代码仍会占用线程，await heavyCalculation() 也不能搬走已经开始的计算。普通脚本中的 await 要在 async 函数里，ES 模块支持顶层 await，但会影响依赖模块的执行。连续 await 已成功结果还不保证绘制机会。见[等待与页面响应](#k05)。
 
-### C17-03 [P0·原理] return await是否总是多余？
+**记忆：** 暂停本函数，不占着线程等待；同步重计算仍然占线程。
 
-**回答：** 不是。当前 catch 需要接管拒绝，或者 finally 必须在操作完成后再清理时，return await 有明确意义。没有本地处理要求时可直接 return Promise，不能机械删除。见[异常与清理](#k03)。
-
-<a id="c17-04"></a>
-
-### C17-04 [P1·原理] new Promise(async resolve=>...)为什么危险？
-
-**回答：** 构造器忽略 executor 返回值，async executor 自己的 Promise 与外层没有自动连接。内部拒绝后，外层可能没有 resolve/reject 而一直等待。已有 Promise 直接用 async 组合，回调适配明确连接两个分支。见[构造器边界](#k04)。
+<a id="recall-04"></a>
 
 <a id="c17-05"></a>
 
 ### C17-05 [P1·工程取舍] 如何选择串行、Promise.all和并发池？
 
-**回答：** 先看数据依赖，依赖前一步就串行；少量独立任务及时用 all/allSettled 接管；大量任务或资源受限则用池控制启动。结果汇总、错误恢复和取消还要分别设计。见[顺序与并发](#k02)。
+**自查：** 怎样选择串行、Promise.all、allSettled 和并发池？多个 await 就一定串行吗？为什么不能把已启动结果很晚才逐个接管？
+
+**回答：** 后一步依赖前一步的数据时，先等前一步再启动；少量独立操作可以先调用并及时用 all 或 allSettled 汇总；大量任务或资源受限时，用池控制启动数量。是否并发取决于任务何时被调用，不是 await 的数量。先创建可能失败的 Promise，却很晚才逐个等待，后面的结果可能已经拒绝而无人接管。限并发、结果汇总、错误恢复与取消也需要分别设计。见[任务依赖](#k02)。
+
+需要全部成功、任意一项失败就让整体失败时用 all；需要等每一项结束并收齐各自的成功或失败结果时用 allSettled。两者都不会自动取消其他已经启动的任务。
+
+**记忆：** 依赖决定先后，调用点决定启动；大量任务保留启动权。
+
+<a id="recall-05"></a>
+
+### 异步遍历：forEach 不收集回调的 Promise
+
+**自查：** forEach(async callback) 为什么不会等全部完成？外面再加 await 有用吗？需要顺序或并发处理应怎样写？
+
+**回答：** forEach 同步遍历并忽略回调返回值，async 回调返回的 Promise 不会被它收集，forEach 自身仍返回 undefined。在外面加 await 只是等待这个 undefined，无法接上内部任务的完成和失败。需要顺序处理时，用 for...of 并在循环体等待；需要并发汇总时，先用 map 产生 Promise，再交给 all 或 allSettled；数量大时另外控制并发。
+
+**记忆：** forEach 不收回调结果；顺序用 for...of，并发用 map 加汇总。
+
+<a id="recall-06"></a>
+
+### 拒绝接管：在 await 的位置进入本地 catch
+
+**自查：** async 内的 throw 怎样传播？为什么只在调用外包同步 try/catch 不够？哪里才能接住返回 Promise 的拒绝？
+
+**回答：** async 函数内的异常会成为返回 Promise 的拒绝。调用者只是调用却不等待，当前 try 中并没有接回这个异步结果，因此抓不到该拒绝；需要 await，或为返回 Promise 安排 catch。await 让拒绝在本函数当前位置表现为异常，本地 catch 可以恢复或继续抛出。恢复时应明确业务含义，不能只打印日志就无意间把失败变成成功。
+
+**记忆：** 调用拿到 Promise，await 才把拒绝接回当前 try。
+
+<a id="recall-07"></a>
+
+<a id="c17-03"></a>
+
+### C17-03 [P0·原理] return await是否总是多余？
+
+**自查：** return await 一定多余吗？直接 return Promise 时本地 catch 和 finally 怎样运行？资源需要等操作完成后释放时怎样选择？
+
+**回答：** 不一定多余。直接 return Promise 会让返回的 Promise 采用任务结局，但任务稍后拒绝不会在这次本地 try 内抛出，finally 也可能先于任务完成执行。return await 先在当前函数等结果，本地 catch 可以接住拒绝，finally 随后才清理，适合资源必须保持到操作完成的情况。若没有本地捕获和清理要求，可以直接 return；finally 的 return、throw 或失败清理还可能覆盖原结果。见[异常与清理](#k03)。
+
+**记忆：** 本地要接失败、完成后要清理，return await 就有意义。
+
+<a id="recall-08"></a>
+
+<a id="c17-04"></a>
+
+### C17-04 [P1·原理] new Promise(async resolve=>...)为什么危险？
+
+**自查：** new Promise(async resolve => ...) 为什么危险？已有 Promise 的任务怎样组合，传统回调又怎样适配？
+
+**回答：** Promise 构造器不使用 executor 的返回值，而 async executor 会产生自己的 Promise。这份返回结果没有自动接到外层 Promise：内部 await 后失败可能只拒绝内层，外层因为没有 resolve 或 reject 而一直 pending。已有 Promise 的任务直接用 async 组合；接传统回调时，构造器明确把成功和失败连到 resolve、reject，回调自己的抛错、取消、监听移除和永不回调的情况还需另外处理。见[构造器边界](#k04)。
+
+**记忆：** 构造器忽略 executor 返回值，两份 Promise 不会自动接上。
+
+<a id="recall-09"></a>
+
+### 等待、取消与页面响应：分别选择机制
+
+**自查：** await 会取消不再需要的工作吗？连续 await Promise.resolve() 能保证页面刷新吗？取消和重计算分别该用什么手段？
+
+**回答：** await 负责接收结果，不会自动停止底层工作；AbortSignal 传递取消意图，任务需要主动响应，服务端已完成的副作用也不会因此撤销。连续 await 已成功 Promise 可能一直以微任务续接，其他任务和绘制仍会等待。需要改善响应时先减少计算，再考虑有界分片或 Worker；rAF 用于视觉更新，里面的大量同步计算仍会阻塞。等待、取消与降低线程占用是三件事。
+
+**记忆：** await 等结果，signal 传取消，分片或 Worker 减少连续占用。
+
+<a id="recall-10"></a>
 
 <a id="c17-06"></a>
 
 ### C17-06 [P1·原理] async/await只是把Generator的两个关键字替换了吗？
 
-**回答：** 不是。Generator 函数返回生成器对象，需要外部推进；async 函数返回 Promise，await 的暂停和恢复由运行时处理。Generator 配合自动执行器可以作为转换类比，但还要处理等待、继续执行、异常传递和最终结果，不能只替换语法符号。普通值经过 await 也异步恢复，拒绝则在 await 位置表现为异常，可由本地 catch 处理。
+**自查：** async/await 只是把 Generator 的两个关键字替换了吗？它们返回什么、谁负责推进、怎样传回值和错误？
+
+**回答：** 不是。Generator 调用返回生成器对象，函数体由 next 等方法推进到 yield；async 调用先执行同步部分，返回 Promise，await 后的恢复由运行时安排。用 Generator 加自动执行器可以类比转换：执行器等待交出的结果，再通过 next 或 throw 送回值与错误，并连接最终结果。这需要完整的推进和异常逻辑，不能只替换符号，也不能据此断定原生 async 内部必须使用 Generator。普通值经过 await 也异步恢复。
+
+**记忆：** Generator 交出迭代器让外部推进，async 交出 Promise 并由运行时续接。
 
 参考：[MDN async function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function)、[MDN await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await)。

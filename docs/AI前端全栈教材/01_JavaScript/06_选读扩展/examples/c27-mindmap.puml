@@ -6,19 +6,34 @@ skinparam backgroundColor white
 skinparam shadowing false
 
 * Web Worker
-**[#EDE7F6] 用途
-*** 独立JS执行环境，适合较重计算
-*** 不能直接操作页面DOM
-*** async不会把计算自动移到另一线程
-**[#E3F2FD] API
-*** 创建：new Worker；结束：terminate
-*** 通信：postMessage / message / error
-*** 数据：结构化克隆或transfer
-*** 任务协议：ID / 结果 / 失败 / 取消
-**[#E0F2F1] 注意
-*** 转移ArrayBuffer后发送方缓冲分离
-*** 长同步循环无法及时处理取消消息
-*** 终止时处理等待中的Promise
-*** 衡量交互改善及启动通信成本
+**[#EDE7F6] 用途与运行环境
+*** 独立计算与 async 的区别
+**** 同步重计算不会因 async 自动离开主线程
+**** 优先改善响应性，不保证总耗时更短
+*** DOM 与变量访问边界
+**** 独立全局环境，不能直接读页面局部变量或 DOM
+**** 浏览器专用 Worker 与 Node 接口分开判断
+**[#E3F2FD] 创建、通信与数据
+*** 创建和结束 Worker
+**** 模块 Worker 检查 URL、同源、CSP 和构建产物
+**** 页面 terminate，内部 close\n任务收尾仍需协议
+*** 消息协议与 Promise 结算
+**** postMessage 不直接返回计算结果
+**** taskId 匹配响应\n成功、失败、超时、终止都要结算
+*** 结构化克隆、转移与共享
+**** ArrayBuffer 转移后发送方缓冲分离
+**** 资源需出现在消息中\ntransfer 不等于共享内存
+left side
+**[#E0F2F1] 取消与生命周期
+*** 取消消息与长同步计算
+**** 长同步循环阻塞取消消息处理
+**** 分块让出执行机会或终止环境\n信号不会自动中止计算
+*** 旧结果与终止后的任务收尾
+**** 版本保护结果归属
+**** 终止或错误时结算 Promise\n清理任务记录与监听
+**[#FFF3E0] 性能选择与注意
+*** 收益与启动通信成本
+**** 同时测响应性、总耗时、内存和传输成本
+**** DOM 与布局瓶颈仍在页面解决
 
 @endmindmap

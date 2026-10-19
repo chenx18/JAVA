@@ -6,19 +6,40 @@ skinparam backgroundColor white
 skinparam shadowing false
 
 * 前端录音
-**[#EDE7F6] 录音过程
-*** 用户授权 → MediaStream音轨
-*** MediaRecorder编码 → Blob分片
-*** 最终stop事件 → 汇总录音
-**[#E3F2FD] API
-*** 采集：getUserMedia；关闭：track.stop
-*** 录制：start / pause / resume / stop
-*** 预览：createObjectURL / revokeObjectURL
-*** 上传：FormData配合fetch
-**[#E0F2F1] 注意
-*** 安全上下文、权限与设备支持
-*** stop返回时最终分片可能还未交付
-*** 实际mimeType决定格式，扩展名不会转码
-*** 关闭音轨、撤销URL、取消上传分别清理
+**[#EDE7F6] 采集与授权
+*** 音轨、编码、字节与播放的分工
+**** 采集 → 音轨 → 录制编码 → Blob → 播放
+**** 波形和音量分析另用 Web Audio API
+*** 权限、设备与迟到授权
+**** 安全上下文、授权、设备和嵌入权限策略
+**** 授权等待不会自动被普通 abort 中止\n迟到 stream 需停止音轨
+**[#E3F2FD] 录制与最终数据
+*** MediaRecorder 控制与状态
+**** start / pause / resume / stop\n按 inactive、recording、paused 控制
+**** 业务还需等待授权和停止处理状态
+*** 媒体类型与文件扩展名
+**** 支持检查后仍处理创建和录制失败
+**** 实际 mimeType 决定格式\n扩展名不会转码
+*** timeslice 与分片边界
+**** 分片间隔不精确，单片不保证独立可播放
+**** 不能用分片数乘间隔充当精确时长
+*** 最终 dataavailable 与 stop 事件
+**** 先注册监听并收集最后分片
+**** 在 stop 事件中汇总 Blob\n及时处理完成或失败
+left side
+**[#E0F2F1] 预览与上传
+*** 对象 URL 的创建和撤销
+**** createObjectURL 可直接预览 Blob
+**** 播放器结束使用或替换时 revoke\n不是服务器存储地址
+*** FormData 上传与服务端校验
+**** FormData 携带 Blob\n不要覆盖浏览器生成的 boundary
+**** 服务端检查大小、真实格式和权限
+**[#FFF3E0] 生命周期与验证
+*** 停止录制与资源清理的区别
+**** recorder.stop 不等于 track.stop
+**** 录制、音轨、对象 URL、上传分别清理\n成功和失败都覆盖
+*** 状态机、防重复启动与真实设备验证
+**** 用状态阻止重复授权与重复录制
+**** 验证卸载、断开、后台和最大时长\n模拟测试不代替真实设备
 
 @endmindmap

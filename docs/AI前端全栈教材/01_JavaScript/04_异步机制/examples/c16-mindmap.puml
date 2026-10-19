@@ -6,25 +6,49 @@ skinparam backgroundColor white
 skinparam shadowing false
 
 * Promise
-**[#EDE7F6] 创建与状态
-*** 同步执行器
-*** 结果采用与锁定
-*** 完成后仍可订阅
-*** 处理函数异步执行
-**[#E3F2FD] 链式处理
-*** then返回新Promise
-*** 返回任务才能等待
-*** catch恢复与传播
-*** finally等待与清理
-**[#E0F2F1] 组合与适配
-*** all与allSettled
-*** race与any
-*** resolve与reject
-*** try与withResolvers
-**[#FFF3E0] 注意
-*** 取消底层操作
-*** 没有进度协议
-*** 未处理拒绝会报告
-*** 手写与A+边界
+**[#EDE7F6] 结果、执行与状态
+*** Promise 的用途：统一一次操作的最终结果
+**** 统一一次成功或失败的结果接口
+**** 不创建计算线程，pending 不代表进度
+*** executor：创建时同步执行，resolve 不结束函数
+**** executor 同步执行；结果处理器稍后运行
+**** resolve 不结束函数；未来回调抛错需单独接入
+*** 状态与结果采用：resolved 不等于 fulfilled
+**** pending 可转 fulfilled 或 rejected；settled 是终态统称
+**** resolved 可能仍 pending，但结果跟随关系已锁定
+**[#E3F2FD] 订阅、链式与清理
+*** 结果订阅：完成后仍能订阅，pending 先保存处理器
+**** 已完成仍可多次订阅，不会重跑原操作
+**** 处理器保持异步；pending 时先保存，完成后再调度
+*** then 链：回调返回值决定下一段
+**** then 返回新 Promise；值成功、抛错拒绝、返回结果则采用
+**** 缺少处理器会透传；漏 return 不等待内部任务
+*** catch 与 finally：恢复失败和完成清理
+**** catch 正常返回可恢复，继续抛错则传播
+**** 同次 then 的失败分支不接成功分支自己的抛错
+**** finally 等清理且通常保留原结果，清理失败可覆盖
+left side
+**[#E0F2F1] 结果接入与任务控制
+*** resolve 与 reject：采用结果和保留原因不对称
+**** resolve 接普通值、同构造器 Promise 和 thenable
+**** reject 直接保存原因，不等待原因 Promise
+*** 组合方法：按成功条件、结果顺序和空输入选择
+**** all 全成功；allSettled 全结束，结果按输入顺序
+**** race 首结局；any 首成功，全失败为 AggregateError
+**** 空输入：前两者空数组、race 等待、any 拒绝
+*** 任务责任：启动、限并发、取消和接管失败各自处理
+**** map 可先启动全部请求；all 不控制启动权
+**** 整体失败不自动取消其他操作
+**** 及时接管每份拒绝；底层取消需协作
+**[#FFF3E0] 辅助 API 与实现边界
+*** withResolvers：把结果与完成函数交给外部
+**** 返回 promise、resolve、reject，便于事件适配
+**** 仍须设计终态、超时、取消和清理，并检查支持
+*** Promise.try：同步调用函数，统一返回与抛错
+**** try 同步调用 fn，接返回结果与同步抛错
+**** resolve().then(fn) 后续才调用；检查目标运行时支持
+*** 手写 all 与 Promise/A+：说明真正实现的范围
+**** 索引保序，计数收齐，处理空输入与任意拒绝
+**** 借用原生 Promise，不等于重写构造器或完整 A+
 
 @endmindmap

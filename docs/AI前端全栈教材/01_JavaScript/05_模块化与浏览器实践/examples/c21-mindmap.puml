@@ -6,25 +6,55 @@ skinparam backgroundColor white
 skinparam shadowing false
 
 * DOM 操作与 DOM 事件
-**[#EDE7F6] 页面与事件
-*** 查询、文本与当前状态
-*** 按点击、输入、提交等用途选择
-*** 焦点与指针进出有不同传播规则
-*** 页面就绪与资源完成分别判断
-**[#E3F2FD] 绑定与清理
-*** 内联与onclick共用一个处理器位置
-*** addEventListener保留多个不同监听
-*** 按引用与capture移除，匿名也可
-*** once、signal与生命周期按需使用
-**[#E0F2F1] 传播与交互
-*** 捕获、目标、冒泡
-*** 默认行为与传播分别控制
-*** 委托处理动态后代并检查归属
-*** 同步派发与任务调度分开
-**[#FFF3E0] 注意
-*** 输入法合成不能只按键判断
-*** requestSubmit与submit行为不同
-*** 事件委托不保证一定更快
-*** unload不可靠，隐藏不等于销毁
+**[#EDE7F6] DOM 基础：怎样访问和更新
+*** DOM、节点与元素
+**** document 表示文档\n元素、文本、注释都是节点
+**** DOM 是浏览器能力\n节点移除不等于引用消失
+*** 查询与更新
+**** querySelector 可能 null\nquerySelectorAll 是静态集合
+**** 创建不等于插入，append 可移动节点\n纯文本用 textContent
+*** property 与 attribute
+**** attribute 是标记属性\nproperty 是对象属性
+**** value / checked 看当前\ndefaultValue / defaultChecked 看默认
+**[#E3F2FD] 监听与输入：怎样选择和管理
+*** 监听注册与解绑
+**** onclick 再赋值会覆盖\naddEventListener 可保存多个不同监听
+**** 移除匹配 type、引用、capture\n匿名函数保存引用也能移除
+*** 监听选项
+**** capture 阶段，once 最多一次
+**** passive 不取消默认动作\nsignal 集中移除监听
+*** 点击、指针和焦点
+**** click 不只来自鼠标\n指针手势处理 pointercancel
+**** over/out 与 focusin/out 可冒泡\nenter/leave 与 focus/blur 不冒泡
+*** 输入、确认与输入法
+**** input 跟踪编辑，change 看控件确认\n赋 value 不自动派发事件
+**** isComposing 区分输入法合成\n按键动作看 key 与 repeat
+*** 表单提交与重置
+**** 提交来源不只按钮\nrequestSubmit 校验并触发 submit
+**** submit 方法跳过校验与事件\nreset 恢复默认值
+left side
+**[#E0F2F1] 传播与委托：谁收到、怎样处理
+*** 事件传播
+**** 祖先捕获 → 目标 → 可选冒泡
+**** 目标先捕获监听后非捕获监听\n两者都属于目标阶段
+*** 事件目标与当前监听对象
+**** target 是目标，currentTarget 是当前监听对象
+**** 图标点击用 closest 找业务元素\n跨边界与异步取值另看规则
+*** 默认行为与传播
+**** preventDefault 取消默认动作\nstopPropagation 停止后续传播
+**** stopImmediatePropagation 还拦后续监听\n取消要看 cancelable 与 passive
+*** 事件委托
+**** 稳定祖先覆盖新增后代
+**** closest 找目标，contains 查范围\n嵌套列表还要查业务归属
+**[#FFF3E0] 页面与调度：何时运行和清理
+*** 页面与资源就绪
+**** DOMContentLoaded 看解析与相关脚本\nload 看资源加载条件
+**** readyState 防止错过就绪\n业务数据完成另行判断
+*** 同步派发
+**** click / dispatchEvent 可同步执行监听\n传播路径与事件调度分开
+**** 人工派发不等于真实输入\n不凭事件对象获得用户激活
+*** 状态观察与生命周期
+**** 视口、元素尺寸、滚动和 hash 分开观察
+**** hidden 不等于销毁，pagehide 可能缓存\n生命周期主动清理监听与资源
 
 @endmindmap

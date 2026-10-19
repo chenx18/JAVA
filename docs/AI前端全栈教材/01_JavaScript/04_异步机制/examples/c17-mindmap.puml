@@ -6,24 +6,42 @@ skinparam backgroundColor white
 skinparam shadowing false
 
 * async 与 await
-**[#EDE7F6] 写法与结果
-*** then改写为await
-*** async返回Promise
-*** Generator返回迭代器
-**[#E3F2FD] 执行顺序
-*** 先求值再等待
-*** 普通值也异步恢复
-*** 按依赖组织任务
-*** forEach不等待回调
-**[#E0F2F1] 异常与清理
-*** await处接住拒绝
-*** return await边界
-*** finally清理时机
-*** 及时接管失败
-**[#FFF3E0] 注意
-*** 不是只换关键字
-*** Generator需外部推进
-*** 等待不等于取消
-*** 计算仍占线程
+**[#EDE7F6] 返回与执行时机
+*** async 返回值：调用者先拿到 Promise
+**** 普通返回成为成功，抛错成为拒绝，返回结果则采用
+**** 先拿 Promise 再取数据；采用已有结果不等于同一对象
+*** 同步前缀：async 不是从函数第一行就延后
+**** 先同步执行到实际经过的 await，右侧先求值
+**** 函数内提前 throw 也交付为 Promise 拒绝
+*** await：暂停当前函数，不阻塞整个线程
+**** 普通值也异步恢复；拒绝在 await 处表现为抛错
+**** 暂停后续，不搬走右侧或续体里的同步计算
+**[#E3F2FD] 任务组织
+*** 串行与并发：由依赖和启动点决定
+**** 有依赖先等待，独立任务可先启动再汇总
+**** 大量任务用池控制启动，及时接管拒绝
+*** 异步遍历：forEach 不收集回调的 Promise
+**** forEach 忽略回调返回值，外层 await 无法补上等待
+**** for...of 控制逐项启动；map 加 all 汇总并发结果
+left side
+**[#E0F2F1] 错误与清理
+*** 拒绝接管：在 await 的位置进入本地 catch
+**** 函数内 throw 成为返回 Promise 的拒绝
+**** 调用者 await 或 catch 接管，日志不是完整错误策略
+*** return await：让本地捕获与清理等到结果
+**** 直接 return 采用结果，本地 catch 不接稍后拒绝
+**** return await 等待后再进入本地捕获与 finally
+**** 清理 return 或失败仍可能覆盖原结果
+*** async executor：两份 Promise 不会自动连接
+**** async executor 返回自己的 Promise，构造器不接管
+**** 已有结果直接组合；回调适配明确连接成功和失败
+**[#FFF3E0] 运行边界与对照
+*** 等待、取消与页面响应：分别选择机制
+**** await 不取消；signal 需要底层操作响应
+**** 连续微任务不保证绘制；分片与 Worker 另行选择
+*** Generator 对照：暂停能力相似，返回与驱动不同
+**** Generator 返回迭代器，需要外部 next 等推进
+**** async 返回 Promise，await 恢复由运行时安排
+**** 自动执行器可作类比，不是简单替换关键字
 
 @endmindmap

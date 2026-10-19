@@ -6,19 +6,40 @@ skinparam backgroundColor white
 skinparam shadowing false
 
 * Fetch、请求取消与竞态
-**[#EDE7F6] 请求过程
-*** 发出请求 → 响应头 → 读取响应体
-*** JSON解析 → 字段校验 → 提交界面
-*** URL / URLSearchParams 构造参数
-**[#E3F2FD] 调用与控制
-*** fetch：method / headers / body / signal
-*** Response：ok / status / json / text
-*** AbortController：取消不再需要的等待
-*** 版本检查：只让当前请求提交
-**[#E0F2F1] 注意
-*** HTTP 404/500 通常不会自动reject
-*** body通常只能读取一次
-*** 旧catch和finally也要判断归属
-*** abort不保证撤销服务端修改
+**[#EDE7F6] 地址与请求：怎样发出
+*** Fetch 的阶段
+**** 发出 → 响应头 → 响应体\n→ 解析 → 校验 → 提交
+**** 200 后仍可能读取、解析或校验失败
+*** URL 与查询参数
+**** URL 解析地址\nset 替换，append 追加同名参数
+**** 编码避免拼接歧义\n不能代替校验和保密
+*** HTTP 状态与请求选项
+**** ok 对应 200～299\n404 / 500 通常仍兑现 Response
+**** 请求方法、头、体、取消与凭证分别配置\nno-cors 不能解锁响应读取
+**[#E3F2FD] 读取与校验：成功到哪一步
+*** Response 读取
+**** json / text 等返回 Promise\n同一响应体通常只能消费一次
+**** 204 与空响应按接口处理\n不盲目调用 json()
+*** 数据校验
+**** json 成功只保证语法合法
+**** 字段、类型、范围与业务状态仍要校验
+left side
+**[#E0F2F1] 取消与超时：停止什么
+*** 取消请求
+**** 支持信号的操作协作取消\n已取消 signal 不能恢复
+**** 服务端可能已经执行\n写操作还需幂等、查询或补偿
+*** 超时与错误分类
+**** timeout 产生信号，any 合并信号\nrace 只选择结果
+**** 完整读取结束再释放预算资源\n取消与其他错误分开
+**[#FFF3E0] 竞态与验证：谁能提交
+*** 请求竞态
+**** 旧操作可能忽略取消\n提交前再次检查版本
+**** 结果、错误、loading、流式增量\n都按当前请求归属提交
+*** 请求状态与重入
+**** abort 监听可同步重入\n先安装新版本与 Controller
+**** 启动、提交检查有效性\nfinally 只清理自己的资源
+*** 验证与适用范围
+**** 可控 Promise 验证乱序、取消和失败
+**** 旧 finally 不影响新状态\n写入操作另定确认与幂等协议
 
 @endmindmap

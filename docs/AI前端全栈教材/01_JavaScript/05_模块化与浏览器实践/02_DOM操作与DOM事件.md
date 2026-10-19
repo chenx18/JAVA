@@ -15,26 +15,56 @@ skinparam backgroundColor white
 skinparam shadowing false
 
 * DOM 操作与 DOM 事件
-**[#EDE7F6] 页面与事件
-*** 查询、文本与当前状态
-*** 按点击、输入、提交等用途选择
-*** 焦点与指针进出有不同传播规则
-*** 页面就绪与资源完成分别判断
-**[#E3F2FD] 绑定与清理
-*** 内联与onclick共用一个处理器位置
-*** addEventListener保留多个不同监听
-*** 按引用与capture移除，匿名也可
-*** once、signal与生命周期按需使用
-**[#E0F2F1] 传播与交互
-*** 捕获、目标、冒泡
-*** 默认行为与传播分别控制
-*** 委托处理动态后代并检查归属
-*** 同步派发与任务调度分开
-**[#FFF3E0] 注意
-*** 输入法合成不能只按键判断
-*** requestSubmit与submit行为不同
-*** 事件委托不保证一定更快
-*** unload不可靠，隐藏不等于销毁
+**[#EDE7F6] DOM 基础：怎样访问和更新
+*** DOM、节点与元素
+**** document 表示文档\n元素、文本、注释都是节点
+**** DOM 是浏览器能力\n节点移除不等于引用消失
+*** 查询与更新
+**** querySelector 可能 null\nquerySelectorAll 是静态集合
+**** 创建不等于插入，append 可移动节点\n纯文本用 textContent
+*** property 与 attribute
+**** attribute 是标记属性\nproperty 是对象属性
+**** value / checked 看当前\ndefaultValue / defaultChecked 看默认
+**[#E3F2FD] 监听与输入：怎样选择和管理
+*** 监听注册与解绑
+**** onclick 再赋值会覆盖\naddEventListener 可保存多个不同监听
+**** 移除匹配 type、引用、capture\n匿名函数保存引用也能移除
+*** 监听选项
+**** capture 阶段，once 最多一次
+**** passive 不取消默认动作\nsignal 集中移除监听
+*** 点击、指针和焦点
+**** click 不只来自鼠标\n指针手势处理 pointercancel
+**** over/out 与 focusin/out 可冒泡\nenter/leave 与 focus/blur 不冒泡
+*** 输入、确认与输入法
+**** input 跟踪编辑，change 看控件确认\n赋 value 不自动派发事件
+**** isComposing 区分输入法合成\n按键动作看 key 与 repeat
+*** 表单提交与重置
+**** 提交来源不只按钮\nrequestSubmit 校验并触发 submit
+**** submit 方法跳过校验与事件\nreset 恢复默认值
+left side
+**[#E0F2F1] 传播与委托：谁收到、怎样处理
+*** 事件传播
+**** 祖先捕获 → 目标 → 可选冒泡
+**** 目标先捕获监听后非捕获监听\n两者都属于目标阶段
+*** 事件目标与当前监听对象
+**** target 是目标，currentTarget 是当前监听对象
+**** 图标点击用 closest 找业务元素\n跨边界与异步取值另看规则
+*** 默认行为与传播
+**** preventDefault 取消默认动作\nstopPropagation 停止后续传播
+**** stopImmediatePropagation 还拦后续监听\n取消要看 cancelable 与 passive
+*** 事件委托
+**** 稳定祖先覆盖新增后代
+**** closest 找目标，contains 查范围\n嵌套列表还要查业务归属
+**[#FFF3E0] 页面与调度：何时运行和清理
+*** 页面与资源就绪
+**** DOMContentLoaded 看解析与相关脚本\nload 看资源加载条件
+**** readyState 防止错过就绪\n业务数据完成另行判断
+*** 同步派发
+**** click / dispatchEvent 可同步执行监听\n传播路径与事件调度分开
+**** 人工派发不等于真实输入\n不凭事件对象获得用户激活
+*** 状态观察与生命周期
+**** 视口、元素尺寸、滚动和 hash 分开观察
+**** hidden 不等于销毁，pagehide 可能缓存\n生命周期主动清理监听与资源
 
 @endmindmap
 ```
@@ -44,6 +74,12 @@ skinparam shadowing false
 <!-- core-mindmap:end -->
 
 **口述总览：** DOM 是浏览器把页面表示成对象的方式。JavaScript 通过 DOM 读取和修改页面，通过事件监听响应点击、输入、提交和资源状态变化。先选择合适的事件和绑定方式，再区分当前属性状态、事件传播与默认行为，并在页面功能结束时清理监听。
+
+<!-- recall-route:start -->
+**记忆线：** 页面对象 → 查询与当前状态 → 绑定和选项 → 事件用途 → 传播与委托 → 调度和生命周期。先说想响应什么，再分清“谁收到了、是否默认执行、何时运行”。
+
+本篇按 15 个主要知识点复习：[先自查](#self-check) · [口述与答案](#interview)。每个知识点都写出完整口述与记忆提示，复制到语雀后也可以按顺序直接阅读。
+<!-- recall-route:end -->
 
 ## 基本概念：DOM、节点与元素
 
@@ -481,27 +517,195 @@ console.log(order.join(' → ')); // before → click → notice → after
 
 复述时先说如何查询和修改 DOM，再按用途选择事件、比较绑定和移除方式，最后区分传播、默认行为和任务调度。请求与后台计算分别见[Fetch、请求取消与竞态](04_Fetch、请求取消与竞态.md)和[Web Worker](../06_选读扩展/02_WebWorker.md)。
 
+<a id="self-check"></a>
+
+## 自查问题
+
+先遮住答案，沿记忆线逐题口述；下面按相同顺序给出完整回答，复制到语雀后也能直接阅读。
+
+1. [DOM 与 HTML 是什么关系？节点和元素有什么区别？移除节点是否意味着它已经被垃圾回收？](#recall-01)
+2. [querySelector 和 querySelectorAll 返回什么？创建节点会自动显示吗？textContent 与 innerHTML 怎样选择？](#recall-02)
+3. [input.value 与 getAttribute("value") 为什么可能不同？读取用户当前输入应该看哪个？](#recall-03)
+4. [onclick 与 addEventListener 怎样选择和移除？匿名函数能解绑吗？重复注册怎样判断？](#recall-04)
+5. [四个常用监听选项分别控制什么？once 是否替代生命周期清理？移除时要提供同一个 options 对象吗？](#recall-05)
+6. [click 只来自鼠标吗？over/out 与 enter/leave、focus/blur 与 focusin/focusout 有什么区别？](#recall-06)
+7. [input 与 change 有何区别？直接赋 value 会触发事件吗？怎样处理输入法合成和键盘快捷操作？](#recall-07)
+8. [submit 是否只在点击按钮时触发？requestSubmit、submit、reset 有什么区别？](#recall-08)
+9. [事件流有哪些阶段？目标节点的捕获监听属于捕获阶段吗？所有事件都会冒泡吗？](#recall-09)
+10. [target 与 currentTarget 有何区别？委托中点击图标怎样找到按钮，异步后还能直接依赖 currentTarget 吗？](#recall-10)
+11. [preventDefault、stopPropagation、stopImmediatePropagation 能互相替代吗？passive 或不可取消事件会怎样？](#recall-11)
+12. [事件委托为什么能处理后来新增的后代？怎样处理嵌套列表，委托一定更快吗？](#recall-12)
+13. [DOMContentLoaded 是否表示页面全部加载完？load、error 与 abort 怎样区分，动态脚本怎样避免错过 DOM 就绪？](#recall-13)
+14. [dispatchEvent 和 click 的监听何时执行？dispatchEvent 返回什么，人工派发是否等于真实用户操作？](#recall-14)
+15. [resize、scroll、hashchange 分别观察什么？页面 hidden、pagehide 是否都表示销毁？怎样清理监听和过时方案？](#recall-15)
+
 <a id="interview"></a>
 
 ## 试题与答案
+
+以下按 15 个知识点归纳口述回答，原有试题编号与锚点保留在对应知识点下。
+
+<a id="recall-01"></a>
+
+### DOM、节点与元素：页面的对象表示
+
+**自查：** DOM 与 HTML 是什么关系？节点和元素有什么区别？移除节点是否意味着它已经被垃圾回收？
+
+**回答：** HTML 是页面标记文本，DOM 是浏览器解析后建立的对象树，document 表示文档。元素、文本、注释都属于节点，Element 是表示元素的那一类。JavaScript 通过这些对象查询和修改页面；DOM 是浏览器提供的能力，不能假设普通 Node 环境也有 document。把节点从页面移除，只是改变树关系，其他对象仍可能引用它，不能据此断言已经回收。
+
+**记忆：** HTML 是标记，DOM 是对象树；元素是节点之一，移除不等于回收。
+
+<a id="recall-02"></a>
+
+### 查询与更新：先处理空结果，再修改内容
+
+**自查：** querySelector 和 querySelectorAll 返回什么？创建节点会自动显示吗？textContent 与 innerHTML 怎样选择？
+
+**回答：** querySelector 返回首个匹配元素或 null；querySelectorAll 返回静态 NodeList，没有匹配时为空，后续节点变化不会更新这份结果。无效选择器会抛 SyntaxError。createElement 只创建对象，插入后才进入页面树；append 已有节点会移动它，不会自动克隆。文本用 textContent，外部字符串不能未经可信处理就交给 innerHTML 解析。classList 用于操作类名，style 主要读写内联样式。
+
+**记忆：** 查询可能为空，集合可能静态；创建还要插入，纯文本用 textContent。
+
+<a id="recall-03"></a>
+
+### property 与 attribute：当前状态不等于标记默认值
+
+**自查：** input.value 与 getAttribute("value") 为什么可能不同？读取用户当前输入应该看哪个？
+
+**回答：** attribute 是 HTML 标记层面的属性，property 是 DOM 对象上的属性，部分属性有映射关系，但不能认为始终同步。用户编辑后的 input.value 表示当前值，value 标记属性与 defaultValue 对应默认值；复选框的 checked 与 defaultChecked 也区分当前和默认状态。读取当前输入通常使用 property，getAttribute 返回标记属性的字符串值或 null。
+
+**记忆：** attribute 看标记，property 看对象状态；当前值与默认值分开。
+
+<a id="recall-04"></a>
+
+<a id="c21-06"></a>
+
+### C21-06 [P0·基础] onclick与addEventListener怎样选择和移除？
+
+**自查：** onclick 与 addEventListener 怎样选择和移除？匿名函数能解绑吗？重复注册怎样判断？
+
+**回答：** HTML 内联 onclick 和 JavaScript 的 onclick 赋值使用同一个事件处理器位置，再次赋值会覆盖，设为 null 可以清空。addEventListener 可以注册多个不同监听，移除时按事件类型、同一回调引用和 capture 匹配；这三个条件相同的重复注册不会增加一份监听。清空 onclick 不会移除另外注册的监听。匿名函数只要保存引用也能解绑，注册时传函数而不是立即调用后的结果。
+
+**记忆：** onclick 一个位，监听可以多份；解绑看类型、同一引用和 capture。
+
+<a id="recall-05"></a>
+
+### 监听选项：capture、once、passive 与 signal
+
+**自查：** 四个常用监听选项分别控制什么？once 是否替代生命周期清理？移除时要提供同一个 options 对象吗？
+
+**回答：** capture 选择捕获或非捕获监听，once 让监听最多响应一次，passive 声明不会在该回调中取消默认行为，signal 允许控制器取消时移除监听。once 尚未触发时仍可能保留，不能代替组件结束时的清理。移除不要求同一个 options 对象，关键仍是事件类型、回调引用与 capture；passive 监听中不能成功使用 preventDefault。
+
+**记忆：** capture 管阶段，once 管次数，passive 限制取消，signal 管结束。
+
+<a id="recall-06"></a>
+
+### 点击、指针和焦点：按动作选择事件
+
+**自查：** click 只来自鼠标吗？over/out 与 enter/leave、focus/blur 与 focusin/focusout 有什么区别？
+
+**回答：** click 常表示可交互元素的激活，也可能由键盘触发；双击通常已经发生两次 click，再发生 dblclick。指针事件可统一鼠标、触摸与笔，拖动还应处理 pointercancel。over/out 会冒泡且可能因后代切换触发，enter/leave 不冒泡，更适合整体边界。focus/blur 不冒泡，focusin/focusout 会冒泡；焦点变化不等于鼠标进出。按业务动作选择事件，不能只靠名字相近来替换。
+
+**记忆：** 激活、边界、焦点各有用途；事件是否冒泡要单独看。
+
+<a id="recall-07"></a>
+
+<a id="c21-07"></a>
+
+### C21-07 [P0·原理] input与change有什么区别，输入法合成怎样处理？
+
+**自查：** input 与 change 有何区别？直接赋 value 会触发事件吗？怎样处理输入法合成和键盘快捷操作？
+
+**回答：** input 主要跟踪用户编辑后的值，change 表示按控件规则完成一次确认，文本框常在改值后失焦触发，选择框等规则不同。直接赋 value 不会自动触发二者。输入法合成中可用 isComposing 暂缓处理中间结果，最终 input 与 compositionend 的衔接要验证并避免重复处理。键盘动作使用 keydown/keyup 和 event.key，长按还可检查 repeat；确认候选字的 Enter 不应随意当作业务提交。
+
+**记忆：** 文本变化看 input，确认看 change；合成未结束别抢着处理。
+
+<a id="recall-08"></a>
+
+<a id="c21-08"></a>
+
+### C21-08 [P0·原理] submit是否只在点击提交按钮时触发？
+
+**自查：** submit 是否只在点击按钮时触发？requestSubmit、submit、reset 有什么区别？
+
+**回答：** 提交按钮、符合条件的回车和 requestSubmit 都可以启动提交流程，约束校验失败通常不会进入 submit 监听。requestSubmit 按提交规则校验并触发事件，form.submit 则跳过约束校验且不触发 submit。业务应监听表单，不只监听按钮 click。reset 的默认行为恢复控件默认值而不是全部清空，reset 监听执行时默认重置还没完成，必要时可取消默认动作。
+
+**记忆：** 提交监听表单，requestSubmit 走校验和事件；reset 恢复默认值。
+
+<a id="recall-09"></a>
+
+### 事件传播：捕获、目标与冒泡
+
+**自查：** 事件流有哪些阶段？目标节点的捕获监听属于捕获阶段吗？所有事件都会冒泡吗？
+
+**回答：** 事件沿传播路径经历捕获、到达目标，并在允许时向祖先冒泡。祖先的 capture 监听在捕获阶段执行，非捕获监听在冒泡阶段执行；目标节点的两种监听都属于目标阶段，通常先执行捕获监听再执行非捕获监听。不是所有事件都会冒泡，例如 focus/blur 可以用祖先捕获监听或对应的 focusin/focusout 处理。传播描述路径，不决定回调一定异步执行。
+
+**记忆：** 捕获到目标，可冒泡才向外；目标两类监听都在目标阶段。
+
+<a id="recall-10"></a>
 
 <a id="c21-01"></a>
 
 ### C21-01 [P0·原理] target与currentTarget有什么区别？委托如何处理图标点击？
 
-**回答：** target 是事件目标，点击图标时可能是按钮内部元素；currentTarget 是当前执行监听的对象。委托在祖先监听里用 closest 找到业务按钮，再检查归属。回调结束后不要依赖 event.currentTarget 仍保存原值，需要时在回调内保存所需信息。
+**自查：** target 与 currentTarget 有何区别？委托中点击图标怎样找到按钮，异步后还能直接依赖 currentTarget 吗？
+
+**回答：** target 表示事件目标，点击图标时可能是按钮内部元素；currentTarget 表示当前正在执行监听的对象。祖先委托可用 closest 从图标找到业务按钮，再检查归属。监听返回后不要依赖 currentTarget 仍保存原值，需要异步使用时在回调内保存所需对象或业务标识。Shadow DOM 可能重定向外部看到的 target，跨边界还需结合 composed 与 composedPath 分析。
+
+**记忆：** target 看事件目标，currentTarget 看当前监听对象；异步用的信息提前保存。
+
+<a id="recall-11"></a>
 
 <a id="c21-02"></a>
 
 ### C21-02 [P0·基础] preventDefault与stopPropagation能互相替代吗？
 
-**回答：** 不能。preventDefault 取消可取消的默认动作，stopPropagation 阻止后续传播。取消跳转不会自动停止冒泡，停止冒泡也不会自动取消跳转；passive 监听中不能成功取消默认行为。
+**自查：** preventDefault、stopPropagation、stopImmediatePropagation 能互相替代吗？passive 或不可取消事件会怎样？
+
+**回答：** preventDefault 尝试取消可取消事件的默认动作，不自动停止传播；stopPropagation 阻止后续传播，不自动取消默认动作；stopImmediatePropagation 还会阻止当前监听器调用过程中后续监听执行。passive 监听或不可取消事件不能成功取消默认行为。停止传播不宜简化成“同节点所有监听都照常”：目标捕获和非捕获分开处理，前者停止传播可能阻止随后目标非捕获监听。
+
+**记忆：** 默认动作与传播分开管；立即停止还拦当前后续监听。
+
+<a id="recall-12"></a>
+
+### 事件委托：匹配元素，还要确认归属
+
+**自查：** 事件委托为什么能处理后来新增的后代？怎样处理嵌套列表，委托一定更快吗？
+
+**回答：** 委托在稳定祖先上统一监听后代事件，因此新增后代通常无需逐项注册。处理时先确认 target 可作为元素使用，再用 closest 找业务元素、contains 检查容器范围；嵌套业务列表还要确认最近的列表祖先属于当前实例。委托需要匹配和分发成本，不保证一定更快，应选择就近稳定的祖先，并在功能结束时移除监听。
+
+**记忆：** 祖先统一接收，匹配后检查归属；动态方便不等于必然更快。
+
+<a id="recall-13"></a>
 
 <a id="c21-03"></a>
 
 ### C21-03 [P1·基础] DOMContentLoaded是否表示页面所有内容加载完？
 
-**回答：** 不表示。它主要对应文档解析和相关脚本执行完成，不等待所有图片或未来请求。业务页面是否就绪，应根据自己的数据、组件和资源状态判断。
+**自查：** DOMContentLoaded 是否表示页面全部加载完？load、error 与 abort 怎样区分，动态脚本怎样避免错过 DOM 就绪？
+
+**回答：** DOMContentLoaded 主要对应文档解析和需要等待的相关脚本执行完成，不等待所有图片、async 脚本或未来请求。load 对应相应资源满足加载条件，业务就绪仍要根据数据、组件和资源分别判断。动态脚本可以先看 document.readyState，仍在 loading 时等待 DOMContentLoaded，否则执行仅依赖 DOM 已解析的初始化。资源 error 表示失败，abort 表示 API 定义的中止，不能把中止当成图片加载失败的通用事件。
+
+**记忆：** DOM 就绪、资源完成、业务可用分别判断；先查 readyState 防止错过事件。
+
+<a id="recall-14"></a>
+
+### 同步派发：事件传播不等于任务调度
+
+**自查：** dispatchEvent 和 click 的监听何时执行？dispatchEvent 返回什么，人工派发是否等于真实用户操作？
+
+**回答：** 代码调用 dispatchEvent 或 click 时，相关监听可以在调用返回前同步执行，不能把所有事件回调都背成未来任务。dispatchEvent 对可取消且被成功取消的事件返回 false，否则返回 true；Event 的 bubbles、cancelable 默认都是 false。人工派发不能等同于真实用户输入，也不能凭它获得浏览器要求的真实用户激活；通过 dispatchEvent 人工派发的事件，以及程序调用 click 触发的点击，isTrusted 为 false。传播回答经过哪些监听，事件循环回答工作何时执行。
+
+**记忆：** 程序派发可以同步；传播管路径，调度管时机，派发不制造用户激活。
+
+<a id="recall-15"></a>
+
+### 状态观察与生命周期：隐藏、离开和卸载不同
+
+**自查：** resize、scroll、hashchange 分别观察什么？页面 hidden、pagehide 是否都表示销毁？怎样清理监听和过时方案？
+
+**回答：** window resize 观察视口尺寸变化，元素尺寸可用 ResizeObserver；scroll 观察文档或元素的滚动位置变化，hashchange 观察 URL 的片段标识（# 后部分）变化。scroll 与 wheel 不等价，pushState/replaceState 也不会自动触发 hashchange。visibilitychange 的 hidden 表示当前不可见，不等于销毁；pagehide 还可能进入往返缓存，需要结合 persisted 与恢复流程。组件结束应主动清理监听、定时器和请求，不能依赖不可靠的 unload。旧 keypress、DOM 变动事件应按用途改用现代输入事件或 MutationObserver，而不是只替换字符串。
+
+**记忆：** 观察对象与事件匹配；隐藏可恢复，卸载主动清理，不赌 unload。
 
 <a id="c21-04"></a>
 
@@ -510,21 +714,3 @@ console.log(order.join(' → ')); // before → click → notice → after
 <a id="c21-05"></a>
 
 原题已移至 [Worker 篇：Worker一定提升性能吗？](../06_选读扩展/02_WebWorker.md#c27-05)。
-
-<a id="c21-06"></a>
-
-### C21-06 [P0·基础] onclick与addEventListener怎样选择和移除？
-
-**回答：** HTML 内联 onclick 和 JavaScript 的 .onclick 赋值使用同一个事件处理器位置，再次赋值会覆盖，设 null 可清空。addEventListener 可以注册多个不同监听，removeEventListener 按 type、同一回调引用和 capture 匹配移除。清空 onclick 不会移除另行注册的监听；匿名函数只要保存了引用也能移除。
-
-<a id="c21-07"></a>
-
-### C21-07 [P0·原理] input与change有什么区别，输入法合成怎样处理？
-
-**回答：** input 主要跟踪用户编辑后的值，change 表示按控件规则完成一次确认；文本框常在改值后失焦触发 change，选择框等有不同规则。直接赋 value 不会自动触发二者。输入法合成期间可用 isComposing 暂缓处理中间结果，最终输入与 compositionend 的衔接要验证并避免重复操作。
-
-<a id="c21-08"></a>
-
-### C21-08 [P0·原理] submit是否只在点击提交按钮时触发？
-
-**回答：** 不是。符合条件的回车和 requestSubmit() 也可以启动表单提交流程，约束校验失败通常不会触发 submit。requestSubmit 按提交规则校验并触发事件；form.submit() 跳过约束校验，也不触发 submit 事件。处理提交应监听表单，不能只监听按钮 click。
