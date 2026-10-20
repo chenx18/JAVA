@@ -72,7 +72,7 @@ left side
 <!-- recall-route:start -->
 **记忆线：** 一次结果 → 执行与状态 → 订阅与链式返回 → 失败和清理 → 组合结果 → 辅助 API 与实现边界。先判断谁完成结果，再沿每一段的新 Promise 推导。
 
-本篇按 12 个主要知识点复习：[先自查](#self-check) · [口述与答案](#interview)。先尝试口述，再用正文示例验证；文末完整保留每点的回答和记忆提示，不依赖跳转也能复习。
+本篇按 12 个主要知识点复习：[知识点归纳与自查](#self-check) · [试题与答案](#interview)。先尝试口述，再用正文示例验证；文末完整保留每点的回答和记忆提示，不依赖跳转也能复习。
 <!-- recall-route:end -->
 
 回调也能通知结果，但不同 API 的参数与报错方式可能不同，连续操作还需要手动衔接。Promise 统一这套结果接口，不负责把计算移到其他线程，也不自动限制并发或取消操作。各例直接使用 Promise，可在现代浏览器或 Node 中独立运行，无需先读 async/await。
@@ -423,11 +423,14 @@ remaining 初始为 1，代表“输入还没有迭代完”。每遇一项加 1
 allDemo 组合的是原生 Promise，没有实现 Promise 构造器。Promise/A+ 主要约束 then 的行为以及如何采用回调返回结果，涉及链式返回、thenable、异常、重复完成和循环引用等规则。原生 Promise 还规定构造器、静态 API 与宿主调度等行为；不能把一个状态骨架或这个受限的 all 练习称为完整 Promise/A+ 或原生 Promise 实现。
 
 <a id="summary"></a>
+
 <a id="self-check"></a>
 
-## 自查问题
+## 知识点归纳与自查
 
-先遮住答案，沿记忆线逐题口述；下方逐点保留完整回答与记忆提示。
+本节按 12 个知识点回忆和归纳。先用自查问题检查理解，再顺序阅读各点口述与记忆提示；分级试题在后面的独立章节。
+
+### 自查问题
 
 1. [Promise 解决什么问题？它会把计算放到其他线程吗？pending 是否表示进度，结果能被多次改写吗？](#recall-01)
 2. [new Promise 的 executor 什么时候执行？resolve 后面的代码还会执行吗？同步抛错与未来回调抛错能否都被构造器接住？](#recall-02)
@@ -442,19 +445,13 @@ allDemo 组合的是原生 Promise，没有实现 Promise 构造器。Promise/A+
 11. [Promise.try(fn, ...args) 与 Promise.resolve().then(fn) 的调用时机相同吗？它怎样处理返回值和同步抛错？](#recall-11)
 12. [手写 all 怎样保持顺序、统计完成、处理空输入和失败？它与手写 Promise 构造器、满足 Promise/A+ 是同一件事吗？](#recall-12)
 
-<a id="interview"></a>
-
-## 试题与答案
-
-以下按 12 个知识点依次归纳。原有分级题保留题号，其余标题对应同一条复习主线。
-
 <a id="recall-01"></a>
 
 ### Promise 的用途：统一一次操作的最终结果
 
 **自查：** Promise 解决什么问题？它会把计算放到其他线程吗？pending 是否表示进度，结果能被多次改写吗？
 
-**回答：** Promise 用对象表示一次操作最终成功还是失败，统一后续结果和错误的接收方式。调用者先获得对象，再通过 then、catch 连接后续步骤，而不是为每个 API 单独组织层层回调。Promise 不创建后台计算线程；pending 只表示尚未完成，不表示百分比，也没有原生进度通知协议。成功或失败一旦确定就不能改写，持续进度需要另用事件或回调表达。
+**口述：** Promise 用对象表示一次操作最终成功还是失败，统一后续结果和错误的接收方式。调用者先获得对象，再通过 then、catch 连接后续步骤，而不是为每个 API 单独组织层层回调。Promise 不创建后台计算线程；pending 只表示尚未完成，不表示百分比，也没有原生进度通知协议。成功或失败一旦确定就不能改写，持续进度需要另用事件或回调表达。
 
 **记忆：** Promise 管一次最终结果，不管线程和持续进度。
 
@@ -464,55 +461,47 @@ allDemo 组合的是原生 Promise，没有实现 Promise 构造器。Promise/A+
 
 **自查：** new Promise 的 executor 什么时候执行？resolve 后面的代码还会执行吗？同步抛错与未来回调抛错能否都被构造器接住？
 
-**回答：** Promise 构造器会同步调用 executor，把 resolve 和 reject 交给它接入结果；then 的处理器则稍后运行。调用 resolve 不是 return，不会结束 executor，后面的同步代码仍会执行。executor 同步抛错会被构造器处理为拒绝，但先前已经锁定的结果不会被随后抛错推翻；它注册的未来回调属于另一段执行，抛错需要在回调中处理并交给 reject，不能靠原构造器兜住。
+**口述：** Promise 构造器会同步调用 executor，把 resolve 和 reject 交给它接入结果；then 的处理器则稍后运行。调用 resolve 不是 return，不会结束 executor，后面的同步代码仍会执行。executor 同步抛错会被构造器处理为拒绝，但先前已经锁定的结果不会被随后抛错推翻；它注册的未来回调属于另一段执行，抛错需要在回调中处理并交给 reject，不能靠原构造器兜住。
 
 **记忆：** 构造器立即执行 executor，resolve 不等于 return，未来回调要另接错误。
 
 <a id="recall-03"></a>
 
-<a id="c16-01"></a>
-
-### C16-01 [P0·原理] resolved与fulfilled是否相同？
+### 状态与结果采用：resolved 不等于 fulfilled
 
 **自查：** Promise 有哪些状态？settled 是第四种状态吗？resolve 一个 pending Promise 后，当前 Promise 是否已经 fulfilled，还能 reject 改写吗？
 
-**回答：** Promise 的三种状态是 pending、fulfilled、rejected，后两者统称 settled，不是新增状态。fulfilled 表示已成功，resolved 表示结果已确定或已经锁定跟随关系：resolve 一个仍 pending 的 Promise 后，当前 Promise 可能继续 pending，但已经决定采用对方的结果，后续 reject 不能改写这个决定。等对方成功或失败后，当前 Promise 才取得相应终态。见[结果采用](#k01)。
+**口述：** Promise 的三种状态是 pending、fulfilled、rejected，后两者统称 settled，不是新增状态。fulfilled 表示已成功，resolved 表示结果已确定或已经锁定跟随关系：resolve 一个仍 pending 的 Promise 后，当前 Promise 可能继续 pending，但已经决定采用对方的结果，后续 reject 不能改写这个决定。等对方成功或失败后，当前 Promise 才取得相应终态。见[结果采用](#k01)。
 
 **记忆：** fulfilled 是成功状态，resolved 还可能只是锁定跟随关系。
 
 <a id="recall-04"></a>
 
-<a id="c16-07"></a>
-
-### C16-07 [P0·基础] Promise已经成功或失败，再注册then还能收到结果吗？
+### 结果订阅：完成后仍能订阅，pending 先保存处理器
 
 **自查：** Promise 已经成功或失败后再注册 then，还能收到结果吗？处理器会改为同步执行吗？pending 时注册就立即入队吗？
 
-**回答：** 能收到。Promise 保留已经确定的结果，之后注册的成功或失败处理器仍会异步执行，也可以多次注册，不会因此重新执行原操作。仍 pending 时，then 先保存处理器，等结果成功或失败后才安排对应处理；不能因为源码调用了 then，就认定处理器已在微任务队列中。结果就绪也不允许处理器插入当前同步代码。
+**口述：** 能收到。Promise 保留已经确定的结果，之后注册的成功或失败处理器仍会异步执行，也可以多次注册，不会因此重新执行原操作。仍 pending 时，then 先保存处理器，等结果成功或失败后才安排对应处理；不能因为源码调用了 then，就认定处理器已在微任务队列中。结果就绪也不允许处理器插入当前同步代码。
 
 **记忆：** 结果会保留，晚订阅仍异步；pending 先登记，完成后再安排。
 
 <a id="recall-05"></a>
 
-<a id="c16-02"></a>
-
-### C16-02 [P0·原理] then返回的Promise由什么决定？
+### then 链：回调返回值决定下一段
 
 **自查：** then 返回的是原 Promise 吗？返回普通值、Promise、thenable 或抛错分别怎样？为什么启动任务后还要 return？
 
-**回答：** 每次 then 返回新的 Promise，不改变原 Promise 的状态。实际执行的处理器返回普通值时，新 Promise 以该值成功；返回 Promise 或 thenable 时采用其最终结果；抛错时拒绝。没有对应的函数处理器时，值或拒绝原因继续透传。省略 return 会得到 undefined，启动了异步任务但没有返回它，下游就不会等待，那个任务失败时还可能无人接管。见[链式返回](#k02)。
+**口述：** 每次 then 返回新的 Promise，不改变原 Promise 的状态。实际执行的处理器返回普通值时，新 Promise 以该值成功；返回 Promise 或 thenable 时采用其最终结果；抛错时拒绝。没有对应的函数处理器时，值或拒绝原因继续透传。省略 return 会得到 undefined，启动了异步任务但没有返回它，下游就不会等待，那个任务失败时还可能无人接管。见[链式返回](#k02)。
 
 **记忆：** 每段生成新 Promise；要等哪项任务，就返回哪项结果。
 
 <a id="recall-06"></a>
 
-<a id="c16-03"></a>
-
-### C16-03 [P0·原理] catch与finally怎样改变链？
+### catch 与 finally：恢复失败和完成清理
 
 **自查：** catch 与 finally 怎样改变后续链？同一次 then 的失败处理器能接住成功处理器抛错吗？清理失败会怎样？
 
-**回答：** catch 等价于只提供失败处理器的 then，返回普通值代表恢复成功，返回 Promise 则采用结果，继续抛错则让下游拒绝。只记录日志却不再抛错，通常使后续成功得到 undefined。同一次 then 的失败处理器只接收输入 Promise 的拒绝，不能接住同次成功处理器自己的错误，需要后续 catch。finally 不接收原值或原因，正常返回保留原结果，返回 Promise 会等待清理；清理抛错或拒绝可覆盖原结果。前面一直 pending，finally 也不会运行。见[错误与清理](#k03)。
+**口述：** catch 等价于只提供失败处理器的 then，返回普通值代表恢复成功，返回 Promise 则采用结果，继续抛错则让下游拒绝。只记录日志却不再抛错，通常使后续成功得到 undefined。同一次 then 的失败处理器只接收输入 Promise 的拒绝，不能接住同次成功处理器自己的错误，需要后续 catch。finally 不接收原值或原因，正常返回保留原结果，返回 Promise 会等待清理；清理抛错或拒绝可覆盖原结果。前面一直 pending，finally 也不会运行。见[错误与清理](#k03)。
 
 **记忆：** catch 正常返回就是恢复，finally 正常清理保留结果；清理失败可覆盖。
 
@@ -522,19 +511,17 @@ allDemo 组合的是原生 Promise，没有实现 Promise 构造器。Promise/A+
 
 **自查：** Promise.resolve 与 Promise.reject 接到已有 Promise 时有什么不同？thenable 是什么，为什么不能只用 instanceof 检查？
 
-**回答：** Promise.resolve 将普通值接成成功结果，遇到同构造器的原生 Promise 可以直接返回原对象，遇到 thenable 则按其 then 方法采用最终结果。thenable 是提供可调用 then 的对象，不一定是 Promise 实例，所以跨实现接入不能仅依赖 instanceof。Promise.reject 始终创建以参数为拒绝原因的 Promise，即使原因本身是 Promise 也不会等待它。读取 then 属性时抛错、重复报告结果等边界由原生机制处理。
+**口述：** Promise.resolve 将普通值接成成功结果，遇到同构造器的原生 Promise 可以直接返回原对象，遇到 thenable 则按其 then 方法采用最终结果。thenable 是提供可调用 then 的对象，不一定是 Promise 实例，所以跨实现接入不能仅依赖 instanceof。Promise.reject 始终创建以参数为拒绝原因的 Promise，即使原因本身是 Promise 也不会等待它。读取 then 属性时抛错、重复报告结果等边界由原生机制处理。
 
 **记忆：** resolve 采用对方结果，reject 把参数直接当原因。
 
 <a id="recall-08"></a>
 
-<a id="c16-04"></a>
-
-### C16-04 [P0·基础] all、allSettled、race、any怎么选？
+### 组合方法：按成功条件、结果顺序和空输入选择
 
 **自查：** all、allSettled、race、any 各等待什么？结果按输入还是完成顺序？空输入和失败分别怎样处理？
 
-**回答：** all 等全部成功，结果数组按输入顺序，某项拒绝则整体拒绝；allSettled 等每项结束，按输入顺序记录 status 与 value 或 reason。race 接收最先成功或失败的结局，any 接收最先成功的值，全部失败时以 AggregateError 拒绝，errors 按输入顺序保存原因。空输入时 all 与 allSettled 成功得到空数组，race 一直 pending，any 以空 errors 的 AggregateError 拒绝。四者接收可迭代输入，也接受其中的普通值；读取或迭代输入自身失败仍需处理。它们不自动取消任务或限制并发。见[组合结果](#k05)。
+**口述：** all 等全部成功，结果数组按输入顺序，某项拒绝则整体拒绝；allSettled 等每项结束，按输入顺序记录 status 与 value 或 reason。race 接收最先成功或失败的结局，any 接收最先成功的值，全部失败时以 AggregateError 拒绝，errors 按输入顺序保存原因。空输入时 all 与 allSettled 成功得到空数组，race 一直 pending，any 以空 errors 的 AggregateError 拒绝。四者接收可迭代输入，也接受其中的普通值；读取或迭代输入自身失败仍需处理。它们不自动取消任务或限制并发。见[组合结果](#k05)。
 
 **记忆：** all 全成功，allSettled 全结束，race 首结局，any 首成功；空输入单独记。
 
@@ -544,7 +531,7 @@ allDemo 组合的是原生 Promise，没有实现 Promise 构造器。Promise/A+
 
 **自查：** Promise.all 会负责启动请求、限制并发或取消失败后的其他任务吗？怎样避免已经启动的任务成为未处理拒绝？
 
-**回答：** 组合方法处理传入的结果，不负责调度任务函数。写 Promise.all(urls.map(fetcher)) 时，map 已经逐项调用 fetcher 并启动请求，all 才接收这些结果；限制并发需要保留任务调用权，交给队列或池安排。整体拒绝不会自动停止其他工作，取消需要底层操作响应信号。每个可能拒绝的结果都要及时由调用方、链条或组合方法接管，不能以为不写 catch 就没有错误；浏览器和 Node 会按各自规则报告未处理拒绝。
+**口述：** 组合方法处理传入的结果，不负责调度任务函数。写 Promise.all(urls.map(fetcher)) 时，map 已经逐项调用 fetcher 并启动请求，all 才接收这些结果；限制并发需要保留任务调用权，交给队列或池安排。整体拒绝不会自动停止其他工作，取消需要底层操作响应信号。每个可能拒绝的结果都要及时由调用方、链条或组合方法接管，不能以为不写 catch 就没有错误；浏览器和 Node 会按各自规则报告未处理拒绝。
 
 **记忆：** 组合结果不负责调度启动；限并发、取消和失败去向分别设计。
 
@@ -554,32 +541,74 @@ allDemo 组合的是原生 Promise，没有实现 Promise 构造器。Promise/A+
 
 **自查：** Promise.withResolvers 返回什么，适合哪些场景？能否多次改写结果，事件永远不来时又该谁负责结束？
 
-**回答：** Promise.withResolvers 返回 promise、resolve、reject，便于把事件或传统回调接入统一结果，而不用手动把完成函数保存到构造器外。它没有改变结果只能确定一次的规则，也不自动提供超时、取消或资源清理；事件可能不来时，调用方仍要设计结束路径和移除监听。使用前要确认目标运行时支持，或采用兼容实现。
+**口述：** Promise.withResolvers 返回 promise、resolve、reject，便于把事件或传统回调接入统一结果，而不用手动把完成函数保存到构造器外。它没有改变结果只能确定一次的规则，也不自动提供超时、取消或资源清理；事件可能不来时，调用方仍要设计结束路径和移除监听。使用前要确认目标运行时支持，或采用兼容实现。
 
 **记忆：** 把完成权交出去，不等于把超时、取消和清理自动补齐。
 
 <a id="recall-11"></a>
 
-<a id="c16-06"></a>
-
-### C16-06 [P1·原理] Promise.try(fn)与resolve().then(fn)的调用时机相同吗？
+### Promise.try：同步调用函数，统一返回与抛错
 
 **自查：** Promise.try(fn, ...args) 与 Promise.resolve().then(fn) 的调用时机相同吗？它怎样处理返回值和同步抛错？
 
-**回答：** 不同。Promise.try 同步调用 fn，并返回采用其结果或接住同步抛错的 Promise；Promise.resolve().then(fn) 在后续微任务中才调用 fn。二者都能统一结果接口，但函数调用时机可被观察，不能仅因最终值相同就随意替换。try 的结果处理器仍异步执行，使用该较新的 API 前还需检查运行时支持。见[辅助 API](#k06)。
+**口述：** 不同。Promise.try 同步调用 fn，并返回采用其结果或接住同步抛错的 Promise；Promise.resolve().then(fn) 在后续微任务中才调用 fn。二者都能统一结果接口，但函数调用时机可被观察，不能仅因最终值相同就随意替换。try 的结果处理器仍异步执行，使用该较新的 API 前还需检查运行时支持。见[辅助 API](#k06)。
 
 **记忆：** try 现在调用，then 稍后调用；交付结果都走 Promise。
 
 <a id="recall-12"></a>
 
+### 手写 all 与 Promise/A+：说明真正实现的范围
+
+**自查：** 手写 all 怎样保持顺序、统计完成、处理空输入和失败？它与手写 Promise 构造器、满足 Promise/A+ 是同一件事吗？
+
+**口述：** 常见 all 实现用输入索引保存结果，以计数判断全部完成，通过 Promise.resolve 接入普通值与 thenable，任意拒绝交给整体 reject。正文 allDemo 的计数还包括迭代未结束的一份，因此空输入也能完成；需验证乱序完成、拒绝和迭代器抛错。它借用了原生 Promise，不是重写构造器，也未完整模拟静态方法的子类协议。Promise/A+ 主要约束 then 及返回结果的采用，原生 Promise 还包含构造器、静态 API 与宿主调度，不能把受限练习说成完整实现。见[实现边界](#k07)。
+
+**记忆：** 索引保序、计数收齐、resolve 接入；手写 all 不等于完整 Promise。
+
+<a id="interview"></a>
+
+## 试题与答案
+
+<a id="c16-01"></a>
+
+### C16-01 [P0·原理] resolved与fulfilled是否相同？
+
+**回答：** Promise 的三种状态是 pending、fulfilled、rejected，后两者统称 settled，不是新增状态。fulfilled 表示已成功，resolved 表示结果已确定或已经锁定跟随关系：resolve 一个仍 pending 的 Promise 后，当前 Promise 可能继续 pending，但已经决定采用对方的结果，后续 reject 不能改写这个决定。等对方成功或失败后，当前 Promise 才取得相应终态。见[结果采用](#k01)。
+
+<a id="c16-07"></a>
+
+### C16-07 [P0·基础] Promise已经成功或失败，再注册then还能收到结果吗？
+
+**回答：** 能收到。Promise 保留已经确定的结果，之后注册的成功或失败处理器仍会异步执行，也可以多次注册，不会因此重新执行原操作。仍 pending 时，then 先保存处理器，等结果成功或失败后才安排对应处理；不能因为源码调用了 then，就认定处理器已在微任务队列中。结果就绪也不允许处理器插入当前同步代码。
+
+<a id="c16-02"></a>
+
+### C16-02 [P0·原理] then返回的Promise由什么决定？
+
+**回答：** 每次 then 返回新的 Promise，不改变原 Promise 的状态。实际执行的处理器返回普通值时，新 Promise 以该值成功；返回 Promise 或 thenable 时采用其最终结果；抛错时拒绝。没有对应的函数处理器时，值或拒绝原因继续透传。省略 return 会得到 undefined，启动了异步任务但没有返回它，下游就不会等待，那个任务失败时还可能无人接管。见[链式返回](#k02)。
+
+<a id="c16-03"></a>
+
+### C16-03 [P0·原理] catch与finally怎样改变链？
+
+**回答：** catch 等价于只提供失败处理器的 then，返回普通值代表恢复成功，返回 Promise 则采用结果，继续抛错则让下游拒绝。只记录日志却不再抛错，通常使后续成功得到 undefined。同一次 then 的失败处理器只接收输入 Promise 的拒绝，不能接住同次成功处理器自己的错误，需要后续 catch。finally 不接收原值或原因，正常返回保留原结果，返回 Promise 会等待清理；清理抛错或拒绝可覆盖原结果。前面一直 pending，finally 也不会运行。见[错误与清理](#k03)。
+
+<a id="c16-04"></a>
+
+### C16-04 [P0·基础] all、allSettled、race、any怎么选？
+
+**回答：** all 等全部成功，结果数组按输入顺序，某项拒绝则整体拒绝；allSettled 等每项结束，按输入顺序记录 status 与 value 或 reason。race 接收最先成功或失败的结局，any 接收最先成功的值，全部失败时以 AggregateError 拒绝，errors 按输入顺序保存原因。空输入时 all 与 allSettled 成功得到空数组，race 一直 pending，any 以空 errors 的 AggregateError 拒绝。四者接收可迭代输入，也接受其中的普通值；读取或迭代输入自身失败仍需处理。它们不自动取消任务或限制并发。见[组合结果](#k05)。
+
+<a id="c16-06"></a>
+
+### C16-06 [P1·原理] Promise.try(fn)与resolve().then(fn)的调用时机相同吗？
+
+**回答：** 不同。Promise.try 同步调用 fn，并返回采用其结果或接住同步抛错的 Promise；Promise.resolve().then(fn) 在后续微任务中才调用 fn。二者都能统一结果接口，但函数调用时机可被观察，不能仅因最终值相同就随意替换。try 的结果处理器仍异步执行，使用该较新的 API 前还需检查运行时支持。见[辅助 API](#k06)。
+
 <a id="c16-05"></a>
 
 ### C16-05 [P0·编码] 实现Promise.all的核心行为。
 
-**自查：** 手写 all 怎样保持顺序、统计完成、处理空输入和失败？它与手写 Promise 构造器、满足 Promise/A+ 是同一件事吗？
-
 **回答：** 常见 all 实现用输入索引保存结果，以计数判断全部完成，通过 Promise.resolve 接入普通值与 thenable，任意拒绝交给整体 reject。正文 allDemo 的计数还包括迭代未结束的一份，因此空输入也能完成；需验证乱序完成、拒绝和迭代器抛错。它借用了原生 Promise，不是重写构造器，也未完整模拟静态方法的子类协议。Promise/A+ 主要约束 then 及返回结果的采用，原生 Promise 还包含构造器、静态 API 与宿主调度，不能把受限练习说成完整实现。见[实现边界](#k07)。
-
-**记忆：** 索引保序、计数收齐、resolve 接入；手写 all 不等于完整 Promise。
 
 参考：[MDN Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)。
